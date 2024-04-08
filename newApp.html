@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Mateusz Rak">
+    <meta name="keywords" content="TAG1, TAG2, TAG3">
+    <meta name="description" content="OPIS STRONY">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/fontello.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/widgets.css">
+</head>
+
+<body>
+
+    <div class="fill d-flex flex-column" id="mainContent">
+
+        <!-- TOPBAR & TOOLS -->
+        <div class="bg-dark text-light px-0 mb-1 border-bottom border-secondary">
+
+            <!-- NAVBAR -->
+            <nav class="navbar navbar-expand-md navbar-dark bg-black-1 p-0 ">
+                <div class="container-fluid p-0">
+                    <a class="navbar-brand fs-6  text-light fw-bolder py-0 ps-1 pe-4" href="#">CrabSheets</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav me-auto mb-2 mb-md-0 px-2 px-md-0 pt-0 mt-0">
+
+                            <li class="nav-item dropdown ms-2">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownFile" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    Plik
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdownFile">
+                                    <li><a class="dropdown-item" href="#widget-fileInfo" data-bs-toggle="offcanvas"
+                                            href="#widget-fileInfo" role="button"
+                                            aria-controls="widget-fileInfo">Informacje</a></li>
+                                    <li><a class="dropdown-item" href="#">Nowy</a></li>
+                                    <li><a class="dropdown-item" href="#">Zapisz</a></li>
+                                    <li><a class="dropdown-item" href="#">Wczytaj</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-item dropdown ms-2">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownFile" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    Wstaw
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdownFile">
+                                    <li><a class="dropdown-item" href="#">Nowy</a></li>
+                                    <li><a class="dropdown-item" href="#">Zapisz</a></li>
+                                    <li><a class="dropdown-item" href="#">Wczytaj</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-item dropdown ms-2">
+                                <a class="nav-link  dropdown-toggle" href="#" id="navbarDropdownFile" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    Narzędzia
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdownFile">
+                                    <li><a class="dropdown-item" href="#">Nowy</a></li>
+                                    <li><a class="dropdown-item" href="#">Zapisz</a></li>
+                                    <li><a class="dropdown-item" href="#">Wczytaj</a></li>
+                                </ul>
+                            </li>
+
+
+                            <li class="nav-item dropdown ms-2">
+                                <a class="nav-link  dropdown-toggle" href="#" id="navbarDropdownFile" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    Widok
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdownFile">
+                                    <li><a class="dropdown-item" href="#">Nowy</a></li>
+                                    <li><a class="dropdown-item" href="#">Zapisz</a></li>
+                                    <li><a class="dropdown-item" href="#">Wczytaj</a></li>
+                                </ul>
+                            </li>
+
+
+                            <li class="nav-item dropdown ms-2">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownFile" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    Pomoc
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdownFile">
+                                    <li><a class="dropdown-item" type="button" data-bs-toggle="offcanvas"
+                                            data-bs-target="#dynamic-page" aria-controls="dynamic-page">Wprowadzenie</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="#">Zapisz</a></li>
+                                    <li><a class="dropdown-item" href="#">Wczytaj</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- TOOLS BAR -->
+            <div class="d-flex w-100 p-1 bg-black-1">
+                <!-- Scroll Back -->
+                <button class="btn btn-sm  px-1 btn-primary" value="-1" name="tool-bar-scroll-control">
+                    <span class="icon-left-bold"></span>
+                </button>
+
+                <!-- Content -->
+                <div class="d-flex flex-grow-1 bg-dark flex-nowrap py-1 horizontal-scroll hideScroll mx-2"
+                    id="tools-bar">
+
+                    <!-- UNDO / REDO -->
+                    <div class="d-flex mx-1 p-1">
+                        <button class="btn btn-sm btn-dark" type="button" id="timeline-undo" disabled>
+                            <span class="icon-reply d-block"></span>
+                            Cofnij
+                        </button>
+                        <button class="btn btn-sm btn-dark" type="button" id="timeline-redo" disabled>
+                            <span class="icon-forward d-block"></span>
+                            Przywróć
+                        </button>
+                    </div>
+
+                    <!-- FONT FAMILY -->
+                    <div class="p-1 ps-2 mx-1 border-start d-flex flex-column">
+                        <select class="bg-dark border-0 border-bottom text-light" id="input-font-family">
+                            <option value="arial" selected>Arial</option>
+                            <option value="times new roman">Times New Roman</option>
+                            <option value="yahoma">Tahoma</option>
+                            <option value="georgia">Georgia</option>
+                            <option value="garamond">Garamond</option>
+                        </select>
+                        <select class="bg-dark border-0 border-bottom mt-1 text-light d-block"
+                            id="input-font-decoration">
+                            <option value="normal" selected>Normal</option>
+                            <option value="bold">Bold</option>
+                            <option value="italic">Italic</option>
+                        </select>
+                    </div>
+
+
+                    <!-- TEXT SIZE -->
+                    <div class="p-1 ps-2 mx-1 border-start">
+                        <div class="text-center"><b>A</b><span class="icon-resize-vertical"></span></div>
+                        <select class="bg-dark border-0 text-light" id="input-font-size">
+                            <option value="8px">8px</option>
+                            <option value="10px">10px</option>
+                            <option value="12px" selected>12px</option>
+                            <option value="14px">14px</option>
+                            <option value="16px">16px</option>
+                            <option value="20px" class="additional-font-size-option" disabled>20px</option>
+                            <option value="24px" class="additional-font-size-option" disabled>24px</option>
+                            <option value="28px" class="additional-font-size-option" disabled>28px</option>
+                            <option value="32px" class="additional-font-size-option" disabled>32px</option>
+                            <option value="36px" class="additional-font-size-option" disabled>36px</option>
+                        </select>
+                    </div>
+
+                    <!-- TEXT ALIGN -->
+                    <div class="p-1  ps-2 mx-1 border-start">
+                        <div class="text-center col-12"><b>A</b><span class="icon-resize-horizontal"></span></div>
+
+                        <div class="d-flex">
+                            <div class="input-icon">
+                                <input class="form-check-input d-none" checked type="radio" value="left"
+                                    name="input-text-align" id="input-text-align-left">
+                                <label class="form-check-label" for="input-text-align-left">
+                                    <span class="icon-align-left fs-5"></span>
+                                </label>
+                            </div>
+
+                            <div class="input-icon">
+                                <input class="form-check-input d-none" type="radio" value="center"
+                                    name="input-text-align" id="input-text-align-center">
+                                <label class="form-check-label" for="input-text-align-center">
+                                    <span class="icon-align-center fs-5"></span>
+                                </label>
+                            </div>
+
+                            <div class="input-icon">
+                                <input class="form-check-input d-none" type="radio" value="right"
+                                    name="input-text-align" id="input-text-align-right">
+                                <label class="form-check-label" for="input-text-align-right">
+                                    <span class="icon-align-right fs-5"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- RESULT ROUND -->
+                    <div class="p-1  ps-2 mx-1 border-start">
+                        <div class="text-center col-12" data-bs-toggle="tooltip" data-bs-placement="left"
+                            title="zaokrąglij wynik do miejsc po przecinku"><b>00.<span
+                                    id="input-round-result">10</span></b></div>
+
+                        <div class="d-flex">
+
+                            <button class="input-icon btn btn-dark btn-sm" type="button" value="-1"
+                                data-numberInput="input-round-result">
+                                <span class="icon-left-bold"></span>
+                            </button>
+
+                            .
+
+                            <button class="input-icon btn btn-dark btn-sm" type="button" value="1"
+                                data-numberInput="input-round-result">
+                                <span class="icon-right-bold"></span>
+                            </button>
+
+                        </div>
+                    </div>
+
+                    <!-- TEXT ADDONS  -->
+                    <div class="d-flex flex-column mx-1 p-1 ps-2 border-start">
+
+                        <div class="d-flex mx-1">
+
+                            <button type="button" class="p-0 input-icon btn btn-dark" data-bs-toggle="tooltip"
+                                data-bs-placement="left" title="symbol końcowy">
+                                <span class="icon-percent"></span>
+                            </button>
+
+
+                            <button type="button" class="p-0 input-icon btn btn-dark" data-bs-toggle="tooltip"
+                                data-bs-placement="right" title="Dodaj jednostkę">
+                                <span class="icon-balance-scale"></span>
+                            </button>
+
+                        </div>
+                        <div class="d-flex mx-1 mt-1">
+
+                            <button type="button" class="p-0 input-icon btn btn-dark" data-bs-toggle="tooltip"
+                                data-bs-placement="left" title="Dodaj komentarz">
+                                <span class="icon-comment"></span>
+                            </button>
+
+                            <button type="button" class="p-0 input-icon btn btn-dark" id="addHyperlink-btn-show"
+                                data-bs-toggle="tooltip" data-bs-placement="right" title="Wstaw Hiperłącze">
+                                <span class="icon-attach"></span>
+                            </button>
+                        </div>
+
+                    </div>
+
+                    <!-- COLOR TEXT -->
+                    <div class="p-1 ps-2 ms-1 border-start ">
+                        <label for="input-font-color">
+                            <span class="icon-brush input-icon d-flex flex-column-reverse fs-5">
+                                <div class="text-center fw-bolder">A</div>
+                            </span>
+
+                        </label>
+                        <input type="color" id="input-font-color" class="d-none">
+                    </div>
+
+                    <!-- COLOR CELL-->
+                    <div class="d-flex flex-column mx-1 p-1 ">
+                        <div class="input-icon text-start mb-1">
+
+                            <input type="color" id="input-background-color" class="d-none">
+                            <label for="input-background-color">
+                                <span class="icon-bucket d-block d-flex"> Tło</span>
+                            </label>
+                        </div>
+
+                        <div class="border-top input-icon text-start">
+
+                            <input type="color" id="input-border-color" class="d-none">
+                            <label for="input-border-color">
+                                <span class="icon-bucket d-block mt-1 d-flex"> Rama</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- INSERT DATE-TIME -->
+                    <div class="d-flex flex-column mx-1 p-1 ps-2 border-start">
+                        <div class="input-icon text-start">
+
+                            <input type="date" id="input-insert-date" class="d-none">
+                            <label for="input-insert-date">
+                                <span class="icon-calendar staySelected d-block d-flex"> Data</span>
+                            </label>
+                        </div>
+
+                        <div class="mt-1 input-icon text-start">
+
+                            <input type="time" id="input-insert-time" class="d-none">
+                            <label for="input-insert-time">
+                                <span class="icon-hourglass staySelected d-block d-flex"> Godzina</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- INSERT CHART-->
+                    <div class="d-flex mx-1 p-1 ps-2 border-start position-relative">
+                        <button class="btn btn-sm btn-dark" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapse-charts" aria-expanded="false" aria-controls="collapse-charts">
+                            <span class="icon-chart-line d-block"></span>
+                            Wykres
+                        </button>
+
+                    </div>
+
+                    <!-- INSERT HEADER-->
+                    <div class="d-flex mx-1 p-1 ps-2 border-start position-relative">
+                        <button class="btn btn-sm btn-dark" type="button" id="addWidget-header">
+                            <span class="icon-medium"></span><span class="icon-circle"></span>
+                            <span class="d-block">Nagłówek</span>
+                        </button>
+                    </div>
+
+                    <!-- INSERT SYMBOL-->
+                    <div class="d-flex mx-1 p-1 ps-2 border-start position-relative">
+                        <button class="btn btn-sm btn-dark" type="button" data-bs-toggle="offcanvas"
+                            data-bs-target="#offcanvas-select-symbol" aria-controls="offcanvas-select-symbol">
+                            <span class="icon-dollar"></span>
+                            <span class="d-block">Symbol</span>
+                        </button>
+                    </div>
+
+                    <!-- INSERT IMAGE -->
+                    <div class="d-flex mx-1 p-1 ps-2 border-start position-relative">
+                        <button class="btn btn-sm btn-dark" type="button" id="addWidget-image">
+                            <span class="icon-picture"></span>
+                            <span class="d-block">Zdjęcie</span>
+                        </button>
+                    </div>
+
+                    <!-- Insert Component -->
+                    <div class="d-flex mx-1 p-1 ps-2 border-start position-relative">
+                        <button class="btn btn-sm btn-dark" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapse-charts" aria-expanded="false" aria-controls="collapse-charts">
+                            <span class="icon-cubes"></span>
+                            <span class="d-block">Kompontenty</span>
+                        </button>
+                    </div>
+
+                </div>
+
+                <!-- Scroll Forward -->
+                <button class="btn btn-sm px-1 btn-primary" value="1" name="tool-bar-scroll-control">
+                    <span class="icon-right-bold"></span>
+                </button>
+            </div>
+
+
+            <!-- Collapse Canvas Top Pivot -->
+            <div class="position-relative">
+
+                <!-- Select Chart Type -->
+                <div class="collapse collapse-pined bg-dark w-100" aria-expanded="false" id="collapse-charts">
+                    <div class="px-3 pb-1 text-light d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center horizontal-scroll py-1">
+                            <div class="px-3">Typ Wykresu: </div>
+
+                            <button class="btn btn-dark input-icon" data-bs-toggle="collapse" id="addChart-line"
+                                data-bs-target="#collapse-charts" aria-expanded="false" aria-controls="collapse-charts">
+                                <span class="icon-chart-line fs-4" data-bs-toggle="tooltip" data-bs-placement="right"
+                                    title="Liniowy"></span>
+                            </button>
+
+                            <button class="btn btn-dark input-icon" data-bs-toggle="collapse" id="addChart-area"
+                                data-bs-target="#collapse-charts" aria-expanded="false" aria-controls="collapse-charts">
+                                <span class="icon-chart-area fs-4" data-bs-toggle="tooltip" data-bs-placement="right"
+                                    title="Obszarowy"></span>
+                            </button>
+
+                            <button class="btn btn-dark input-icon" data-bs-toggle="collapse" id="addChart-bar"
+                                data-bs-target="#collapse-charts" aria-expanded="false" aria-controls="collapse-charts">
+                                <span class="icon-chart-bar fs-4" data-bs-toggle="tooltip" data-bs-placement="right"
+                                    title="Kolumnowy"></span>
+                            </button>
+
+                            <button class="btn btn-dark input-icon" data-bs-toggle="collapse" id="addChart-pie"
+                                data-bs-target="#collapse-charts" aria-expanded="false" aria-controls="collapse-charts">
+                                <span class="icon-chart-pie fs-4" data-bs-toggle="tooltip" data-bs-placement="right"
+                                    title="Kołowy"></span>
+                            </button>
+                        </div>
+                        <button type="button" class="btn-close btn-sm btn-close-white" aria-label="Close"
+                            data-bs-toggle="collapse" data-bs-target="#collapse-charts" aria-expanded="false"
+                            aria-controls="collapse-charts"></button>
+                    </div>
+                </div>
+
+                <!-- Widget-Image Settings -->
+                <div class="collapse collapse-pined bg-dark w-100" aria-expanded="false" id="collapse-image-options">
+                    <div class="text-light">
+
+                        <div class="input-group w-auto my-1 px-2">
+                            <input type="file" class="form-control bg-black-1 text-light border-0"
+                                placeholder="Wybierz Zdjęcie" id="widgetTool-image-input">
+                            <button type="button" class="btn bg-black-1 d-block icon-right-bold"
+                                id="widgetTool-image-apply">Zatwierdź</button>
+                            <button type="button" class="btn bg-black-1 d-block icon-resize-normal"
+                                id="image-size-fill">Dopasuj</button>
+                            <button type="button" class="btn bg-black-1 d-block icon-resize-full"
+                                id="image-size-cover">Zachowaj</button>
+                        </div>
+                        <button type="button" class="icon-angle-double-up btn-sm btn btn-primary w-100 py-0"
+                            aria-label="Close" data-bs-toggle="collapse" data-bs-target="#collapse-image-options"
+                            aria-expanded="false" aria-controls="collapse-charts"></button>
+                    </div>
+                </div>
+
+                <!-- Widget-Header Settings -->
+                <div class="collapse collapse-pined bg-dark w-100 mx-auto" aria-expanded="false"
+                    id="collapse-header-options">
+                    <div class="text-light">
+
+                        <div class="input-group w-auto my-1 px-2">
+
+                            <form class="input-group">
+                                <input type="text" class="form-control bg-black-1 text-light border-0"
+                                    id="widgetTool-header-text" placeholder="Wpisz tekst Nagłówka">
+                                <button type="button" class="btn bg-black-1"
+                                    id="widgetTool-header-apply">Zatwierdź</button>
+                                <button type="reset" class="btn bg-black-1"
+                                    id="widgetTool-header-clear">Wyczyść</button>
+                            </form>
+
+                        </div>
+
+                        <button type="button" class="icon-angle-double-up btn-sm btn btn-primary w-100 py-0"
+                            aria-label="Close" data-bs-toggle="collapse" data-bs-target="#collapse-header-options"
+                            aria-expanded="false" aria-controls="collapse-header-options"></button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- CELL DATA DISPLAY -->
+            <div class="bg-black-1 py-1 px-2">
+                <div class="input-group input-group-sm rounded-pill">
+                    <span class="input-group-text bg-dark px-2 text-light border-0 hover-effect"
+                        id="cellData-cords">-:-</span>
+                    <button class="btn btn-dark" type="button" id="cellData-mode">Funkcja:</button>
+                    <input type="text" class="form-control  text-light bg-dark px-2 border-0" id="cellData-input">
+                    <button class="btn btn-dark border-0" type="button" data-bs-toggle="tooltip"
+                        data-bs-placement="left" title="Zatwierdź" id="cellData-aprove">
+                        <span class="icon-ok"></span>
+                    </button>
+                    <button class="btn btn-dark border-0" type="button" data-bs-toggle="tooltip"
+                        data-bs-placement="left" title="Wyczyść" id="cellData-clear">
+                        <span class="icon-cancel"></span>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- CANVAS -->
+        <div class=" bg-dark flex-grow-1 overflow-auto position-relative dark-scroll withBtn" id="canvas-container">
+            <div id="widgetTools_base" class="hidden">
+                <button type="button" id="resizer"></button>
+                <button class="icon-trash-empty widget-remove-btn"></button>
+            </div>
+            <input type="text" id="cellInput" class="position-absolute hidden">
+            <div id="mathFunctions-container" class="position-absolute d-flex flex-column p-1 dark-scroll hidden"></div>
+            <canvas id="mainCanvas" class="position-relative" width="2000" height="2000"></canvas>
+        </div>
+
+
+        <!-- FOOTER -->
+        <div class="px-2 py-1 bg-dark text-light d-flex">
+            <div class="me-3">
+
+                <div class="input-group flex-nowrap">
+                    <button class="btn btn-sm p-1 btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="right"
+                        title="Dodaj Nowy" id="sheet-new">
+                        <span class="icon-doc-add"></span>
+                    </button>
+
+                    <button class="btn btn-sm p-1 btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="right"
+                        title="Kopiuj Wybrany" id="sheet-copy">
+                        <span class="icon-docs"></span>
+                    </button>
+
+                    <button class="btn btn-sm p-1 btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="right"
+                        title="Usuń Wybrany" id="sheet-remove">
+                        <span class="icon-doc-remove"></span>
+                    </button>
+                </div>
+
+            </div>
+
+            <div class="bg-black-1 d-flex flex flex-grow-1">
+
+                <!-- Scroll Back -->
+                <button class="btn btn-sm  px-1 btn-secondary" value="-1" name="available-sheets-scroll-control">
+                    <span class="icon-left-bold"></span>
+                </button>
+
+
+                <!-- Content -->
+                <div class="flex-grow-1 position-relative">
+                    <div class="px-1 mx-1 horizontal-scroll hideScroll position-absolute top-0 bottom-0 start-0 end-0 d-flex flex-nowrap"
+                        id="available-sheets">
+
+
+                    </div>
+                </div>
+
+
+                <!-- Scroll Forward -->
+                <button class="btn btn-sm  px-1 btn-secondary" value="1" name="available-sheets-scroll-control">
+                    <span class="icon-right-bold"></span>
+                </button>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- OFFCANVAS LIST -->
+    <!-- SYMBOLS -->
+    <div class="offcanvas offcanvas-bottom bg-black-1 pe-1 pb-2" data-bs-scroll="true" data-bs-backdrop="false"
+        tabindex="-1" id="offcanvas-select-symbol">
+        <div class="offcanvas-header bg-dark p-1 mb-1">
+            <h5 class="offcanvas-title text-light fw-bolder">Lista symboli</h5>
+            <button type="button" class="btn-close btn-close-white text-reset" data-bs-dismiss="offcanvas"
+                aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body pt-0 px-0 ps-1 dark-scroll">
+            <div class="d-flex flex-wrap pt-0 horizontal-scroll py-2" id="collapse-symbol-container">
+                <!-- Symbols added by pageEvents.JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- DYNAMIC PAGE -->
+    <div class="offcanvas offcanvas-end bg-black-1 w-100 p-1" data-bs-scroll="true" data-bs-backdrop="false"
+        tabindex="-1" id="dynamic-page">
+        <div class="offcanvas-header bg-primary py-3">
+            <h5 class="offcanvas-title text-light fw-bolder">Wprowadzenie</h5>
+            <button type="button" class="ms-auto btn-close btn-close-white text-reset" data-bs-dismiss="offcanvas"
+                aria-label="Close"></button>
+        </div>
+        <iframe src="help.html" frameborder="0" class="fill"></iframe>
+
+    </div>
+
+    <!-- approveActionWindow-->
+    <div class="modal fade" id="approveActionWindow" tabindex="-1" aria-labelledby="exampleModalLabel"
+        data-bs-backdrop="static" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content bg-dark text-light">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="approveActionWindow-title">Modal title</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="approveActionWindow-description">
+                    Example Descr
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                        id="approveActionWindow-btn-deny">Close</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                        id="approveActionWindow-btn-approve">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Add Hyperlink Window -->
+    <div class="modal fade" id="addHyperlink-modal" tabindex="-1" aria-labelledby="addHyperlink-title"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content bg-dark text-light">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title" id="addHyperlink-title">Tworzenie Hyperłącza</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="input-group">
+                        <span class="input-group-text">Tekst</span>
+                        <input type="text" class="form-control" id="addHyperlink-input-text">
+                    </div>
+
+                    <div class="input-group mt-2">
+                        <span class="input-group-text">URL</span>
+                        <input type="text" class="form-control" id="addHyperlink-input-link">
+                    </div>
+
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+                        id="addHyperlink-remove">Usuń</button>
+                    <button type="button" class="btn btn-success" data-bs-dismiss="modal"
+                        id="addHyperlink-create">Stwórz Hiperłącze</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- File Info Page -->
+    <div class="offcanvas offcanvas-start bg-dark text-light" data-bs-scroll="true" data-bs-backdrop="false"
+        tabindex="-1" id="widget-fileInfo">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title">Informacje o pliku</h5>
+
+            <button type="button" class="btn-close btn-close-white text-reset" data-bs-dismiss="offcanvas"
+                aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body dark-scroll">
+            <div>
+                Data Utworzenia:
+                <input type="text" class="form-control" readonly id="file-date">
+            </div>
+
+            <div class="mt-2">
+                <span class="text-light">Nazwa: </span>
+                <input type="text" class="form-control" id="file-name" placeholder="Bez Nazwy">
+            </div>
+
+            <div class="mt-2">
+                <span class="text-light">Autor: </span>
+                <input type="text" class="form-control" id="file-author" placeholder="Brak Autora">
+            </div>
+
+            <div class="mt-2 mb-3">
+                <span class="text-light">Opis: </span>
+                <textarea class="form-control" cols="30" rows="10" id="file-description"
+                    placeholder="Brak Opis"></textarea>
+            </div>
+
+            <button class="d-block ms-auto btn btn-primary">Zapisz</button>
+
+        </div>
+    </div>
+
+    <!-- Chart Settings -->
+    <div class="offcanvas offcanvas-end bg-dark text-light close-left-widget " data-bs-scroll="true" data-bs-backdrop="false"
+        tabindex="-1" id="widgetTool-chart">
+        <button type="button" class="close-left d-none d-sm-block" data-bs-dismiss="offcanvas" aria-label="Close">></button>
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title">Ustawienia wykresu</h5>
+            <button type="button" class="btn-close btn-close-white text-reset d-block d-sm-none" data-bs-dismiss="offcanvas"
+                aria-label="Close"></button>
+            
+        </div>
+        <div class="offcanvas-body dark-scroll">
+
+            
+            <div class="position-absolute end-0 start-0 top-0 z-5">
+                <div id="chartError-1" class="toast hide w-100" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="toast-header bg-danger border-0">
+                    <strong class="me-auto text-dark">Brak danych</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body bg-dark text-light border-bottom">
+                    Nie wpisałeś żanych danych do wykresu.
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="accordion accordion-flush" id="accordionFlushExample">
+
+                <div class="accordion-item bg-dark text-light">
+                    <h2 class="accordion-header" id="flush-headingTwo">
+                      <button class="accordion-button bg-black-1" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                        Stylowanie
+                      </button>
+                    </h2>
+                    <div id="flush-collapseTwo" class="accordion-collapse collapse show" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+                      <div class="accordion-body px-0">
+                        <div class="fw-bold">Kolory:</div>
+                        <div class="d-flex flex-wrap justify-content-around">
+                            <div class="form-check form-check-inline mt-2">
+                                <input class="form-check-input" type="radio" id="chartStyle-1" value="210, 180, 222" name="chart-styles-color" checked>
+                                <label class="form-check-label ms-1" for="chartStyle-1">
+                                    <span class="color-example" style="background-color: rgb(210, 180, 222);"></span>
+                                    <span class="color-example" style="background-color: rgb(165, 105, 189);"></span>
+                                    <span class="color-example" style="background-color: rgb(108, 52, 131);"></span>
+                                </label>
+                            </div>
+    
+                            <div class="form-check form-check-inline mt-2">
+                                <input class="form-check-input" type="radio" id="chartStyle-2" value="174, 214, 241" name="chart-styles-color">
+                                <label class="form-check-label ms-1" for="chartStyle-2">
+                                    <span class="color-example" style="background-color: rgb(174, 214, 241) "></span>
+                                    <span class="color-example" style="background-color: #5DADE2;"></span>
+                                    <span class="color-example" style="background-color: #2E86C1;"></span>
+                                </label>
+                            </div>
+    
+                            <div class="form-check form-check-inline mt-2">
+                                <input class="form-check-input" type="radio" id="chartStyle-3" value="245, 203, 167" name="chart-styles-color"> 
+                                <label class="form-check-label ms-1" for="chartStyle-3">
+                                    <span class="color-example" style="background-color: rgb(245, 203, 167);"></span>
+                                    <span class="color-example" style="background-color: #EB984E ;"></span>
+                                    <span class="color-example" style="background-color: #D68910;"></span>
+                                </label>
+                            </div>
+    
+                            <div class="form-check form-check-inline mt-2">
+                                <input class="form-check-input" type="radio" id="chartStyle-4" value="190, 210, 227" name="chart-styles-color">
+                                <label class="form-check-label ms-1" for="chartStyle-4">
+                                    <span class="color-example" style="background-color: rgb(190, 210, 227);"></span>
+                                    <span class="color-example" style="background-color: #5D6D7E;"></span>
+                                    <span class="color-example" style="background-color: #2E4053;"></span>
+                                </label>
+                            </div>
+
+                            <div class="form-check form-check-inline mt-2">
+                                <input class="form-check-input" type="radio" id="chartStyle-5" value="227, 190, 190" name="chart-styles-color">
+                                <label class="form-check-label ms-1" for="chartStyle-5">
+                                    <span class="color-example" style="background-color: rgb(227, 190, 190);"></span>
+                                    <span class="color-example" style="background-color: #7e5d5d;"></span>
+                                    <span class="color-example" style="background-color: #532e2e;"></span>
+                                </label>
+                            </div>
+
+                            <div class="form-check form-check-inline mt-2">
+                                <input class="form-check-input" type="radio" id="chartStyle-6" value="117, 150, 120" name="chart-styles-color">
+                                <label class="form-check-label ms-1" for="chartStyle-6">
+                                    <span class="color-example" style="background-color: rgb(117, 150, 120);"></span>
+                                    <span class="color-example" style="background-color: #6f995d;"></span>
+                                    <span class="color-example" style="background-color: #3b6127;"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="fw-bold mt-2 mb-1 pt-1 border-top border-secondary">Preferencje:</div>
+
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="chart-render-bg" value="true" checked>
+                                <label class="form-check-label" for="flexSwitchCheckDefault">Przezroczyste Tło</label>
+                            </div>
+
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="chart-render-legend" checked>
+                                <label class="form-check-label" for="flexSwitchCheckDefault">Pokaż legendę</label>
+                            </div>
+
+                    </div>
+                    </div>
+                  </div>
+
+
+                <div class="accordion-item bg-dark text-light">
+                  <h2 class="accordion-header" id="flush-headingOne">
+                    <button class="accordion-button bg-black-1 collapsed " type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                      Zakres Danych
+                    </button>
+                  </h2>
+                  <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body px-0">
+                        <div class="fw-bold mb-2">Dodaj wszystkie zaznaczone komórki do:</div>
+
+                            <div>
+                                <button class="bg-black-1 btn ntn-sm">Kluczy</button>
+                                <button class="bg-black-1 btn ntn-sm">Wartości</button>
+                                <button class="bg-black-1 btn ntn-sm">Rozpoznaj</button>
+                            </div>
+
+                            <div class="form-check form-switch mt-2">
+                                <input class="form-check-input" type="checkbox" id="chartData-overwrite" checked>
+                                <label class="form-check-label" for="chartData-overwrite">Nadpisz stare dane</label>
+                            </div>
+
+                       <div class="border-top border-secondary pt-1 mt-1 dark-scroll">
+                            <ol id="chartData-list">
+                                <!-- Chart data  -->
+                            </ol>
+                            <button class="btn-success btn btn-sm w-75 mx-auto d-block" id="chartData-addData">+</button>
+                       </div>
+                       <button type="button" class="btn btn-success d-block mt-4 ms-auto" id="chart-approve-changes">Zatwierdź</button>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+        </div>
+    </div>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="core.js"></script>
+    <script src="scripts/accessories.js"></script>
+    <script src="scripts/mathFunctions.js"></script>
+    <script src="scripts/widgets.js"></script>
+    <script src="scripts/charts.js"></script>
+    <script src="starter.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            padding: 0;
+            margin: 0;
+        }
+
+        .box{
+            width: 100%;
+            min-height:25px;
+            margin: 0;
+            background-color: antiquewhite;
+        }
+    </style>
+</head>
+<body>
+    <div id="bbox"></div>
+    <script>
+        const box = document.getElementById("bbox");
+
+        function getChartColors(r,g,b,steps){
+            let multiper = Math.min(r,g,b)/steps;
+            let colors = [];
+            for(let step = 1; step<steps; step++){
+                let newR = Math.round(r - step*multiper);
+                let newG = Math.round(g - step*multiper);
+                let newB = Math.round(b - step*multiper);
+                colors.push({r:newR,g:newG,b:newB});
+            }
+            return colors
+        }
+
+        function makeBox(r,g,b){
+            let div = document.createElement("div");
+            div.classList.add("box");
+            div.style.backgroundColor = `rgb(${r},${g},${b})`;
+            box.appendChild(div);
+        }
+
+
+    </script>
+    
+</body>
+</html>

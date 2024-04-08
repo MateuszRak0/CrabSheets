@@ -1,0 +1,243 @@
+.widget-remove-btn{
+    position: absolute;
+    z-index: 20;
+    top: -30px;
+    left: -30px;
+    width: 30px;
+    height: 30px;
+    color: rgb(255, 255, 255);
+    font-size: 20px;
+    border: none;
+    padding: 0;
+    outline: none;
+    background-color: #1163ab;
+    transition: all .2s ease-in-out;
+    text-align: center;
+    border-radius: 94% 6% 73% 27% / 10% 100% 0% 90% ;
+}
+
+.widget-remove-btn:hover{
+    background-color: #1d7acc;
+}
+
+/* EDITOR */
+#widgetTools_base{
+    position: absolute;
+    z-index: 4;
+    border: 4px solid #1d7acc00
+}
+
+
+#widgetTools_base div{
+    position: absolute;
+    bottom:calc(100% + 5px);
+    display: flex;
+}
+
+#widgetTools_base div button{
+    padding: 2px;
+    margin: 0 3px;
+    color: aliceblue;
+    background-color: rgba(0, 0, 0, 0.6);
+    border: none;
+    outline: none;
+}
+
+#resizer{
+    position: absolute;
+    z-index: 2;
+    width: 10px;
+    height: 10px;
+    padding: 0;
+    background-color: #1d7acc;
+    border: 0;
+    transition: all .1s linear;
+    right: -10px;
+    bottom: -10px;
+}
+
+#resizer:hover{
+    background-color: #00a6ff;
+}
+
+/* WIDGET BASE */
+.interacive-widget{
+    position: absolute;
+    z-index: 5;
+    padding: 1px;
+    background-color: #4e4e4e;
+    box-sizing: border-box;
+}
+
+.active{
+    z-index: 7;
+    outline: 3px solid #1d7acc;
+}
+
+
+/* WIDGET IMAGE */
+.interacive-widget.widget-image{
+    background-color: transparent !important;
+    background-position: center;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+
+.widget-image.bg-cover{
+    background-size: cover;
+}
+
+.interacive-widget.widget-header{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: stretch;
+    overflow: hidden;
+    padding: 2px !important;
+    background-color: aliceblue;
+    box-sizing: border-box;
+}
+
+.interacive-widget.widget-chart{
+    padding: 0;
+}
+
+.interacive-widget.widget-chart canvas{
+    background-color: rgba(255, 255, 255, 0);
+}
+
+.resizing{
+    opacity: .4;
+}
+
+.resizing canvas{
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.close-left{
+    border: 0;
+    position: absolute;
+    display: block;
+    text-align: center;
+    left: 0px;
+    font-weight: 900;
+    color: #dddddd;
+    width: fit-content;
+    top: 40%;
+    bottom: 40%;
+    padding: 0 2px;
+    margin: 0;
+    box-sizing: border-box;
+    background-color: #1d7acc;
+    border-radius: 0 10px 10px 0;
+    transition: all .3s ease-in-out;
+}
+
+.close-left-widget{
+    padding-left: 16px;
+    border-left: 4px solid #1d7acc;
+}
+
+.close-left:hover{
+    background-color: #1163ab;
+    color: #fff;
+}
+
+@media only screen and (max-width: 600px) {
+    .close-left-widget{
+      width: 100%;
+      max-width: 100%;
+      border: none;
+    }
+
+    .close-left{
+        display: none;
+    }
+
+    
+    .chartData input{
+        display: block;
+        width: 100% !important;
+    }
+}
+
+.color-example{
+    display: inline-block;
+    width: 17px;
+    height: 17px;
+}
+
+/* DARK TABLE */
+
+.dark-table{
+    box-sizing: border-box;
+    width: 100%;
+    border: 1px solid #4e4e4e;
+}
+
+.dark-table thead{
+    padding: 6px 0;
+    background-color: #dddddd;
+    color: #4e4e4e;
+}
+
+.dark-table thead tr td{
+    box-sizing: border-box;
+    padding: 3px;
+}
+
+.dark-table thead tr td:first-of-type{
+    border-right: 1px solid #4e4e4e;
+}
+
+.dark-table tbody tr td{
+    box-sizing: border-box;
+    padding: 0;
+}
+
+.dark-table tbody tr:nth-of-type(odd){
+    background-color: #7e7e7e;
+}
+
+.dark-table tbody tr:nth-of-type(even){
+    background-color: rgb(170, 170, 170);
+}
+
+.dark-table tbody tr td:first-of-type{
+    border-right: 1px solid #4e4e4e;
+}
+
+.dark-table tbody tr td input{
+    border-radius: 0;
+    border: none;
+    outline: none;
+    background-color: transparent;
+}
+
+
+.chartData{
+    padding-left: 0;
+    width: 100%;
+}
+
+#chartData-list .chartData:first-of-type button{
+    color: #4e4e4e;
+    pointer-events: none;
+}
+
+
+.chartData input{
+    width: 39%;
+    box-sizing: border-box;
+    margin-right: 1%;
+    border: none;
+    background-color: transparent;
+    outline: none;
+    border-bottom: 1px solid #7e7e7e;
+    color: #dddddd;
+}
+
+#widgetTool-chart{
+    max-width: 50vw;
+}
