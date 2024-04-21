@@ -13,37 +13,73 @@
         .box{
             width: 100%;
             min-height:25px;
+            height: 25px;
             margin: 0;
             background-color: antiquewhite;
         }
     </style>
 </head>
 <body>
+    <label>START: <input type="color" id="color1"></label>
+     <label>END: <input type="color" id="color2"></label>
+     <label>COUNT<input type="number" id="color3"></label>
+     <button type="button" onclick="render()">RENDER</button>
+    <hr>
     <div id="bbox"></div>
     <script>
         const box = document.getElementById("bbox");
-
-        function getChartColors(r,g,b,steps){
-            let multiper = Math.min(r,g,b)/steps;
-            let colors = [];
-            for(let step = 1; step<steps; step++){
-                let newR = Math.round(r - step*multiper);
-                let newG = Math.round(g - step*multiper);
-                let newB = Math.round(b - step*multiper);
-                colors.push({r:newR,g:newG,b:newB});
+        let start;
+        let end;
+        let count;
+        document.getElementById("color1").addEventListener("input",(e)=>{start = e.target.value});
+        document.getElementById("color2").addEventListener("input",(e)=>{end = e.target.value});
+        document.getElementById("color3").addEventListener("input",(e)=>{count = e.target.value});
+        function render(){
+            let shades = generateColorShades(start,end,count);
+            console.log(shades)
+            for(let shade of shades){
+                
+                buffor = document.createElement("div");
+                buffor.style.backgroundColor = shade;
+                buffor.classList.add("box");
+                box.appendChild(buffor);
             }
-            return colors
         }
 
-        function makeBox(r,g,b){
-            let div = document.createElement("div");
-            div.classList.add("box");
-            div.style.backgroundColor = `rgb(${r},${g},${b})`;
-            box.appendChild(div);
-        }
+function generateColorShades(startColor, endColor, numberOfShades) {
+    const startRGB = hexToRgb(startColor);
+    const endRGB = hexToRgb(endColor);
+
+    const diffR = (endRGB[0] - startRGB[0]) / (numberOfShades - 1);
+    const diffG = (endRGB[1] - startRGB[1]) / (numberOfShades - 1);
+    const diffB = (endRGB[2] - startRGB[2]) / (numberOfShades - 1);
+
+    const colorShades = [];
+    for (let i = 0; i < numberOfShades; i++) {
+        const newR = Math.round(startRGB[0] + diffR * i);
+        const newG = Math.round(startRGB[1] + diffG * i);
+        const newB = Math.round(startRGB[2] + diffB * i);
+        colorShades.push(rgbToHex(newR, newG, newB));
+    }
+
+    return colorShades;
+}
 
 
-    </script>
+function hexToRgb(hex) {
+    const bigint = parseInt(hex.slice(1), 16);
+    const r = (bigint >> 16) & 255;
+    const g = (bigint >> 8) & 255;
+    const b = bigint & 255;
+    return [r, g, b];
+}
+
+function rgbToHex(r, g, b) {
+    return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+}
+
+
+</script>
     
 </body>
 </html>

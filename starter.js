@@ -58,7 +58,7 @@ return new bootstrap.Tooltip(tooltipTriggerEl,{trigger: 'hover'})
 //downloadSymbols();
 prepareBoard();
 cellInput.load();
-openedFile = new File();
+newFile();
 addScrolling("tool-bar-scroll-control",document.getElementById("tools-bar"));
 addScrolling("available-sheets-scroll-control",document.getElementById("available-sheets"));
 
@@ -78,6 +78,7 @@ new CalculationError("NARG","Nie wysyła się żadnych argumentów do funkcji: "
 new CalculationError("NLOGIC","Nie wysłano argumentu logicznego (true/false) do funkcji: ","@BRAK LOGIKI","Brak Logiki");
 new CalculationError("NPAIRS","W przesłanych argumentach brakuje jednej wartości aby uzyskać klucz:wartość w funkcji: ","@BRAK LOGIKI","Brak jednego argumentu");
 new CalculationError("NAN","Uzyskany wynik to nie liczba. Dzieje się tak poprez błąd w zapisie np dodanie liczby do Tekstu","NaN","NaN");
+new CalculationError("VALUE","Argument który przesłałeś do funkcji jest w złym formacie albo jest poza zakresem funkcji: ","@ZLY ARG","Zły argument");
 
 //Event Listeners
 document.getElementById("sheet-new").addEventListener("click",()=>{openedFile.addNewSheet()});
@@ -114,22 +115,10 @@ addEventListener("keydown", (keyboard) => {
         
     }
     else if (keyboard.key == "Delete") {
-        if (selector.selected) { 
-            cellInput.clearData();
-            selector.selected.clearData();
-            selector.resetOldData();
-         }
-        else{
-            if (selector.selectedCells.size > 0) {
-                for (let cell of selector.selectedCells) {
-                    cell.text = "";
-                    cell.refresh();
-                }
-            }
-        }
         if(widgetTools_base.selectedWidget){
             widgetTools_base.removeWidget();
         }
+        selectedClearData();
     }
     else if (keyboard.key == "Enter") {
         if (selector.selected){
@@ -188,4 +177,4 @@ canvasContainer.addEventListener("mousemove",(e)=>{widgetTools_base.actionMove(e
 canvasContainer.addEventListener("mouseup",(e)=>{widgetTools_base.actionEnd(e)});
 document.getElementById("resizer").addEventListener("mousedown",(e)=>{widgetTools_base.resizeStart(e)})
 
-fileInfo.load();
+

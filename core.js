@@ -331,6 +331,7 @@ const selector = {
     firstPoint: false,
     secondPoint: false,
     selectedCells: new Set(),
+    focusedCells: new Set(),
     selectedInput: false,
     blocked:false,
     selectionResult:[],
@@ -347,9 +348,10 @@ const selector = {
         }
     },
 
-    actionStart: function (mouse) {
+    actionStart: function (mouse){
         this.firstPoint = this.selectCell(mouse)
         hideFunctions();
+        insertTimeLine.lockApproveBtn();
         if(this.firstPoint) StyleInput.loadCell(this.firstPoint);
     },
 
@@ -361,7 +363,7 @@ const selector = {
                 if (this.firstPoint == this.secondPoint){
                     this.selectionResult = [];
                     if (this.selectedInput) {
-                        this.selectedCells.add(this.firstPoint);
+                        this.focusedCells.add(this.firstPoint);
                         this.firstPoint.focus();
                         this.selectedInput.value = cellSymbol+this.firstPoint.stringAddress;
                         this.selectedInput = false;
@@ -475,6 +477,10 @@ const selector = {
         this.selectedCells.forEach(cell => {
             cell.unfocus()
         });
+        this.focusedCells.forEach(cell => {
+            cell.unfocus()
+        });
+        this.focusedCells = new Set();
         this.selectedCells = new Set();
         this.selectedInput = false;
     },
@@ -511,11 +517,10 @@ class File{
         this.name = "";
         this.author = "";
         this.description = "";
-        this.creationDate = getDate.func() +" / "+ getTime.func();
+        this.creationDate = $getDate.func() +" / "+ $getTime.func();
         this.sheets = new Set();
         this.openedSheet = false;
         (json) ? this.loadFile(json) : this.addNewSheet();
-        
     }
 
     addNewSheet(){
@@ -625,11 +630,12 @@ class Sheet {
         this.element = document.createElement("label");
         this.element.classList.add("sheet-switch-btn");
 
-        let input = document.createElement("input");
-        input.type = "text";
-        input.placeholder = "Arkusz bez nazwy";
-        input.value = this.name;
-        input.addEventListener("input",(e)=>{this.name = e.target.value});
+        this.nameInput = document.createElement("input");
+        this.nameInput.type = "text";
+        this.nameInput.placeholder = "Arkusz bez nazwy";
+        this.nameInput.name = "sheetBtn";
+        this.nameInput.value = this.name;
+        this.nameInput.addEventListener("input",(e)=>{this.name = e.target.value});
 
         this.button = document.createElement("input");
         this.button.type = "radio";
@@ -638,7 +644,7 @@ class Sheet {
         this.button.classList.add("overlay");
         
         this.element.appendChild(this.button);
-        this.element.appendChild(input)
+        this.element.appendChild(this.nameInput);
         this.button.checked = true;
 
         Sheet.prototype.listElement.appendChild(this.element);
@@ -646,6 +652,8 @@ class Sheet {
 
     destroy() {
         clearCanvas();
+        this.nameInput.removeEventListener("input",(e)=>{this.name = e.target.value});
+        this.button.removeEventListener("click", this.select.bind(this));
         this.element.outerHTML = "";
         cellInput.hide();
         openedFile.sheets.delete(this);
@@ -715,14 +723,13 @@ class Legend {
 
 class Cell {
     constructor(column, row, sheet, text = "") {
-        this.styles = baseStyles();
+        this.styles = new StyleList();
         this.sheet = sheet;
         this.text = text;
         this.oldtext = "";
         this.calculaction = false;
         this.usedInCalculations = new Set();
         this.usedInCharts = new Set();
-        this.styles.strokeColor = "#808080";
 
         this.address = {
             column: column,
@@ -1395,6 +1402,47 @@ class ErrorClue{
     }
 }
 
+//StyleList Working like css on cells or widgets. 
+class StyleList{
+    constructor(){
+        this.fontFamily= "arial";
+        this.fontType= "normal";
+        this.fontSize= "12px";
+        this.textAlign="left";
+        this.roundTo=6;
+        this.endSymbol="";
+        this.color= "#ffffff";
+        this.fillColor= false;
+        this.strokeColor="#808080";
+        this.strokeColorOld=false;
+        this.strokeWidth=3;
+    }
+}
+
+class StyleListFilled extends StyleList{
+    constructor(){
+        super()
+        this.strokeColor=false;
+        this.chartStyles = "210, 180, 222";
+        this.percentMode= false;
+        this.beTransparent = false;
+        this.fillColor = "#eeeeee";
+        this.color = "#000000";
+        this.fontSize = "20px";
+    }
+}
+
+class StyleListFlush extends StyleList{
+    constructor(){
+        super()
+        this.strokeColor=false;
+        this.chartStyles = "210, 180, 222";
+        this.percentMode= false;
+        this.beTransparent = true;
+        this.fillColor = "transparent";
+    }
+}
+
 // CANVAS FUNCTIONS
 function resizeCanvas(canvas){
     canvas.width = (26 * cellSize.x) + cellSize.x / 3 + 26;
@@ -1438,22 +1486,6 @@ function MoveByArrows(arrow) {
 
 }
 
-function baseStyles(){
-    return {
-        fontFamily: "arial",
-        fontType: "normal",
-        fontSize: "12px",
-        textAlign:"left",
-        roundTo:6,
-        endSymbol:"",
-        color: "#ffffff",
-        fillColor: false,
-        strokeColor:false,
-        strokeColorOld:"#808080",
-        strokeWidth:3,
-    }
-}
-
 function callHyperlink(){
     let url = selector.selected.styles.hyperlink;
     if(!url.includes("http")){
@@ -1461,3 +1493,9 @@ function callHyperlink(){
     }
     window.open(url, "_blank");
 }
+
+function trimText(text,maxWidth,ctx){
+     while (ctx.measureText(text).width > maxWidth) { text = text.slice(0, text.length - 1); }
+     return text
+}
+

@@ -42,7 +42,7 @@ body{
 
 /* ScrollBars Styling & Behavior*/
 
-.dark-scroll::-webkit-scrollbar{
+.offcanvas-body::-webkit-scrollbar,.dark-scroll::-webkit-scrollbar{
     appearance: none;
     scroll-behavior: smooth;
     background-color: rgba(0, 0, 0, 0.2);
@@ -52,16 +52,16 @@ body{
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-.dark-scroll::-webkit-scrollbar-track{
+.offcanvas-body::-webkit-scrollbar-track,.dark-scroll::-webkit-scrollbar-track{
     background-color: rgba(0, 0, 0, 0.2);
     
 }
 
-.dark-scroll::-webkit-scrollbar-thumb{
+.offcanvas-body::-webkit-scrollbar-thumb,.dark-scroll::-webkit-scrollbar-thumb{
     background-color: rgba(0, 0, 0, 0.4);
 }
 
-.dark-scroll::-webkit-scrollbar-corner{
+.offcanvas-body::-webkit-scrollbar-corner,.dark-scroll::-webkit-scrollbar-corner{
     background-color: rgba(0, 0, 0, 0.1);
 }
 
@@ -95,12 +95,12 @@ body{
 
 /*bg.black-1 in inputs*/
 
-button.bg-black-1, input[type="text"].bg-black-1{
+button.bg-black-1, input[type="text"].bg-black-1,input[type="button"].bg-black-1{
     color: #cbcbcb;
     transition: all .2s ease-in-out;
 }
 
-.bg-black-1.hover-effect:hover, button.bg-black-1:hover, input[type="text"].bg-black-1:hover{
+.bg-black-1.hover-effect:hover, button.bg-black-1:hover, input[type="text"].bg-black-1:hover, input[type="button"].bg-black-1:hover{
     color: #ffffff;
     background-color: #0f0f0f !important;
 }
@@ -311,18 +311,27 @@ input[type="file"]{
 
 @keyframes  outline_Animated{
     0%{
-        -webkit-box-shadow: 0px 0px 3px 1px rgba(255,255,255,0.4);
-        -moz-box-shadow: 0px 0px 3px 1px rgba(255,255,255,0.4);
-        box-shadow: 0px 0px 3px 1px rgba(255,255,255,0.4);
+        -webkit-box-shadow: 0px 0px 3px 1px rgba(255,255,255,0.7);
+        -moz-box-shadow: 0px 0px 3px 1px rgba(255,255,255,0.7);
+        box-shadow: 0px 0px 3px 1px rgba(255,255,255,0.7);
     }
     50%{
-        -webkit-box-shadow: 0px 0px 5px 1px rgba(255,255,255,0.7);
-        -moz-box-shadow: 0px 0px 5px 1px rgba(255,255,255,0.7);
-        box-shadow: 0px 0px 5px 1px rgba(255,255,255,0.7);
+        -webkit-box-shadow: 0px 0px 5px 1px rgba(255,255,255,0.4);
+        -moz-box-shadow: 0px 0px 5px 1px rgba(255,255,255,0.4);
+        box-shadow: 0px 0px 5px 1px rgba(255,255,255,0.4);
     }
     100%{
-        -webkit-box-shadow: 0px 0px 3px 1px rgba(255,255,255,0.4);
-        -moz-box-shadow: 0px 0px 3px 1px rgba(255,255,255,0.4);
-        box-shadow: 0px 0px 3px 1px rgba(255,255,255,0.4);
+        -webkit-box-shadow: 0px 0px 3px 1px rgba(255,255,255,0.7);
+        -moz-box-shadow: 0px 0px 3px 1px rgba(255,255,255,0.7);
+        box-shadow: 0px 0px 3px 1px rgba(255,255,255,0.7);
     }
+}
+
+
+.navbar-brand img{
+    transition: transform .3s ease-in-out;
+}
+
+.navbar-brand:hover img{
+    transform: rotate(10deg);
 }

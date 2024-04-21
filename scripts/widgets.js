@@ -23,12 +23,11 @@ const widgetTools_base = {
         if(this.selectedWidget){
             if(this.selectedWidget.tools && !switched){
                 this.selectedWidget.tools.hide();
-                changeFontSizesOptions()
+                changeFontSizesOptions();
             } 
             this.selectedWidget.container.classList.remove("active");
             this.selectedWidget = false;
             this.editorNode.classList.add("hidden");
-            
         }
     },
 
@@ -210,7 +209,7 @@ const widgetTools_chart = new WidgetTools(document.getElementById("widgetTool-ch
 
 class WidgetInteractive{
     constructor(){
-        this.styles = baseStyles();
+        this.styles = new StyleListFilled()//baseStyles();
         this.container = document.createElement("div");
         this.container.classList.add("interacive-widget");
         canvasContainer.appendChild(this.container);
@@ -288,11 +287,7 @@ class WidgetHeader extends WidgetInteractive{
         this.container.style.width = "130px";
         this.container.style.height = "60px";
         this.container.innerHTML = "<span class='w-100'>Przykładowy Nagłówek</span>";
-        this.styles.color = "#000000";
-        this.styles.fillColor = "#ffffff";
         this.styles.textAlign = "center";
-        this.styles.fontSize = "20px";
-        this.styles.strokeColor = false;
         this.refreshStyles();
     }
 
@@ -319,17 +314,16 @@ class WidgetChart extends WidgetInteractive{
         this.container.style.width = "200px"; this.container.style.height = "140px";
         this.styles.chartStyles = "210, 180, 222";
         this.styles.beTransparent = false;
-        this.styles.showLegend= true;
-        this.styles.fillColor = "#ffffff";
+        this.styles.percentMode= false;
         this.refresh(true);
         
     }
 
     refreshStyles(){
-        if(this.styles.strokeColor != this.styles.strokeColorOld) this.refresh();
+        this.refresh()
         if(this.styles.beTransparent){this.styles.fillColor = "transparent"}
         else if(!this.styles.beTransparent && this.styles.fillColor == "transparent"){
-            this.styles.fillColor = "#00000080";
+            this.styles.fillColor = "#ffffff";
         }
         super.refreshStyles();
     }
@@ -390,16 +384,18 @@ widgetTools_header.apply = function(){
     this.selectedWidget.text = this.textInput.value;
 }
 
-
-
-
 //resize Main-content to make place for a widget 
 document.getElementById("widgetTool-chart").addEventListener("shown.bs.offcanvas",(e)=>{
     if(mainContent.offsetWidth + 20 < window.innerWidth) return false;
     mainContent.style.width = `${mainContent.offsetWidth - e.target.offsetWidth}px`;
     //If more than 50% of chart is hidden scroll position to center
     if(widgetTools_chart.selectedWidget.container.offsetLeft + widgetTools_chart.selectedWidget.container.offsetWidth/2 > canvasContainer.offsetWidth + canvasContainer.scrollLeft  - e.target.offsetWidth){
-        canvasContainer.scrollLeft += e.target.offsetWidth;
+        let newPos = canvasContainer.scrollLeft + e.target.offsetWidth;
+        canvasContainer.scroll({
+            top: canvasContainer.scrollTop,
+            left: newPos,
+            behavior: "smooth",
+          });
         mainContent.changedWidth = e.target.offsetWidth;
     }
     else{
@@ -409,7 +405,14 @@ document.getElementById("widgetTool-chart").addEventListener("shown.bs.offcanvas
 
 document.getElementById("widgetTool-chart").addEventListener("hidden.bs.offcanvas",(e)=>{
     mainContent.style.width = "";
-    if(mainContent.changedWidth) canvasContainer.scrollLeft -= mainContent.changedWidth;
+    if(mainContent.changedWidth){
+        let newPos = canvasContainer.scrollLeft - mainContent.changedWidth;
+        canvasContainer.scroll({
+            top: canvasContainer.scrollTop,
+            left: newPos,
+            behavior: "smooth",
+          });
+    }
 })
 
 addEventListener("resize",(e)=>{

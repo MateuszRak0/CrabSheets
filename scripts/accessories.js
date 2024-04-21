@@ -1,4 +1,96 @@
 //Display
+class UniversalInput{
+    constructor(id){
+        this.element = document.getElementById(id);
+        this.element.addEventListener("input",(e)=>{this.updateData(e)})
+        this.label = document.querySelector(`label[for='${id}']`)
+        this.mode;
+        this.inputTime();
+    }
+
+    updateData(e,value){
+        if(this.mode == "month"){
+            if(!value){ value = $getMonth.func([e.target.value]) }
+            this.label.innerHTML = value;
+        }
+        else if(this.mode == "day"){
+            if(!value){ value = $getDay.func([e.target.value]) }
+            this.label.innerHTML = value;
+        }
+        else{
+            if(!value){ this.element.value = e.target.value; }
+            else{ this.element.value=value };
+        }
+        
+    }
+
+    getValue(){
+        return this.element.value
+    }
+
+    clearData(){
+        this.label.innerHTML = "";
+        this.showValue = false;
+        this.element.max = "";
+        this.element.min = "";
+        this.value = "";
+        this.element.step = "";
+    }
+
+    inputTime(){
+        this.mode = "time";
+        this.clearData();
+        this.element.type = "time";
+        this.element.value="23:00";
+        this.element.step = 60;
+    }
+
+    inputTimeSec(){
+        this.element.value="23:00:00";
+        this.element.step = 30;
+    }
+
+    inputDate(){
+        this.mode = "date";
+        this.clearData();
+        this.element.type = "date";
+        this.element.value= $getDate.func();
+    }
+
+    inputMonth(){
+        this.mode = "month";
+        this.clearData();
+        this.label.innerHTML = $getMonth.func(["1"]);
+        this.element.type = "range";
+        this.element.value = 1;
+        this.element.min = 1;
+        this.element.max = 12;
+        this.element.step = 1;
+    }
+
+    inputDay(){
+        this.mode = "day";
+        this.clearData();
+        this.label.innerHTML = $getDay.func(["1"]);
+        this.element.type = "range";
+        this.element.value = 1;
+        this.element.min = 1;
+        this.element.max = 7;
+        this.element.step = 1;
+    }
+
+    inputNumber(){
+        this.mode = "year";
+        this.showValue = false;
+        this.element.type = "number";
+        this.element.value = "2024";
+        this.element.step = 1;
+        this.element.max = 9999;
+        this.element.min = 0;
+    }
+
+}
+
 const fontSizeselectNode = document.getElementById("input-font-size");
 const fontSizeOptions = document.getElementsByClassName("additional-font-size-option");
 
@@ -114,7 +206,7 @@ const hyperlinkEditor = {
     createHyperlink: function () {
         if (selector.selected) {
             let value = this.inputLinkNode.value;
-            if(value && value.length > 0){
+            if (value && value.length > 0) {
                 selector.selected.styles.hyperlink = value;
                 let text = this.inputTextNode.value;
                 if (text.length == 0 || text == " ") text = "Link";
@@ -126,21 +218,263 @@ const hyperlinkEditor = {
     }
 }
 
-const fileInfo = {
-    dateNode: document.getElementById("file-date"),
-    nameNode: document.getElementById("file-name"),
-    authorNode: document.getElementById("file-author"),
-    descriptionNode: document.getElementById("file-description"),
+const styleTable = {
+    orientation:"vertical",
+    extra1:false,
+    extra2:false,
+    color:"#ff0000",
+    function:false,
 
-    load: function () {
-        if (openedFile) {
-            this.dateNode.value = openedFile.creationDate;
-            this.authorNode.value = openedFile.author;
-            this.nameNode.value = openedFile.name;
-            this.descriptionNode.value = openedFile.description;
+    update:function(){
+       this.orientation = document.getElementById("table-style-orient").value;
+       this.function = document.getElementById("table-function").value;
+       this.extra1 = document.getElementById("table-style-extra-1").checked;
+       this.extra2 = document.getElementById("table-style-extra-2").checked;
+       for(let input of document.getElementsByName("table-style-color")){ if(input.checked){ this.color = input.value} }
+    },
+
+    makeTable:function(){
+        this.update();
+        let groups = {};
+        for(let cell of selector.selectedCells){
+            let x = cell.address.column;
+            let y = cell.address.row;
+            if(this.orientation == "vertical"){
+                if(!groups[x]){ groups[x] = [] };
+                groups[x].push(cell);
+                
+            }
+            else{
+                if(!groups[y]){ groups[y] = [] };
+                groups[y].push(cell);
+            }
+        }
+        for(let group of Object.values(groups)){
+            let bufforGroup = [...group];
+            for(let i=0; i<group.length; i++){
+                let cell = group[i];
+                let buffor = this.color;
+                if((this.extra1 && i == 0)){
+                    if(!cell.text) cell.text = `Tytuł`;
+                    cell.styles.textAlign = "center";
+                    cell.styles.fontType= "bold";
+                    cell.styles.fontSize= "16px";
+                    bufforGroup.shift();
+                }
+                if(this.extra2 && i == group.length-1){
+                    bufforGroup.pop();
+                    if(this.function){
+                        cell.text = `=|${this.function}|`;
+                        for(let bufforCell of bufforGroup){
+                            cell.text += `${bufforCell.fakeAddress},`
+                        }
+                        cell.text = cell.text.substring(0, cell.text.length - 1);
+                        cell.refresh();
+                    }
+                }
+                if(i % 2 == 0){ buffor += "cc" }
+                cell.styles.strokeColor = "#303030";
+                cell.styles.fillColor = buffor;
+                cell.fill();
+                cell.focus();
+            }
+        }
+
+    },
+}
+
+const insertTimeLine = {
+    growing:true,
+    format:"hour",
+    step:1,
+    stepType:1,
+    labelFrom: new UniversalInput("timeline-label-from"),
+    labelTo: new UniversalInput("timeline-label-to") ,
+    approveBtn:document.getElementById("timeline-approve"),
+    generated:false,
+    generatedValues:[],
+
+    updateGrowing:function(e){
+        this.lockApproveBtn();
+        this.growing = (e.target.value == "true");
+    },
+
+    updateStep:function(e){
+        this.lockApproveBtn();
+        if(e.target.value < 1){ e.target.value = 1 }
+        else{
+            if(this.format == "day" && e.target.value > 7){ e.target.value = 7 }
+            else if(this.format == "month" && e.target.value > 12){ e.target.value = 12}
+        }
+        this.step = parseInt(e.target.value);
+    },
+
+    updateStepType:function(e){
+        this.lockApproveBtn();
+        this.stepType = e.target.value;
+        if(this.format == "hour"){
+            if(this.stepType == "3"){ 
+                this.labelFrom.inputTimeSec();
+                this.labelTo.inputTimeSec();
+            }
+            else{
+                this.labelFrom.inputTime();
+                this.labelTo.inputTime();
+            }
+        }
+    },
+
+    updateFormat:function(e){
+        this.lockApproveBtn();
+        this.format = e.target.value
+        if(this.format != "hour" && this.format != "date"){
+            this.lockStepType();
+            if(this.format == "year"){ 
+                this.labelFrom.inputNumber();
+                this.labelTo.inputNumber();
+             }
+            else if(this.format == "month"){ 
+                this.labelFrom.inputMonth(); 
+                this.labelTo.inputMonth();
+            }
+            else{
+                this.labelFrom.inputDay(); 
+                this.labelTo.inputDay();
+            }
+            
+        }
+        else{
+            if(this.format == "hour"){ 
+                let names = ["Godzina", "Minuta", "Sekunda",];
+                this.changeStepTypeNames(names); 
+                this.labelFrom.inputTime();
+                this.labelTo.inputTime();
+            }
+            else{ 
+                let names = ["Rok", "Miesiąc", "Dzień",];
+                this.changeStepTypeNames(names); 
+                this.labelFrom.inputDate();
+                this.labelTo.inputDate();
+            }
+            this.unlockStepType(); 
+        }
+    },
+
+    changeStepTypeNames:function(names){
+        let options = document.getElementById("timeline-stepType").querySelectorAll("option");
+        for(let option of options){
+            option.innerHTML = names.shift();
+        }
+    },
+
+    lockStepType:function(){
+        document.getElementById("timeline-stepType").disabled = true;
+        document.getElementById("timeline-stepType").value = "";
+    },
+
+    unlockStepType:function(){
+        document.getElementById("timeline-stepType").disabled = false;
+        document.getElementById("timeline-stepType").value = "1";
+
+    },
+
+    lockApproveBtn:function(){
+      this.approveBtn.disabled = true;
+      this.generated = false;
+    },
+
+    recalculate:function(){
+        this.generatedValues = [];
+        this.approveBtn.disabled = false;
+        const selectedSize = selector.selectedCells.size;
+        let startValue = this.labelFrom.getValue();
+
+            for(let i=0; i<selectedSize;i++){
+                let buffor;
+
+                if(this.format == "day"){
+                    startValue = parseInt(startValue);
+                    buffor = $getDay.func([startValue]);
+                    if(this.growing){ startValue += this.step; }
+                    else{ startValue -= this.step; }
+                    if(startValue > 7){ startValue = startValue - 7; }
+                    else if(startValue < 1){ startValue = 7 + (startValue) }
+                }
+
+                else if(this.format == "month"){
+                    startValue = parseInt(startValue);
+                    buffor = $getMonth.func([startValue]);
+                    if(this.growing){ startValue += this.step; }
+                    else{ startValue -= this.step; }
+                    if(startValue > 12){ startValue = startValue - 12; }
+                    else if(startValue < 1){ startValue = 12 + (startValue) }
+                }
+
+                else if(this.format == "year"){
+                    startValue = parseInt(startValue);
+                    buffor = `${startValue}`;
+                    if(this.growing){ startValue += this.step; }
+                    else{ startValue -= this.step; }
+                }
+
+                else if(this.format == "hour"){
+                    buffor = startValue;
+                    let [h, m, s] = buffor.split(':').map(Number);
+                    if(!s) s=0;
+                    let time = (h*3600) + (m*60) + s;
+                    
+                    let multiper = 1;
+                    if(this.stepType == "1") multiper = 3600;
+                    if(this.stepType == "2") multiper = 60;
+                    if(this.growing){ time += this.step*multiper; }
+                    else{
+                         time -= this.step*multiper;
+                         if(time < 0) time = 86400 + time;
+                    }
+
+                    h = Math.floor(time / 3600) % 24;
+                    m = Math.floor((time % 3600) / 60);
+                    s = time % 60;
+
+                    (h<10) ? h=`0${h}` : `${h}`;
+                    (m<10) ? m=`0${m}` : `${m}`;
+                    (s<10) ? s=`0${s}` : `${s}`;
+                    
+                    if(this.stepType == "3"){ startValue = `${h}:${m}:${s}`; }
+                    else{ startValue = `${h}:${m}`;}
+                }
+
+                else{
+                    buffor = startValue;
+                    let [y, m, d] = startValue.split('-').map(Number);
+                    let date = new Date(y, m - 1, d);
+                    let step = (this.growing) ? this.step : this.step*-1;
+                    if(this.stepType == "1"){
+                        date.setFullYear(date.getFullYear() + step);
+                    }
+                    else if(this.stepType == "2"){
+                        date.setMonth(date.getMonth() + step);
+                    }
+                    else{
+                        date.setDate(date.getDate() + step);
+                    }
+                    startValue = makeDateString(date);
+                }
+
+                if(i == selectedSize-1) this.labelTo.updateData(false,buffor);
+                this.generatedValues.push(buffor);
+            }
+    },
+
+    insert(){
+        for(let cell of selector.selectedCells){
+            cell.text = this.generatedValues.shift();
+            cell.refresh();
+            cell.focus();
         }
     }
 }
+
 
 class Message {
     constructor(title, description, approve, deny = "Rozumiem") {
@@ -286,25 +620,25 @@ class StyleInput_Radio extends StyleInput {
     }
 }
 
-class StyleInput_CheckBox extends StyleInput{
-    constructor(checkbox,styleName){
+class StyleInput_CheckBox extends StyleInput {
+    constructor(checkbox, styleName) {
         super(styleName)
         this.checkbox = checkbox;
-        checkbox.addEventListener("input",(e)=>{this.apply(e)})
+        checkbox.addEventListener("input", (e) => { this.apply(e) })
     }
 
-    load(cell){
+    load(cell) {
         let value = cell.styles[this.styleName];
-        if(value == true){
+        if (value == true) {
             this.checkbox.checked = true;
         }
-        else{
+        else {
             this.checkbox.checked = false;
         }
     }
 
-    apply(e){
-        super.apply({target:{value:e.target.checked}});
+    apply(e) {
+        super.apply({ target: { value: e.target.checked } });
     }
 }
 
@@ -379,6 +713,7 @@ class StyleInput_Number extends StyleInput {
 
 }
 
+
 StyleInput.inputs = [];
 StyleInput.loadCell = function (cell) {
     for (let input of this.inputs) {
@@ -400,39 +735,13 @@ new StyleInput_Button("hyperlink", document.getElementById("addHyperlink-modal")
 //Messages
 const msg_remove = new Message("Czy jesteś pewny ?", "Ta operacja usunięcia nie może zostać cofnięta dobrze się zastanów", "Usuń", "Zostaw");
 const msg_hyperlink = new Message("Otworzyć odnośnik ?", "Pamiętaj arkusze od obcych osób lub z nieznanych źródeł mogą zawierać odnośniki do złośliwych stron", "Tak", "Nie");
+const msg_newFile = new Message("Utworzyć nowy plik ?", "Wszystkie niezapisane zmiany w bieżacym pliku zostaną utracone", "Tak", "Nie");
 
 // 
 function changeFontSizesOptions(biger = false) {
     for (let option of fontSizeOptions) {
         (biger) ? option.disabled = false : option.disabled = true;
     }
-}
-
-function downloadFile() {
-    if (openedFile) {
-        let data = openedFile.packToSaving();
-        let file = new Blob([data], { type: "text/plain" })
-        let a = document.createElement("a");
-        a.href = URL.createObjectURL(file);
-        a.download = openedFile.name + ".json";
-        a.click();
-    }
-}
-
-function loadFile(e) {
-    if (e.target.files.length > 1) { console.log("ZA DUZO PLIKOW"); }
-    else {
-        let file = e.target.files[0];
-        let reader = new FileReader();
-        reader.onload = handleLoadedFile
-        reader.readAsText(file);
-    }
-}
-
-function handleLoadedFile(e) {
-    let loadedData = e.target.result;
-    loadedData = JSON.parse(loadedData);
-    console.dir(loadedData)
 }
 
 function insertTimeData(e) {
@@ -442,6 +751,52 @@ function insertTimeData(e) {
         display.showData(selector.selected);
         cellInput.show(selector.selected);
     }
+}
+
+function selectedClearData() {
+    if (selector.selected) {
+        cellInput.clearData();
+        selector.selected.clearData();
+        selector.resetOldData();
+    }
+    else {
+        if (selector.selectedCells.size > 0) {
+            for (let cell of selector.selectedCells) {
+                cell.text = "";
+                cell.refresh();
+            }
+            selector.resetOldData();
+        }
+    }
+}
+
+function selectedClearStyles() {
+    if (selector.selected) {
+        selector.selected.styles = new selector.selected.styles.constructor();
+        selector.selected.fill();
+    }
+    else if (selector.selectedCells.size > 0) {
+
+        for (let cell of selector.selectedCells) {
+            cell.styles = cell.styles = new cell.styles.constructor();
+        }
+    }
+    else if(widgetTools_base.selectedWidget){
+        widgetTools_base.selectedWidget.styles = new widgetTools_base.selectedWidget.styles.constructor();
+        widgetTools_base.selectedWidget.refreshStyles();
+    }
+}
+
+function hexToRgb(hex) {
+    const bigint = parseInt(hex.slice(1), 16);
+    const r = (bigint >> 16) & 255;
+    const g = (bigint >> 8) & 255;
+    const b = bigint & 255;
+    return [r, g, b];
+}
+
+function rgbToHex(r, g, b) {
+    return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
 }
 
 // LISTENERS to accesories
@@ -458,7 +813,13 @@ document.getElementById("cellData-aprove").addEventListener("click", display.con
 document.getElementById("cellData-mode").addEventListener("click", display.switchDisplayedData.bind(display));
 document.getElementById("cellData-clear").addEventListener("click", display.clearFuncInput.bind(display));
 
-document.getElementById("input-insert-date").addEventListener("click", (e) => { e.target.showPicker() })
-document.getElementById("input-insert-time").addEventListener("click", (e) => { e.target.showPicker() })
-document.getElementById("input-insert-date").addEventListener("input", insertTimeData)
-document.getElementById("input-insert-time").addEventListener("input", insertTimeData)
+document.getElementById("input-insert-date").addEventListener("click", (e) => { e.target.showPicker() });
+document.getElementById("input-insert-time").addEventListener("click", (e) => { e.target.showPicker() });
+document.getElementById("input-insert-date").addEventListener("input", insertTimeData);
+document.getElementById("input-insert-time").addEventListener("input", insertTimeData);
+
+document.getElementById("timeline-format").addEventListener("input",(e)=>{insertTimeLine.updateFormat(e)});
+document.getElementsByName("timeline-direction").forEach(input=>{input.addEventListener("input",(e)=>{insertTimeLine.updateGrowing(e)});})
+document.getElementById("timeline-step").addEventListener("input",(e)=>{insertTimeLine.updateStep(e)});
+document.getElementById("timeline-stepType").addEventListener("input",(e)=>{insertTimeLine.updateStepType(e)});
+

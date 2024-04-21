@@ -444,7 +444,7 @@ new MathFunction("NAJMNIEJSZA",function(values){
 //=============================== FUNKCJE  ============================================
 
 // YYYY.MM.DD
-const getDate = new MathFunction("_DATA:DZIS",function(values){
+const $getDate = new MathFunction("_DATA:DZIS",function(values){
     let date = new Date();
     return makeDateString(date);
 },"Zwraca dzisiejszą date w formacie 'Rok-Miesiąc-Dzień' Data będzie się aktualizowac przy każdym odpaleniu arkusza",false);
@@ -464,11 +464,12 @@ new MathFunction("_DATA:DNI",function(values){
 
 },"Dodaje lub odejmuje dni od daty wzór: |FUNC|DATA,DNI   gdzie wartość dni może być ujemna lub dodatnia  ",true);
 
+
 // MIESIAC
-new MathFunction("_MSC",function(values){
+const $getMonth = new MathFunction("_MSC",function(values){
     if(values.length > 1){ return "@TOMORE" }
     else{
-        let number = values[0];
+        let number = `${values[0]}`;
         switch(number){
             case "1":
                 return "Styczeń";
@@ -499,10 +500,37 @@ new MathFunction("_MSC",function(values){
     return this.baseResult;
 
     
-},"Zwraca nazwe miesiąca z podanej liczby np: |MONTH|1 == Styczeń",true,"ERR_VALUE");
+},"Zwraca nazwe dnia tygodnia z podanej liczby np: ||1 == Styczeń",true,"@VALUE");
+
+// DZIEN
+const $getDay = new MathFunction("_DZIEN",function(values){
+    if(values.length > 1){ return "@TOMORE" }
+    else{
+        let number = `${values[0]}`;
+        switch(number){
+            case "1":
+                return "Poniedziałek";
+            case "2":
+                return "Wtorek"
+            case "3":
+                return "Środa"
+            case "4":
+                return "Czwartek"
+            case "5":
+                return "Piątek"
+            case "6":
+                return "Sobota"
+            case "7":
+                return "Niedziela"
+        }
+    }
+    return this.baseResult;
+
+    
+},"Zwraca nazwe miesiąca z podanej liczby np: |_MSC|1 == Styczeń",true,"@VALUE");
 
 // TIME HH:MM:SS
-const getTime = new MathFunction("_CZAS",function(values){
+const $getTime = new MathFunction("_CZAS",function(values){
     let date = new Date();
 
     let checkFormat = function(number){
@@ -566,7 +594,6 @@ new MathFunction("&SMALER:GROUP",function(values){
     for(let value of values){  if(value > operator) result = false; } 
     return result;
 },"Zwraca TRUE gdy wszystkie elementy są mniejsze niz wartość X wzór: |FUNC|X,Elementy..",true)
-
 
 //ROWNE
 new MathFunction("&EQUAL",function(values){

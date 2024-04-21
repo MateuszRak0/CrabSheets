@@ -146,9 +146,13 @@
 
 @media only screen and (max-width: 600px) {
     .close-left-widget{
+        border: none !important;
+    }
+
+    .close-left-widget.scaling{
       width: 100%;
       max-width: 100%;
-      border: none;
+      max-height: 35vh;
     }
 
     .close-left{
@@ -240,4 +244,15 @@
 
 #widgetTool-chart{
     max-width: 50vw;
+}
+
+/* Switch Table */
+.switchTable{
+    position: absolute;
+    z-index: 5;
+}
+
+.switchTable select{
+    max-height: 0px;
+    border: 2px solid #1163ab;
 }

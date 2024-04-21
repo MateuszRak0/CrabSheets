@@ -100,6 +100,12 @@ class Chart{
         this.usedCells = new Set();
         this.drawBase(...this.getSpace());
 
+        this.minValue;
+        this.maxValue;
+        this.sum;
+        this.sumAbs;
+        this.keys;
+        this.values;
     }
 
     getSpace(){
@@ -132,11 +138,24 @@ class Chart{
 
     unpackData(){
         let dataList = [];
+        this.keys = [];
+        this.values = [];
+
+        this.sum = 0;
+        this.sumAbs = 0;
         for(let data of this.pairs){
             let key = this.lookForCellAddress(data.key);
             let value = this.lookForCellAddress(data.value);
+            if(!isNaN(parseFloat( value ))){ 
+                this.sum += parseFloat( value );
+                this.sumAbs += Math.abs(value);
+             };
             dataList.push({key:key,value:value})
+            this.keys.push(key); 
+            this.values.push(value);
         }
+        this.minValue = Math.min(...this.values);
+        this.maxValue = Math.max(...this.values);
         return dataList;
     }
 
@@ -153,6 +172,7 @@ class Chart{
     }
 
     drawBase(){
+        this.unpackData();
     }
 
     destroy(){
@@ -161,18 +181,79 @@ class Chart{
             cell.usedInCharts.delete(this);
         }
     }
+}
 
+class BasicChart extends Chart{
+    constructor(){
+        super()
+        this.startX;
+        this.startY;
+        this.widget.refreshStyles();
+    }
+
+    drawBase(spaceX,spaceY){
+        super.drawBase()
+        let colors = [...this.widget.styles.chartStyles.split(",")];
+        colors = renderChartColors(...colors,3);
+        let ctx = this.widget.ctx;
+        let startX = 30;
+        let startY = spaceY-30;
+        ctx.fillStyle = colors.pop();
+        ctx.fillRect(startX,startY,spaceX-startX-3,4);
+        ctx.fillRect(startX,3,4,startY);
+        if(!this.widget.styles.percentMode){
+            this.drawRest(spaceX-10,startY,startX,startY,colors);
+        }
+        else{
+            this.drawPercent(spaceX-10,startY,startX,startY,colors);
+        }
+    }
+
+    drawLegendX(x,key,value,stepX){
+        this.widget.ctx.fillStyle = this.widget.styles.color;
+        this.widget.ctx.font = "bold 10px arial";
+        if(!key) key = "";
+        if(!value) value = 0;
+        key = trimText(key,stepX-10,this.widget.ctx);
+        value = trimText(value,stepX-10,this.widget.ctx);
+        let y = this.widget.canvas.height - 18;
+        this.widget.ctx.fillText(value,x,y);
+        this.widget.ctx.fillText(key,x,y+15);
+        ctx.font = "bold 12px arial";
+    }
+
+    drawLegendY(minValue,maxValue,startY,startX,minusValue,spaceY){
+        this.widget.ctx.fillStyle = this.widget.styles.color;
+        this.widget.ctx.font = "bold 10px arial";
+        let y75 = Math.ceil((startY+10)/2 - (startY)/4);
+        let y50 = Math.ceil((startY+10)/2);
+        this.widget.ctx.fillText(minValue,3,startY);
+        this.widget.ctx.fillText(maxValue,3,14);
+        this.widget.ctx.fillText(maxValue,3,14);
+        if(minusValue){
+            this.widget.ctx.fillText(`${Math.round(minusValue)}%`,3,spaceY+5);
+        }
+        let oldStyle = this.widget.ctx.fillStyle;
+        let lineWidth = this.widget.canvas.width-startX-10;
+        this.widget.ctx.fillStyle = oldStyle + "30";
+        this.widget.ctx.fillRect(startX+4,startY,lineWidth,2);
+        this.widget.ctx.fillRect(startX+4,10,lineWidth,1);
+        this.widget.ctx.fillRect(startX+4,y50,lineWidth,1);
+        this.widget.ctx.fillRect(startX+4,Math.ceil((startY)/2 + (startY)/4),lineWidth,1);
+        this.widget.ctx.fillRect(startX+4,y75,lineWidth,1);
+        this.widget.ctx.fillStyle = oldStyle;
+    }
 }
 
 class PieChart extends Chart{
     constructor(){
         super()
-        this.widget.styles.beTransparent = true;
-        this.widget.styles.fillColor = "transparent";
+        this.widget.styles = new StyleListFlush();
         this.widget.refreshStyles();
     }
 
     drawBase(spaceX,spaceY){
+        super.drawBase()
         let centerX = spaceX/2;
         let centerY = spaceY/2;
         let radius = (Math.min(spaceX,spaceY)/2)*.9;
@@ -182,7 +263,8 @@ class PieChart extends Chart{
         ctx.shadowBlur = 5;
         ctx.shadowOffsetX = 2;
         ctx.shadowOffsetY = 2;
-        ctx.fillStyle = renderChartColors(...this.widget.styles.chartStyles.split(","));
+        if(this.minValue < 0){ ctx.fillStyle = "#BE3232"; }
+        else{ ctx.fillStyle = renderChartColors(...this.widget.styles.chartStyles.split(","));  }
         ctx.beginPath();
         ctx.arc(centerX,centerY,radius,0,2*Math.PI);
         ctx.fill();
@@ -192,14 +274,9 @@ class PieChart extends Chart{
 
     drawRest(centerX,centerY,radius){
         let dataList = this.unpackData();
-        let sumValues = 0;
         let colors = [...this.widget.styles.chartStyles.split(",")];
         colors = renderChartColors(...colors,dataList.length);
-        for(let data of dataList){
-            let value = parseFloat(data.value);
-            (value >= 0) ? sumValues += value: sumValues += (value*-1);
-        }
-        let part = 360/sumValues;
+        let part = 360/this.sumAbs;
         let last = 0;
         let ctx = this.widget.ctx;
         ctx.save();
@@ -208,280 +285,256 @@ class PieChart extends Chart{
         ctx.shadowOffsetX = 0;
         ctx.shadowOffsetY = 0;
         for(let data of dataList){
-            let end = last + (data.value * part)
-            ctx.fillStyle = colors.pop()
-            ctx.beginPath();
-            ctx.moveTo(centerX, centerY);
-            ctx.arc(centerX, centerY, radius,last*Math.PI/180,end*Math.PI/180);
-            ctx.lineTo(centerX, centerY);
-            ctx.fill()
-            last = end;
+            if(data.value > 0){
+                let end = last + (data.value * part)
+                ctx.fillStyle = colors.pop()
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, radius,last*Math.PI/180,end*Math.PI/180);
+                ctx.lineTo(centerX, centerY);
+                ctx.fill()
+                last = end;
+            }
         }
         ctx.restore();
     }
 }
 
-class LineChart extends Chart{
+class LineChart extends BasicChart{
     constructor(){
         super()
-        this.widget.styles.beTransparent = false;
-        this.widget.styles.fillColor = "#eeeeee";
-        this.widget.refreshStyles();
     }
 
-    drawBase(spaceX,spaceY){
-        let colors = [...this.widget.styles.chartStyles.split(",")];
-        colors = renderChartColors(...colors,3);
+    drawPercent(spaceX,spaceY,startX,startY,colors){
         let ctx = this.widget.ctx;
-        let startX = 30;
-        let startY = spaceY-30;
-        ctx.fillStyle = colors.pop();
-        ctx.fillRect(startX,startY,spaceX-startX-3,4);
-        ctx.fillRect(startX,3,4,startY);
-        this.drawRest(spaceX-10,startY,startX,startY,colors);
-    }
-
-    drawLegendY(minValue,maxValue,startY,startX){
-        this.widget.ctx.fillText(minValue,5,startY)
-        this.widget.ctx.fillText(maxValue,5,14)
-        let oldStyle = this.widget.ctx.fillStyle;
-        this.widget.ctx.fillStyle = oldStyle + "30";
-        this.widget.ctx.fillRect(startX+4,10,this.widget.canvas.width-20,1)
-        this.widget.ctx.fillRect(startX+4,Math.ceil((startY+10)/2),this.widget.canvas.width-startX-10,1)
-        this.widget.ctx.fillRect(startX+4,Math.ceil((startY)/2 + (startY)/4),this.widget.canvas.width-startX-10,1)
-        this.widget.ctx.fillRect(startX+4,Math.ceil((startY+10)/4),this.widget.canvas.width-startX-10,1)
-        this.widget.ctx.fillStyle = oldStyle;
-    }
-
-    drawLegendX(x,key,stepX){
-        if(!key) key = "|"
-        while (ctx.measureText(key).width > stepX-10) { key = key.slice(0, key.length - 1); }
-        ctx.font = "bold 8px arial";
-        let y = this.widget.canvas.height - 15;
-        this.widget.ctx.fillText(key,x - ctx.measureText(key).width/2,y);
-        ctx.font = "bold 12px arial";
-    }
-
-    drawRest(spaceX,spaceY,startX,startY,colors){
-        let ctx = this.widget.ctx;
-        let keys = [];
-        let values = [];
-        for(let data of this.unpackData()){ 
-            values.push(data.value)
-            keys.push(data.key)
-        };
-        let minValue = Math.min(...values);
-        let maxValue = Math.max(...values);
-        if(minValue == Infinity || maxValue == Infinity){
-            minValue = 0;
-            maxValue = 100;
-        };
-        if(minValue >= 0 && maxValue <= 100){ 
-            minValue = 0; 
-            maxValue = 100; 
-        }
-        let stepY = (spaceY-10)/Math.abs(maxValue - minValue);
-        let stepX = (spaceX-10)/Math.max(keys.length,values.length);
+        let percent = 100/this.sum;
+        let realPercent = 100/this.sumAbs;
+        let stepY = (spaceY-10)/100;
+        let stepX = (spaceX-10)/Math.max(this.keys.length,this.values.length);
         if(stepX < 10) stepX = 10;
-        ctx.save()
+        if(this.minValue < 0){
+            startY = startY -(Math.abs(this.minValue)*realPercent)*stepY 
+            this.drawLegendY("0%",`${100+Math.round(Math.abs(this.minValue)*percent)}%`,startY,startX,this.minValue*percent,spaceY);
+        } 
+        else{
+            this.drawLegendY("0%","100%",startY,startX);
+        }
+        ctx.save();
         ctx.fillStyle = colors.pop();
-        ctx.font = "bold 12px arial";
-        this.drawLegendY(minValue,maxValue,startY,startX);
         ctx.strokeStyle = colors.pop();
         ctx.lineWidth = 3;
         ctx.beginPath();
-        for(let i = 0; i< values.length; i++){
-            let value = values[i];
+        for(let i = 0; i< this.values.length; i++){
+            let value = this.values[i];
             let x = stepX*i;
-            let y = (value - minValue)*stepY;
+            let y = (value*realPercent)*stepY;
             if(i == 0){ 
                 ctx.moveTo(startX + x,startY - y); 
             }
             else{ ctx.lineTo(startX + x, startY - y); }
             ctx.fillRect( startX + x -3, startY - y -3, 6, 6 );
-            this.drawLegendX(startX + x,keys[i],stepX)
+            let keyValue = value*percent;
+            keyValue = `${keyValue.toFixed(2)}%`;
+            this.drawLegendX(startX + x,this.keys[i],keyValue,stepX);
         }
         ctx.stroke();
-        
+        ctx.restore();
+    } 
+
+    drawRest(spaceX,spaceY,startX,startY,colors){
+        let ctx = this.widget.ctx;
+        if(this.minValue == Infinity || this.maxValue == Infinity){
+            this.minValue = 0;
+            this.maxValue = 100;
+        };
+        if(this.minValue >= 0 && this.maxValue <= 100){ 
+            this.minValue = 0; 
+            this.maxValue = 100; 
+        }
+        let stepY = (spaceY-10)/Math.abs(this.maxValue - this.minValue);
+        let stepX = (spaceX-10)/Math.max(this.keys.length,this.values.length);
+        if(stepX < 10) stepX = 10;
+        ctx.save()
+        ctx.fillStyle = colors.pop();
+        this.drawLegendY(this.minValue,this.maxValue,startY,startX);
+        ctx.strokeStyle = colors.pop();
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        for(let i = 0; i< this.values.length; i++){
+            let value = this.values[i];
+            let x = stepX*i;
+            let y = (value - this.minValue)*stepY;
+            if(i == 0){ 
+                ctx.moveTo(startX + x,startY - y); 
+            }
+            else{ ctx.lineTo(startX + x, startY - y); }
+            ctx.fillRect( startX + x -3, startY - y -3, 6, 6 );
+            this.drawLegendX(startX + x + 15,this.keys[i],value,stepX);
+        }
+        ctx.stroke();
         ctx.restore();
     } 
 }
 
-class BarChart extends Chart{
+class AreaChart extends BasicChart{
     constructor(){
         super()
-        this.widget.styles.beTransparent = false;
-        this.widget.styles.fillColor = "#eeeeee";
-        this.widget.refreshStyles();
     }
 
-    drawBase(spaceX,spaceY){
-        let colors = [...this.widget.styles.chartStyles.split(",")];
-        colors = renderChartColors(...colors,2);
+    drawPercent(spaceX,spaceY,startX,startY,colors){
         let ctx = this.widget.ctx;
-        let startX = 30;
-        let startY = spaceY-30;
+        let percent = 100/this.sum;
+        let realPercent = 100/this.sumAbs;
+        let stepY = (spaceY-10)/100;
+        let stepX = (spaceX-10)/Math.max(this.keys.length,this.values.length);
+        if(stepX < 10) stepX = 10;
+        ctx.font = "bold 10px arial";
+        if(this.minValue < 0){
+            startY = startY -(Math.abs(this.minValue)*realPercent)*stepY 
+            this.drawLegendY("0%",`${100+Math.round(Math.abs(this.minValue)*percent)}%`,startY,startX,this.minValue*percent,spaceY);
+        } 
+        else{
+            this.drawLegendY("0%","100%",startY,startX);
+        }
+        ctx.save();
         ctx.fillStyle = colors.pop();
-        ctx.fillRect(startX,startY,spaceX-startX-3,4);
-        ctx.fillRect(startX,3,4,startY);
+        ctx.strokeStyle = colors.pop();
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        for(let i = 0; i< this.values.length; i++){
+            let value = this.values[i];
+            let x = stepX*i;
+            let y = (value*realPercent)*stepY;
+            if(i == 0){ 
+                ctx.moveTo(startX + x,startY - y); 
+            }
+            else{ ctx.lineTo(startX + x, startY - y); }
+            if(i == this.values.length-1){
+                ctx.lineTo(startX + x, startY);
+                ctx.lineTo(startX, startY);
+            }
+            let keyValue = value*percent;
+            keyValue = `${keyValue.toFixed(2)}%`;
+            this.drawLegendX(startX + x,this.keys[i],keyValue,stepX);
+        }
+        ctx.fill();
+        ctx.restore();
+    } 
+
+    drawRest(spaceX,spaceY,startX,startY,colors){
+        let ctx = this.widget.ctx;
+        if(this.minValue == Infinity || this.maxValue == Infinity){
+            this.minValue = 0;
+            this.maxValue = 100;
+        };
+        if(this.minValue >= 0 && this.maxValue <= 100){ 
+            this.minValue = 0; 
+            this.maxValue = 100; 
+        }
+        let stepY = (spaceY-10)/Math.abs(this.maxValue - this.minValue);
+        let stepX = (spaceX-10)/Math.max(this.keys.length,this.values.length);
+        if(stepX < 10) stepX = 10;
+        ctx.save()
         ctx.fillStyle = colors.pop();
-        this.drawRest(spaceX-10,startY,startX,startY);
+        this.drawLegendY(this.minValue,this.maxValue,startY,startX);
+        ctx.strokeStyle = colors.pop();
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        for(let i = 0; i< this.values.length; i++){
+            let value = this.values[i];
+            let x = (stepX+5)*i;
+            let y = (value - this.minValue)*stepY;
+            if(i == 0){ 
+                ctx.moveTo(startX + x,startY - y); 
+            }
+            else{ ctx.lineTo(startX + x, startY - y); }
+            if(i == this.values.length-1){
+                ctx.lineTo(startX + x, startY);
+                ctx.lineTo(startX, startY);
+            }
+            this.drawLegendX(startX + x + 15,this.keys[i],value,stepX);
+        }
+        ctx.fill();
+        ctx.restore();
+    } 
+}
+
+class BarChart extends BasicChart{
+    constructor(){
+        super()
     }
 
-    drawLegendY(minValue,maxValue,startY,startX){
-        this.widget.ctx.fillText(minValue,5,startY)
-        this.widget.ctx.fillText(maxValue,5,14)
-        let oldStyle = this.widget.ctx.fillStyle;
-        this.widget.ctx.fillStyle = oldStyle + "30";
-        this.widget.ctx.fillRect(startX+4,10,this.widget.canvas.width-20,1)
-        this.widget.ctx.fillRect(startX+4,Math.ceil((startY+10)/2),this.widget.canvas.width-startX-10,1)
-        this.widget.ctx.fillRect(startX+4,Math.ceil((startY)/2 + (startY)/4),this.widget.canvas.width-startX-10,1)
-        this.widget.ctx.fillRect(startX+4,Math.ceil((startY+10)/4),this.widget.canvas.width-startX-10,1)
-        this.widget.ctx.fillStyle = oldStyle;
-    }
-
-    drawLegendX(x,key,stepX){
-        if(!key) key = "|"
-        while (ctx.measureText(key).width > stepX-10) { key = key.slice(0, key.length - 1); }
-        ctx.font = "bold 8px arial";
-        let y = this.widget.canvas.height - 15;
-        this.widget.ctx.fillText(key,x - ctx.measureText(key).width/2,y);
-        ctx.font = "bold 12px arial";
-    }
+    drawPercent(spaceX,spaceY,startX,startY){
+        let colors = [...this.widget.styles.chartStyles.split(",")];
+        let ctx = this.widget.ctx;
+        colors = renderChartColors(...colors,this.values.length);
+        let percent = 100/this.sum;
+        let realPercent = 100/this.sumAbs;
+        let stepY = (spaceY-10)/100;
+        let stepX = (spaceX-10)/Math.max(this.keys.length,this.values.length);
+        if(stepX < 25) stepX = 25;
+        ctx.font = "bold 10px arial";
+        if(this.minValue < 0){
+            startY = startY -(Math.abs(this.minValue)*realPercent)*stepY 
+            this.drawLegendY("0%",`${100+Math.round(Math.abs(this.minValue)*percent)}%`,startY,startX,this.minValue*percent,spaceY);
+        } 
+        else{
+            this.drawLegendY("0%","100%",startY,startX);
+        }
+        for(let i = 0; i< this.values.length; i++){
+            let value = this.values[i];
+            if(value < 0){ ctx.fillStyle = "#BE3232"; }
+            else{ ctx.fillStyle = colors.pop(); }
+            let x = stepX*i;
+            let y = (value*realPercent)*stepY;
+            ctx.save()
+            ctx.shadowColor = "black";
+            ctx.shadowBlur = 3;
+            ctx.shadowOffsetX = 2;
+            ctx.shadowOffsetY = 2;
+            ctx.fillRect( startX + x +15, startY - y,20,y);
+            ctx.restore();
+            let keyValue = value*percent;
+            keyValue = `${keyValue.toFixed(2)}%`;
+            this.drawLegendX(startX + x,this.keys[i],keyValue,stepX);
+        }
+    } 
 
     drawRest(spaceX,spaceY,startX,startY){
         let colors = [...this.widget.styles.chartStyles.split(",")];
         let ctx = this.widget.ctx;
-        let keys = [];
-        let values = [];
-        for(let data of this.unpackData()){ 
-            values.push(data.value)
-            keys.push(data.key)
+        colors = renderChartColors(...colors,this.values.length);
+        if(this.minValue == Infinity || this.maxValue == Infinity){
+            this.minValue = 0;
+            this.maxValue = 100;
         };
-        let minValue = Math.min(...values);
-        let maxValue = Math.max(...values);
-        colors = renderChartColors(...colors,values.length);
-        if(minValue == Infinity || maxValue == Infinity){
-            minValue = 0;
-            maxValue = 100;
-        };
-        if(minValue >= 0 && maxValue <= 100){ 
-            minValue = 0; 
-            maxValue = 100; 
+        if(this.minValue >= 0 && this.maxValue <= 100){ 
+            this.minValue = 0; 
+            this.maxValue = 100; 
         }
-        let stepY = (spaceY-10)/Math.abs(maxValue - minValue);
-        let stepX = (spaceX-25)/Math.max(keys.length,values.length);
-        if(stepX < 20) stepX = 20;
-        ctx.font = "bold 12px arial";
-        this.drawLegendY(minValue,maxValue,startY,startX);
+        let stepY = (spaceY-10)/Math.abs(this.maxValue - this.minValue);
+        let stepX = (spaceX-25)/Math.max(this.keys.length,this.values.length);
+        if(stepX < 25) stepX = 25;
+        this.drawLegendY(this.minValue,this.maxValue,startY,startX);
 
-        for(let i = 0; i< values.length; i++){
-            let value = values[i];
+        for(let i = 0; i< this.values.length; i++){
+            let value = this.values[i];
             let x = stepX*i;
-            let y = (value - minValue)*stepY;
+            let y = (value - this.minValue)*stepY;
             ctx.fillStyle = colors.pop();
             ctx.save()
             ctx.shadowColor = "black";
-            ctx.shadowBlur = 5;
-            ctx.shadowOffsetX = 3;
-            ctx.shadowOffsetY = 3;
+            ctx.shadowBlur = 3;
+            ctx.shadowOffsetX = 2;
+            ctx.shadowOffsetY = 2;
             if(y < 1) y = 1;
             ctx.fillRect( startX + x +15, startY - y,20,y);
             ctx.restore();
-            this.drawLegendX(startX + x + 15,keys[i],stepX)
+            this.drawLegendX(startX + x + 15,this.keys[i],value,stepX);
         }
         
     } 
-}
 
-class AreaChart extends Chart{
-    constructor(){
-        super()
-        this.widget.styles.beTransparent = false;
-        this.widget.styles.fillColor = "#eeeeee";
-        this.widget.refreshStyles();
-    }
-
-    drawBase(spaceX,spaceY){
-        let colors = [...this.widget.styles.chartStyles.split(",")];
-        colors = renderChartColors(...colors,3);
-        let ctx = this.widget.ctx;
-        let startX = 30;
-        let startY = spaceY-30;
-        ctx.fillStyle = colors.pop();
-        ctx.fillRect(startX,startY,spaceX-startX-3,4);
-        ctx.fillRect(startX,3,4,startY);
-        this.drawRest(spaceX-10,startY,startX,startY,colors);
-    }
-
-    drawLegendY(minValue,maxValue,startY,startX){
-        this.widget.ctx.fillText(minValue,5,startY)
-        this.widget.ctx.fillText(maxValue,5,14)
-        let oldStyle = this.widget.ctx.fillStyle;
-        this.widget.ctx.fillStyle = oldStyle + "30";
-        this.widget.ctx.fillRect(startX+4,10,this.widget.canvas.width-20,1)
-        this.widget.ctx.fillRect(startX+4,Math.ceil((startY+10)/2),this.widget.canvas.width-startX-10,1)
-        this.widget.ctx.fillRect(startX+4,Math.ceil((startY)/2 + (startY)/4),this.widget.canvas.width-startX-10,1)
-        this.widget.ctx.fillRect(startX+4,Math.ceil((startY+10)/4),this.widget.canvas.width-startX-10,1)
-        this.widget.ctx.fillStyle = oldStyle;
-    }
-
-    drawLegendX(x,key,stepX){
-        if(!key) key = "|"
-        while (ctx.measureText(key).width > stepX-10) { key = key.slice(0, key.length - 1); }
-        ctx.font = "bold 8px arial";
-        let y = this.widget.canvas.height - 15;
-        this.widget.ctx.fillText(key,x - ctx.measureText(key).width/2,y);
-        ctx.font = "bold 12px arial";
-    }
-
-    drawRest(spaceX,spaceY,startX,startY,colors){
-        let ctx = this.widget.ctx;
-        let keys = [];
-        let values = [];
-        for(let data of this.unpackData()){ 
-            values.push(data.value)
-            keys.push(data.key)
-        };
-        let minValue = Math.min(...values);
-        let maxValue = Math.max(...values);
-        if(minValue == Infinity || maxValue == Infinity){
-            minValue = 0;
-            maxValue = 100;
-        };
-        if(minValue >= 0 && maxValue <= 100){ 
-            minValue = 0; 
-            maxValue = 100; 
-        }
-        let stepY = (spaceY-10)/Math.abs(maxValue - minValue);
-        let stepX = (spaceX-10)/Math.max(keys.length,values.length);
-        if(stepX < 10) stepX = 10;
-        ctx.save()
-        ctx.fillStyle = colors.pop();
-        ctx.font = "bold 12px arial";
-        this.drawLegendY(minValue,maxValue,startY,startX);
-        ctx.strokeStyle = colors.pop();
-        ctx.lineWidth = 3;
-        ctx.beginPath();
-        for(let i = 0; i< values.length; i++){
-            let value = values[i];
-            let x = (stepX+5)*i;
-            let y = (value - minValue)*stepY;
-            if(i == 0){ 
-                ctx.moveTo(startX + x,startY - y); 
-            }
-            else{ ctx.lineTo(startX + x, startY - y); }
-            if(i == values.length-1){
-                ctx.lineTo(startX + x, startY);
-                ctx.lineTo(startX, startY);
-            }
-            ctx.fillRect( startX + x -3, startY - y -3, 6, 6 );
-            this.drawLegendX(startX + x,keys[i],stepX)
-        }
-        ctx.fill();
-        
-        ctx.restore();
-    } 
 }
 
 // CHART TOOLS
@@ -503,8 +556,8 @@ widgetTools_chart.addData = function(key,value){
 
 widgetTools_chart.focusUsedCells = function(){
     for(let usedCell of this.selectedWidget.chartObject.usedCells){
-        selector.selectedCells.add(usedCell);
         usedCell.focus("#a0ff58ce");
+        selector.focusedCells.add(usedCell);
     }
 }
 
@@ -531,6 +584,7 @@ widgetTools_chart.show = function(widget){
 }
 
 widgetTools_chart.apply = function(e){
+    canvas.classList.remove("cursor-addCell");
     const dataSet = [];
     for(let data of this.dataList){
         data =  data.getData() 
@@ -544,7 +598,7 @@ widgetTools_chart.apply = function(e){
 
 new StyleInput_Radio(document.getElementsByName("chart-styles-color"),"chartStyles");
 new StyleInput_CheckBox(document.getElementById("chart-render-bg"),"beTransparent");
-new StyleInput_CheckBox(document.getElementById("chart-render-legend"),"showLegend");
+new StyleInput_CheckBox(document.getElementById("chart-render-legend"),"percentMode");
 
 
 document.getElementById("addChart-line").addEventListener("click",()=>{new LineChart(selectedSheet)});
