@@ -2,10 +2,10 @@ const canvasContainer = document.getElementById("canvas-container");
 const canvas = document.getElementById("mainCanvas");
 const ctx = canvas.getContext("2d");
 const pressedKeys = new Set();
-const allSymbols = ["^", "+", "-", "*", "/", "=", "(", ")", "[", "]", "{", "}", ",","<",">"];
-const selectiveSymbols = ["+", "-", "*", "/", "=", "|", "^", ",", "(", "[", "{","<",">"];
-const endSymbols = ["+", "-", "*", "/", "=", "|", "^","<",">"];
-const specialSymbols = ["$","&","_"];
+const allSymbols = ["^", "+", "-", "*", "/", "=", "(", ")", "[", "]", "{", "}", ",", "<", ">"];
+const selectiveSymbols = ["+", "-", "*", "/", "=", "|", "^", ",", "(", "[", "{", "<", ">"];
+const endSymbols = ["+", "-", "*", "/", "=", "|", "^", "<", ">"];
+const specialSymbols = ["$", "&", "_"];
 const cellSize = { x: 120, y: 20 };
 const cellSymbol = "☍";
 
@@ -14,25 +14,25 @@ let selectedSheet;
 
 //SELECTOR & INPUT - Two base object's responsible for selecting and typing into cells
 const cellInput = {
-    wrotedText:"",
-    erasedText:"",
+    wrotedText: "",
+    erasedText: "",
     writeFunc: false,
-    writeAddress:false,
-    writeString:false,
+    writeAddress: false,
+    writeString: false,
     afterFunction: false,
     aproveCell: false,
     element: document.getElementById("cellInput"),
 
-    changeCellAproving:function(cell=false,func=false){
-        if(!cell && !func){ 
+    changeCellAproving: function (cell = false, func = false) {
+        if (!cell && !func) {
             this.aproveCell = false;
             this.afterFunction = false;
             canvas.classList.remove("cursor-addCell");
         }
-        else{
+        else {
             canvas.classList.add("cursor-addCell");
-            if(cell) this.aproveCell = true;
-            if(func){
+            if (cell) this.aproveCell = true;
+            if (func) {
                 this.aproveCell = true;
                 this.afterFunction = true;
             }
@@ -43,8 +43,8 @@ const cellInput = {
         this.writeFunc = false;
         this.writeAddress = false;
         this.wrotedText = "";
-        
-        this.element.style.top = `${cell.y+1}px`;
+
+        this.element.style.top = `${cell.y + 1}px`;
         this.element.style.left = `${cell.x}px`;
 
         if (this.element.classList.contains("hidden")) {
@@ -53,57 +53,57 @@ const cellInput = {
 
         if (cell.text) {
             this.element.value = cell.text;
-            if(cell.text[0] == "=") this.scanText(cell,true);       
+            if (cell.text[0] == "=") this.scanText(cell, true);
         }
         else {
             this.element.value = "";
         }
     },
 
-    scanText:function(cell = selector.selected,afterClick){  
-        if(cell){
+    scanText: function (cell = selector.selected, afterClick) {
+        if (cell) {
             this.changeCellAproving();
             for (let i = this.element.value.length - 1; i >= 0; i--) {
                 let letter = this.element.value[i];
-                if(isNaN(parseFloat(letter))){
-                    if (selectiveSymbols.includes(letter)){
-                        if(letter != ","){
+                if (isNaN(parseFloat(letter))) {
+                    if (selectiveSymbols.includes(letter)) {
+                        if (letter != ",") {
                             if (i == this.element.value.length - 1) {
                                 this.changeCellAproving(true);
                             }
-                            if (letter == "|"){
-                                if(this.wrotedText.length > 0){ 
-                                    this.writeFunc = true; 
-                                    this.wrotedText = "|"+this.wrotedText; 
+                            if (letter == "|") {
+                                if (this.wrotedText.length > 0) {
+                                    this.writeFunc = true;
+                                    this.wrotedText = "|" + this.wrotedText;
                                 }
-                                else{ 
-                                    this.changeCellAproving(true,true);
-                                     break 
-                                    }
-                                
+                                else {
+                                    this.changeCellAproving(true, true);
+                                    break
+                                }
+
                             }
-                            else{
+                            else {
                                 break
                             }
                         }
                     }
-                    else if(afterClick){
-                        if(letter == "'"){
-                                if(this.writeAddress){
-                                    this.writeAddress = false;
+                    else if (afterClick) {
+                        if (letter == "'") {
+                            if (this.writeAddress) {
+                                this.writeAddress = false;
+                            }
+                            else {
+                                this.writeAddress = true;
+                                if (this.wrotedText.length > 0) {
+                                    break
                                 }
-                                else{
-                                    this.writeAddress = true;
-                                    if(this.wrotedText.length > 0){
-                                        break
-                                    }
-                                }
-                                this.wrotedText = "";
+                            }
+                            this.wrotedText = "";
                         }
-                        else{
+                        else {
                             this.wrotedText = letter + this.wrotedText
                         }
-                        
+
                     }
                 }
             }
@@ -120,36 +120,36 @@ const cellInput = {
         }
     },
 
-    typing:function(e){
-        if(this.element.selectionStart != this.element.value.length){ selector.selected.text = this.element.value; return false;} 
-        if(!pressedKeys.has("Control") && selector.selected && this.element.value[0] == "="){ 
+    typing: function (e) {
+        if (this.element.selectionStart != this.element.value.length) { selector.selected.text = this.element.value; return false; }
+        if (!pressedKeys.has("Control") && selector.selected && this.element.value[0] == "=") {
             this.checkFocus();
-            let lastLetter = this.element.value[this.element.value.length-1];
-            let erasedLetter = (e.data == null) ? selector.selected.text[selector.selected.text.length-1]:false;
+            let lastLetter = this.element.value[this.element.value.length - 1];
+            let erasedLetter = (e.data == null) ? selector.selected.text[selector.selected.text.length - 1] : false;
             let primaryResult = erasedLetter || lastLetter;
             selector.selected.text = this.element.value;
             display.showData(selector.selected);
-            if(erasedLetter && allSymbols.includes(erasedLetter)){ this.scanText();}
-            else{
+            if (erasedLetter && allSymbols.includes(erasedLetter)) { this.scanText(); }
+            else {
                 if (selectiveSymbols.includes(lastLetter)) {
                     this.changeCellAproving(true);
                     if (this.afterFunction && endSymbols.includes(lastLetter)) {
                         this.afterFunction = false
                     };
                 }
-                else{
+                else {
                     this.changeCellAproving();
                 }
             }
-            if(primaryResult == `"`){
-            this.writeString = (this.writeString) ? false : true ;
+            if (primaryResult == `"`) {
+                this.writeString = (this.writeString) ? false : true;
             }
-            else if(!this.writeString){
-                if(primaryResult == "'"){
-                    if(this.writeAddress){
+            else if (!this.writeString) {
+                if (primaryResult == "'") {
+                    if (this.writeAddress) {
                         this.writeAddress = false;
                         let cell = selectedSheet.cells.get(this.wrotedText.toUpperCase())
-                        if(cell){ 
+                        if (cell) {
                             cell.focus();
                             selector.selectedCells.add(cell);
                             this.element.value = this.element.value.replace(this.wrotedText, this.wrotedText.toUpperCase());
@@ -159,14 +159,14 @@ const cellInput = {
                         }
                         this.wrotedText = "";
                     }
-                    else{ 
-                        if(e.data == null){
+                    else {
+                        if (e.data == null) {
                             let lastIndex = this.element.value.lastIndexOf("'");
-                            if(lastIndex != -1){
-                                let removed = this.element.value.slice(lastIndex+1);
+                            if (lastIndex != -1) {
+                                let removed = this.element.value.slice(lastIndex + 1);
                                 let cell = selectedSheet.cells.get(removed)
-                                if(cell){ selector.unselectCell(cell) }
-                                this.element.value = this.element.value.slice(0,lastIndex)
+                                if (cell) { selector.unselectCell(cell) }
+                                this.element.value = this.element.value.slice(0, lastIndex)
                                 this.writeAddress = false;
                                 selector.selected.text = this.element.value;
                                 display.showData(selector.selected);
@@ -174,28 +174,28 @@ const cellInput = {
                                 this.wrotedText = "";
                             }
                         }
-                        else{
+                        else {
                             this.writeAddress = true;
                         }
                     }
                 }
-                else{
-                    if(this.writeAddress){
-                        if(e.data == null){ 
-                            this.wrotedText = this.wrotedText.slice(0, -1) 
-                            if(this.wrotedText.length == 0) this.writeAddress = false;
+                else {
+                    if (this.writeAddress) {
+                        if (e.data == null) {
+                            this.wrotedText = this.wrotedText.slice(0, -1)
+                            if (this.wrotedText.length == 0) this.writeAddress = false;
                         }
-                        else{
-                            
+                        else {
+
                             this.wrotedText += primaryResult;
                         }
                     }
-                    else{
-                        if(isNaN(parseFloat(primaryResult))){
-                            if(e.data == null && !this.writeFunc && primaryResult == "|"){
+                    else {
+                        if (isNaN(parseFloat(primaryResult))) {
+                            if (e.data == null && !this.writeFunc && primaryResult == "|") {
                                 let lastIndex = this.element.value.lastIndexOf("|");
-                                if(lastIndex != -1){
-                                    this.element.value = this.element.value.slice(0,lastIndex)
+                                if (lastIndex != -1) {
+                                    this.element.value = this.element.value.slice(0, lastIndex)
                                     this.writeFunc = false;
                                     selector.selected.text = this.element.value;
                                     display.showData(selector.selected);
@@ -203,44 +203,44 @@ const cellInput = {
                                     this.wrotedText = "";
                                 }
                             }
-                            else{
-                                if(!allSymbols.includes(primaryResult)){
+                            else {
+                                if (!allSymbols.includes(primaryResult)) {
                                     this.writeFunc = true;
                                 }
-                                else{
+                                else {
                                     this.writeFunc = false;
                                     hideFunctions();
                                 }
                             }
                         }
-                        if(this.writeFunc){
-                            if(e.data == null){ 
-                                this.wrotedText = this.wrotedText.slice(0, -1) 
-                                if(this.wrotedText.length == 0){
+                        if (this.writeFunc) {
+                            if (e.data == null) {
+                                this.wrotedText = this.wrotedText.slice(0, -1)
+                                if (this.wrotedText.length == 0) {
                                     this.writeFunc = false;
                                     hideFunctions();
-                                } 
-                                else{ showSimilarFunctions(); }
+                                }
+                                else { showSimilarFunctions(); }
                             }
-                            else{
+                            else {
                                 this.wrotedText += primaryResult;
-                                
-                                if (MathFunction.prototype.functionsNames.includes(this.wrotedText.replace("|","").toUpperCase())) {
-                                    let text = this.wrotedText.toUpperCase().replace("|","")
+
+                                if (MathFunction.prototype.functionsNames.includes(this.wrotedText.replace("|", "").toUpperCase())) {
+                                    let text = this.wrotedText.toUpperCase().replace("|", "")
                                     this.saveFunction(`|${text}|`);
                                     hideFunctions();
                                 }
-                                else{
+                                else {
                                     showSimilarFunctions();
                                 }
                             }
                         }
                     }
-                    
+
                 }
             }
         }
-        else if(this.element.value[0] != "="){
+        else if (this.element.value[0] != "=") {
             selector.selected.text = this.element.value;
             display.showData(selector.selected);
         }
@@ -252,11 +252,11 @@ const cellInput = {
 
     saveFunction: function (toreplace) {
         if (toreplace) {
-            this.element.value = this.element.value.slice(0,this.element.value.length-this.wrotedText.length) + toreplace;
+            this.element.value = this.element.value.slice(0, this.element.value.length - this.wrotedText.length) + toreplace;
             if (this.element.value[0] != "=") this.element.value = "=" + this.element.value;
             selector.selected.text = this.element.value;
             display.showData(selector.selected);
-            this.changeCellAproving(true,true);
+            this.changeCellAproving(true, true);
             this.checkFocus();
             this.writeFunc = false;
             hideFunctions();
@@ -264,19 +264,19 @@ const cellInput = {
 
     },
 
-    erasing:function(e){
+    erasing: function (e) {
         this.checkFocus();
-        let letter = this.element.value[this.element.value.length-1]
-        if(this.element.value.length == 1 && letter == "="){ 
+        let letter = this.element.value[this.element.value.length - 1]
+        if (this.element.value.length == 1 && letter == "=") {
             this.changeCellAproving(); // Off when this.element.value == empty
-         }
+        }
     },
 
-    removeCellObject:function(cellAddress) {
+    removeCellObject: function (cellAddress) {
         let parts = selector.selected.text.split(cellAddress);
         selector.selected.text = parts[0];
         if (parts[1]) selector.selected.text += parts[1];
-        if(selector.selected.text[selector.selected.text.length-1] ==",")selector.selected.text = selector.selected.text.slice(0,-1) ;
+        if (selector.selected.text[selector.selected.text.length - 1] == ",") selector.selected.text = selector.selected.text.slice(0, -1);
         this.updateData();
     },
 
@@ -287,24 +287,24 @@ const cellInput = {
                 this.element.value += "=";
             }
             selector.selected.changed = true;
-            if(selector.selected.text){
-                let lastLetter = selector.selected.text[selector.selected.text.length-1]
-                if(lastLetter == "'" || !isNaN(lastLetter)){ selector.selected.text += ","}
+            if (selector.selected.text) {
+                let lastLetter = selector.selected.text[selector.selected.text.length - 1]
+                if (lastLetter == "'" || !isNaN(lastLetter)) { selector.selected.text += "," }
             }
             selector.selected.text += cellAddress;
             this.updateData();
         }
     },
-    
-    updateData:function(){
+
+    updateData: function () {
         this.element.value = selector.selected.text;
         display.showData(selector.selected);
         this.checkFocus();
         this.scanText();
     },
 
-    addTextOnEnd:function(text){
-        if(selector.selected){
+    addTextOnEnd: function (text) {
+        if (selector.selected) {
             selector.selected.text += text;
             this.updateData();
         }
@@ -333,26 +333,25 @@ const selector = {
     selectedCells: new Set(),
     focusedCells: new Set(),
     selectedInput: false,
-    blocked:false,
-    selectionResult:[],
+    blocked: false,
 
     selectCell: function (mouse) {
-        if (selectedSheet){
+        if (selectedSheet) {
             let x = mouse.offsetX - cellSize.x / 3;
-            let y = mouse.offsetY - cellSize.y - 1;
+            let y = mouse.offsetY - 1;
             let column = Math.ceil(x / cellSize.x);
-            let row = Math.ceil(y / cellSize.y)
-            x = Math.floor((x-column) / cellSize.x);
-            y = Math.floor((y-(row)) / cellSize.y) + 1;
-            return selectedSheet.cells.get(`${String.fromCharCode(x + 65)}:${y}`);
+            let row = Math.floor(y / (cellSize.y+2));
+            x = Math.floor((x - column*2) / cellSize.x);
+            y = Math.floor((y - row*2) / cellSize.y);
+            return selectedSheet.getCell(x,y);
         }
     },
 
-    actionStart: function (mouse){
+    actionStart: function (mouse) {
         this.firstPoint = this.selectCell(mouse)
         hideFunctions();
         insertTimeLine.lockApproveBtn();
-        if(this.firstPoint) StyleInput.loadCell(this.firstPoint);
+        if (this.firstPoint) StyleInput.loadCell(this.firstPoint);
     },
 
     actionEnd: function (mouse) {
@@ -360,22 +359,22 @@ const selector = {
             this.secondPoint = this.selectCell(mouse)
             if (this.secondPoint) {
                 changeFontSizesOptions()
-                if (this.firstPoint == this.secondPoint){
+                if (this.firstPoint == this.secondPoint) {
                     this.selectionResult = [];
                     if (this.selectedInput) {
                         this.focusedCells.add(this.firstPoint);
                         this.firstPoint.focus();
-                        this.selectedInput.value = cellSymbol+this.firstPoint.stringAddress;
+                        this.selectedInput.value = cellSymbol + this.firstPoint.stringAddress;
                         this.selectedInput = false;
                         canvas.classList.remove("cursor-addCell");
                     }
                     else if (!pressedKeys.has("Control") && !cellInput.aproveCell && !cellInput.afterFunction) {
-                        if(!widgetTools_base.selectedWidget){
+                        if (!widgetTools_base.selectedWidget) {
                             if (!this.checkAreaCell(this.firstPoint)) {
                                 this.switchCell(this.firstPoint);
                             }
                         }
-                        else{
+                        else {
                             widgetTools_base.unselectWidget();
                             this.resetOldData();
                         }
@@ -386,23 +385,23 @@ const selector = {
                         }
                     }
                     else if (!this.selected) {
-                        if (!this.checkAreaCell(this.firstPoint)){
+                        if (!this.checkAreaCell(this.firstPoint)) {
                             this.addAreaCell(this.firstPoint);
                         }
                     }
                 }
-                else{
-                    if (pressedKeys.has("Control") || cellInput.afterFunction || !this.selected){
+                else {
+                    if (pressedKeys.has("Control") || cellInput.afterFunction || !this.selected) {
                         this.calculateSelectedArea();
                     }
-                    else if(this.selected){
+                    else if (this.selected) {
                         this.selected.refresh();
                         this.selected = false;
                         this.calculateSelectedArea();
                         cellInput.hide();
                         hideFunctions();
                     }
-                } 
+                }
             }
             this.firstPoint = false;
             this.secondPoint = false;
@@ -442,14 +441,14 @@ const selector = {
             row.start = this.firstPoint.address.row;
             row.end = this.secondPoint.address.row;
         };
-        this.selectionResult = {column:column, row:row};
+        this.selectionResult = { column: column, row: row };
         this.getAreaCells(column, row);
     },
 
     getAreaCells: function (columns, rows) {
         for (let column = columns.start; column <= columns.end; column++) {
             for (let row = rows.start; row <= rows.end; row++) {
-                let cell = selectedSheet.cells.get(`${String.fromCharCode(column + 65)}:${row}`);
+                let cell = selectedSheet.getCell(column,row);
                 cell.focus();
                 if (!this.checkAreaCell(cell)) this.addAreaCell(cell);
             }
@@ -472,7 +471,7 @@ const selector = {
         cellInput.addCellObject(cell.fakeAddress);
     },
 
-    resetOldData: function () {
+    resetOldData: function (unfocus) {
         this.selectionResult = false;
         this.selectedCells.forEach(cell => {
             cell.unfocus()
@@ -485,15 +484,15 @@ const selector = {
         this.selectedInput = false;
     },
 
-    unselectCell:function(cell){
-        if(this.selectedCells.has(cell)){
+    unselectCell: function (cell) {
+        if (this.selectedCells.has(cell)) {
             this.selectedCells.delete(cell);
             cell.unfocus();
         }
     },
 
     switchCell: function (cell) {
-        if(cell.styles.hyperlink){ approveActionWindow.show(msg_hyperlink,callHyperlink) }
+        if (cell.styles.hyperlink) { approveActionWindow.show(msg_hyperlink, callHyperlink) }
         cellInput.show(cell);
         display.showData(cell);
         widgetTools_base.unselectWidget();
@@ -509,94 +508,110 @@ const selector = {
             }
         }
     },
+
+    getSelected:function(single){
+        if(this.selected){
+            if(single) return this.selected;
+            return [this.selected];
+        }
+        else if(this.selectedCells.size > 0){
+            return this.selectedCells;
+        } 
+        return false
+    }
 }
 
 // BASE FILE OBJECTS
-class File{
-    constructor(json){
+class File {
+    constructor(json) {
         this.name = "";
         this.author = "";
         this.description = "";
-        this.creationDate = $getDate.func() +" / "+ $getTime.func();
+        this.creationDate = $getDate.func() + " / " + $getTime.func();
         this.sheets = new Set();
         this.openedSheet = false;
         (json) ? this.loadFile(json) : this.addNewSheet();
     }
 
-    addNewSheet(){
+    addNewSheet() {
         let sheet = new Sheet(this);
         this.sheets.add(sheet);
         sheet.select();
     }
 
-    copySelectedSheet(){
-        if(this.openedSheet){
-            let sheet = new Sheet(this,this.openedSheet);
+    copySelectedSheet() {
+        if (this.openedSheet) {
+            let sheet = new Sheet(this, this.openedSheet, true);
             this.sheets.add(sheet);
             sheet.select();
         }
     }
 
-    packToSaving(){
+    packToSaving() {
         let buffor = {
-            name:this.name,
-            createDate:this.creationDate,
-            editDate:"01,02,2024",
-            author:this.author,
-            sheets:[],
+            name: this.name,
+            createDate: this.creationDate,
+            editDate: "01,02,2024",
+            author: this.author,
+            sheets: [],
         };
 
-        for(let sheet of this.sheets){
-            buffor.sheets.push( sheet.packToSaving() )
+        for (let sheet of this.sheets) {
+            buffor.sheets.push(sheet.packToSaving())
         }
 
         buffor = JSON.stringify(buffor)
         return buffor
     }
 
-    removeSelectedSheet(){
-        if(this.sheets.size > 1){
-            approveActionWindow.show(msg_remove,this.openedSheet.destroy.bind(this.openedSheet))
+    removeSelectedSheet() {
+        if (this.sheets.size > 1) {
+            approveActionWindow.show(msg_remove, this.openedSheet.destroy.bind(this.openedSheet))
         }
     }
 }
 
 class Sheet {
-    constructor(parentFile,otherSheet) {
+    constructor(parentFile, otherSheet, copied) {
         if (!Sheet.prototype.listElement) { Sheet.prototype.listElement = document.getElementById("available-sheets") };
         this.timeline = new Timeline();
         this.cells = new Map();
-        this.errors = new Set();
+        this.cellPopovers = new Set();
         this.parent = parentFile;
         this.widgets = new Set();
         this.name = "";
-        if(otherSheet){ this.copySheet(otherSheet) }
-        else{ this.createNew() }
+        if (otherSheet) { this.copySheet(otherSheet, copied) }
+        else { this.createNew() }
         this.createButton();
     }
 
-    copySheet(sheet){
+    getCell(column,row){
+        return this.cells.get(`${String.fromCharCode(column + 65)}:${row}`);
+    }
+
+    copySheet(sheet, copied) {
         this.name = sheet.name;
-        for(let cell of sheet.cells){
+        if (copied) this.name += " - kopia";
+        for (let cell of sheet.cells) {
             cell = cell[1];
             let text = (cell.text) ? cell.text : "";
-            let copied = new Cell(cell.address.column,cell.address.row,this,text);
+            let copied = new Cell(cell.address.column, cell.address.row, this, text);
             this.cells.set(copied.stringAddress, copied);
         }
     }
 
-    createNew(){
+    createNew() {
         for (let x = 0; x < 26; x++) {
             for (let y = 1; y <= 1000; y++) {
-                let cell = new Cell(x, y,this)
+                let cell = new Cell(x, y, this)
                 this.cells.set(cell.stringAddress, cell);
             }
         }
     }
 
-    unselect(){
+    unselect() {
         this.widgets.forEach(widget => widget.hide())
-        this.errors.forEach((error)=>{error.element.classList.add("hidden");  })
+        this.cellPopovers.forEach((error) => { error.element.classList.add("hidden"); })
         this.button.checked = false;
     }
 
@@ -609,12 +624,12 @@ class Sheet {
             this.button.checked = true;
             this.parent.openedSheet = this;
             this.render();
-            cellInput.hide();   
+            cellInput.hide();
             selectedSheet = this;
             this.widgets.forEach(widget => { widget.show() })
         }
         this.timeline.lockButtons();
-        
+
     }
 
     render() {
@@ -623,7 +638,7 @@ class Sheet {
             cell.draw();
             if (cell.text) { cell.refresh(); }
         })
-        this.errors.forEach(error =>{ error.element.classList.remove("hidden");  })
+        this.cellPopovers.forEach(error => { error.element.classList.remove("hidden"); })
     }
 
     createButton() {
@@ -635,14 +650,14 @@ class Sheet {
         this.nameInput.placeholder = "Arkusz bez nazwy";
         this.nameInput.name = "sheetBtn";
         this.nameInput.value = this.name;
-        this.nameInput.addEventListener("input",(e)=>{this.name = e.target.value});
+        this.nameInput.addEventListener("input", (e) => { this.name = e.target.value });
 
         this.button = document.createElement("input");
         this.button.type = "radio";
         this.button.name = 'available-sheets';
         this.button.addEventListener("click", this.select.bind(this));
         this.button.classList.add("overlay");
-        
+
         this.element.appendChild(this.button);
         this.element.appendChild(this.nameInput);
         this.button.checked = true;
@@ -652,7 +667,7 @@ class Sheet {
 
     destroy() {
         clearCanvas();
-        this.nameInput.removeEventListener("input",(e)=>{this.name = e.target.value});
+        this.nameInput.removeEventListener("input", (e) => { this.name = e.target.value });
         this.button.removeEventListener("click", this.select.bind(this));
         this.element.outerHTML = "";
         cellInput.hide();
@@ -663,25 +678,25 @@ class Sheet {
         sheet.select();
     }
 
-    packToSaving(){
-        let packCell = function(cell){
+    packToSaving() {
+        let packCell = function (cell) {
             return {
-                address:cell.stringAddress,
-                text:cell.text,
-                styles:cell.styles,
+                address: cell.stringAddress,
+                text: cell.text,
+                styles: cell.styles,
             }
         }
 
         let buffor = {
-            name:this.name,
-            cells:[],
-            widgets:[]
+            name: this.name,
+            cells: [],
+            widgets: []
         };
 
-        for(let cell of this.cells){
+        for (let cell of this.cells) {
             cell = cell[1];
-            if(cell.text && cell.text != ""){
-                buffor.cells.push( packCell(cell) )
+            if (cell.text && cell.text != "") {
+                buffor.cells.push(packCell(cell))
             }
         }
 
@@ -696,22 +711,22 @@ class Legend {
             x: cellSize.x,
             y: cellSize.y,
         }
-        this.y = (row * this.size.y) + row
-
+        this.y = (row * this.size.y) + row*2;
+        if(row == 0) this.y++;
         if (column == 0) {
             this.text = row;
             this.size.x = cellSize.x / 3;
             this.x = 0;
         }
         else {
-            this.x = column * this.size.x + (cellSize.x / 3) + column - cellSize.x -1;
+            this.x = column * this.size.x + (cellSize.x / 3) + (column*2) - cellSize.x-2;
             this.text = String.fromCharCode(column + 64);
         }
         this.draw()
     }
 
     draw() {
-        ctx.strokeRect(this.x , this.y , this.size.x , this.size.y);
+        ctx.strokeRect(this.x, this.y, this.size.x, this.size.y);
         let x = this.x + 4
         let y = this.y + this.size.y / 2 + 4;
         ctx.fillStyle = "#1c1c1c";
@@ -738,18 +753,27 @@ class Cell {
 
         this.stringAddress = `${String.fromCharCode(column + 65)}:${row}`;
         this.fakeAddress = `'${String.fromCharCode(column + 65)}:${row}'`;
-        this.y = Math.round(row * cellSize.y) + row;
-        this.x = Math.round(column * cellSize.x) + cellSize.x / 3 + column;
+        this.y = Math.round(row * cellSize.y) + row*2;
+        this.x = Math.round(column * cellSize.x) + (cellSize.x / 3) + column*2;
 
-        if(text != "") console.log(this);
+        if (text != "") console.log(this);
     }
 
-    getText() {
+    getText(toshow) {
         let text = this.text;
-        if (this.calculaction) { 
-            if(!this.calculaction.error){ text = this.calculaction.result + this.styles.endSymbol }
-            else{ text = this.calculaction.result }
-            
+        if (this.calculaction) {
+            if (!this.calculaction.error) {
+                text = `${this.calculaction.result}`;
+                if (toshow) {
+                    const parts = text.split(".");
+                    if (parts[1] && parts[1].length > this.styles.roundTo) {
+                        text = parseFloat(text);
+                        text = text.toFixed(this.styles.roundTo);
+                    }
+                    if (this.styles.endSymbol) text += this.styles.endSymbol;
+                }
+            }
+            else { text = this.calculaction.result }
         }
         return `${text}`;
     }
@@ -759,7 +783,7 @@ class Cell {
         ctx.strokeRect(this.x + 2, this.y + 2, cellSize.x - 4, cellSize.y - 4);
     }
 
-    unfocus(){
+    unfocus() {
         ctx.clearRect(this.x + 1, this.y + 1, cellSize.x - 2, cellSize.y - 2); // in next
         this.fill();
     }
@@ -769,11 +793,13 @@ class Cell {
         this.refresh();
     }
 
-    refresh(auto){
+    refresh(auto) {
         if (this.text != this.oldtext) {
-            if(!auto) this.sheet.timeline.addEvent(this,"text",this.oldtext,this.text);
+            if (!auto) this.sheet.timeline.addEvent(this, "text", this.oldtext, this.text);
             if (!this.calculaction) {
-                if (this.text != undefined && this.text.charAt(0) == "=") this.calculaction = new Calculaction(this);
+                if (this.text != undefined && this.text.charAt(0) == "=") {
+                    this.calculaction = new Calculaction(this);
+                }
             }
             else {
                 if (this.text.charAt(0) != "=") {
@@ -794,7 +820,7 @@ class Cell {
         this.usedInCharts.forEach(chart => {
             chart.refresh();
         })
-        this.oldtext = this.text
+        this.oldtext = this.text;
         ctx.clearRect(this.x + 1, this.y + 1, cellSize.x - 2, cellSize.y - 2);
         this.fill();
     }
@@ -802,15 +828,15 @@ class Cell {
     draw() {
         ctx.strokeStyle = this.styles.strokeColor;
         ctx.strokeRect(this.x, this.y, cellSize.x, cellSize.y);
-        if(this.styles.fillColor) this.fill();
+        if (this.styles.fillColor) this.fill();
     }
 
-    fill(){
-        if(this.styles.fillColor){
+    fill() {
+        if (this.styles.fillColor) {
             ctx.fillStyle = this.styles.fillColor;
-            ctx.fillRect(this.x+1, this.y+1, cellSize.x-1, cellSize.y-1);
+            ctx.fillRect(this.x + 1, this.y + 1, cellSize.x - 1, cellSize.y - 1);
         }
-        if(this.styles.strokeColor != this.styles.strokeColorOld){
+        if (this.styles.strokeColor != this.styles.strokeColorOld) {
             this.redraw()
         }
         this.writeText();
@@ -830,35 +856,35 @@ class Cell {
         ctx.fillStyle = this.styles.color;
         ctx.font = this.styles.fontType + " " + this.styles.fontSize + " " + this.styles.fontFamily;
         if (this.text != undefined) {
-            let text = this.getText();
+            let text = this.getText(true);
             let x;
             let y;
-            if(this.styles.textAlign == "left"){
+            if (this.styles.textAlign == "left") {
                 x = this.x + 4;
                 y = this.y + cellSize.y / 2 + parseInt(this.styles.fontSize) / 3;
                 let buffor = text;
                 while (ctx.measureText(buffor).width > cellSize.x - 10) { buffor = buffor.slice(0, buffor.length - 1); }
                 if (text != buffor) text = buffor + "..";
             }
-            else if(this.styles.textAlign == "right"){
+            else if (this.styles.textAlign == "right") {
                 y = this.y + cellSize.y / 2 + parseInt(this.styles.fontSize) / 3;
                 let buffor = text;
                 while (ctx.measureText(buffor).width > cellSize.x - 10) { buffor = buffor.slice(0, buffor.length - 1); }
                 if (text != buffor) text = buffor + "..";
                 x = this.x + cellSize.x - ctx.measureText(text).width - 4;
             }
-            else if(this.styles.textAlign == "center"){
+            else if (this.styles.textAlign == "center") {
                 y = this.y + cellSize.y / 2 + parseInt(this.styles.fontSize) / 3;
                 let buffor = text;
                 while (ctx.measureText(buffor).width > cellSize.x - 10) { buffor = buffor.slice(0, buffor.length - 1); }
-                if (text != buffor){
+                if (text != buffor) {
                     this.styles.textAlign = "left";
                     this.writeText();
                     return;
-                } ;
-                x = this.x + (cellSize.x/2) - (ctx.measureText(text).width/2) - 4;
+                };
+                x = this.x + (cellSize.x / 2) - (ctx.measureText(text).width / 2) - 4;
             }
-            
+
             ctx.fillText(text, x, y);
         }
     }
@@ -868,20 +894,20 @@ class Cell {
 class Calculaction {
     constructor(cell, elements) {
         if (elements) this.elements = elements;
-        this.operators = ["^", "+", "-", "*", "/", "=","<",">"];
+        this.operators = ["^", "+", "-", "*", "/", "=", "<", ">"];
         this.cell = cell;
         this.error = false;
         this.usedCels = new Set();
         this.startScan(false);
     }
 
-    throwError(code,additionalData) {
-        if(this.error) this.error.remove();
-        this.error = new ErrorClue(this.cell,code,additionalData);
+    throwError(code, additionalData) {
+        if (this.error) this.error.remove();
+        this.error = new ErrorPopover(this.cell, code, additionalData);
     }
 
     restartData() {
-        if(this.error) this.error.remove();
+        if (this.error) this.error.remove();
         this.error = false;
         this.result = "0";
         this.usedCels = new Set();
@@ -899,12 +925,12 @@ class Calculaction {
         };
         if (!this.error) { elements = this.createBracketsHierarchy(elements); };
         if (!this.error) { this.result = this.calculateElements(elements); };
-        if (typeof this.result === "undefined"){ this.throwError("FORM"); }
-        if(this.error){
+        if (typeof this.result === "undefined") { this.throwError("FORM"); }
+        if (this.error) {
             this.result = this.error.getResult();
         }
-        else{
-            if(typeof this.result == "number" && isNaN(this.result)){
+        else {
+            if (typeof this.result == "number" && isNaN(this.result)) {
                 this.throwError("NAN")
             }
         }
@@ -1030,8 +1056,8 @@ class Calculaction {
                         let index = buffor.indexOf("*");
                         let a = buffor[index - 1];
                         let b = buffor[index + 1];
-                        if(typeof a == "undefined" || typeof b == "undefined") console.log("Catched Error: some value in calculation is undefined");
-                        if(isNaN(parseFloat(a)) || isNaN(parseFloat(b))) this.throwError("FORM") ;
+                        if (typeof a == "undefined" || typeof b == "undefined") console.log("Catched Error: some value in calculation is undefined");
+                        if (isNaN(parseFloat(a)) || isNaN(parseFloat(b))) this.throwError("FORM");
                         let res = 0;
                         if (!a || !b) { res = 0 }
                         else { res = parseFloat(a) * parseFloat(b) };
@@ -1044,7 +1070,7 @@ class Calculaction {
                         let a = buffor[index - 1] || 0;
                         let b = buffor[index + 1] || 0;
                         if (!a || !b || a == 0 || b == 0) { this.throwError("/0") };
-                        if(isNaN(parseFloat(a)) || isNaN(parseFloat(b))) this.throwError("FORM") ;
+                        if (isNaN(parseFloat(a)) || isNaN(parseFloat(b))) this.throwError("FORM");
                         let res = parseFloat(a) / parseFloat(b);
                         buffor.splice(index - 1, 3, res);
                     }
@@ -1071,12 +1097,12 @@ class Calculaction {
                     equal = "=";
                     result2 = variable;
                 }
-                else if( operator == ">" ){
+                else if (operator == ">") {
                     if (equal == true) return this.throwError("FORM");
                     equal = ">";
                     result2 = variable;
                 }
-                else if( operator == "<" ){
+                else if (operator == "<") {
                     if (equal == true) return this.throwError("FORM");
                     equal = "<";
                     result2 = variable;
@@ -1088,10 +1114,10 @@ class Calculaction {
             }
             if (!equal) return result;
 
-            switch(equal){
+            switch (equal) {
                 case "=":
                     return result == result2;
-                
+
                 case ">":
                     return result > result2;
 
@@ -1099,8 +1125,8 @@ class Calculaction {
                     return result < result2;
             }
 
-            
-            
+
+
         }
 
     }
@@ -1117,8 +1143,8 @@ class Calculaction {
                 if (this.operators.includes(element) || bracketsEnd.includes(element)) {
                     funcElements = this.calculateFunctions(funcElements);
                     let res = func.func(funcElements); // Tutaj mamy func func
-                    if(res[0] == "@"){
-                        this.throwError(res.slice(1),func.prefix);
+                    if (res[0] == "@") {
+                        this.throwError(res.slice(1), func.prefix);
                         break
                     };
                     buffor.push(res);
@@ -1130,8 +1156,8 @@ class Calculaction {
                     funcElements.push(element);
                     funcElements = this.calculateFunctions(funcElements);
                     let res = func.func(funcElements); // Tutaj tez func func
-                    if(res[0] == "@"){
-                        this.throwError(res.slice(1),func.prefix);
+                    if (res[0] == "@") {
+                        this.throwError(res.slice(1), func.prefix);
                         break
                     };
                     buffor.push(res);
@@ -1144,45 +1170,45 @@ class Calculaction {
 
             }
             else {
-                if(typeof element != "undefined"){
+                if (typeof element != "undefined") {
                     if (MathFunction.prototype.functions.has(element)) {
                         inFunc = true;
                         func = MathFunction.prototype.functions.get(element);
-                        if (elements.length == 1) { 
+                        if (elements.length == 1) {
                             let res = func.func()
-                            if(res[0] == "@"){
-                                this.throwError(res.slice(1),func.prefix);
+                            if (res[0] == "@") {
+                                this.throwError(res.slice(1), func.prefix);
                                 return 0;
                             };
                         }
-                        if( i ==  elements.length-1){
+                        if (i == elements.length - 1) {
                             let res = func.func()
-                            if(res[0] == "@"){
-                                this.throwError(res.slice(1),func.prefix);
+                            if (res[0] == "@") {
+                                this.throwError(res.slice(1), func.prefix);
                                 return 0;
                             }
-                            else{
+                            else {
                                 buffor.push(res);
                             }
                         }
                     }
                     else {
-                        if (isNaN(parseFloat(element)) && !allSymbols.includes(element)){
+                        if (isNaN(parseFloat(element)) && !allSymbols.includes(element)) {
                             let firstLetter = element[0]
-                            if(firstLetter == "@"){
-                                this.throwError("OTHER",element);
+                            if (firstLetter == "@") {
+                                this.throwError("OTHER", element);
                             }
-                            else if(firstLetter == "'"){
-                                this.throwError("ERRCELL",element);
+                            else if (firstLetter == "'") {
+                                this.throwError("ERRCELL", element);
                             }
-                            else if(firstLetter != `"`){
-                                if(typeof element != "boolean" &&  element != "true" && element != "false") this.throwError("ERRFUNC",element);          
-                            }    
-                        } 
+                            else if (firstLetter != `"`) {
+                                if (typeof element != "boolean" && element != "true" && element != "false") this.throwError("ERRFUNC", element);
+                            }
+                        }
                         buffor.push(element);
                     }
                 }
-                else{
+                else {
                     this.throwError("FORM");
                 }
 
@@ -1202,19 +1228,19 @@ class Calculaction {
         let inFunction = false;
         for (let i = 1; i < text.length; i++) {
             let char = text.charAt(i);
-            if(char != "-"){
-                if(this.operators.includes(char) && this.operators.includes(lastChar)){ this.throwError("FORM"); break }
+            if (char != "-") {
+                if (this.operators.includes(char) && this.operators.includes(lastChar)) { this.throwError("FORM"); break }
             }
             lastChar = char;
 
-            if(buffor[0] == '"'){
+            if (buffor[0] == '"') {
                 buffor += char;
-                if(char == '"'){
+                if (char == '"') {
                     elements.push(buffor);
                     buffor = "";
                 }
             }
-            else{
+            else {
 
                 if (bracketsStart.includes(char)) {
                     elements.push(char);
@@ -1226,9 +1252,9 @@ class Calculaction {
                     elements.push(buffor);
                     buffor = "";
                 }
-    
-    
-    
+
+
+
                 if (bracketsEnd.includes(char)) {
                     if (buffor.length - 1 > 0) {
                         elements.push(buffor.slice(0, buffor.length - 1));
@@ -1236,7 +1262,7 @@ class Calculaction {
                     }
                     elements.push(char)
                 }
-    
+
                 //MathFunction
                 if (char == "|") {
                     if (!inFunction) {
@@ -1269,14 +1295,14 @@ class Calculaction {
                             if (result) { elements.push(result); };
                         }
                         else {
-                            this.throwError("ERRCELL",buffor)
+                            this.throwError("ERRCELL", buffor)
                             break
                         }
                         buffor = "";
-    
+
                     }
                 }
-    
+
                 // Operators
                 if (this.operators.includes(char)) {
                     if (buffor.length - 1 > 0) {
@@ -1344,15 +1370,15 @@ class Calculaction {
         if (!text || text.length == 0) {
             text = "0";
         }
-        
-        if(isNaN(text) && text[0] != "@"){
-            return `"${text.replace(`"`,'').replace(`"`,'')}"`
-        } 
+
+        if (isNaN(text) && text[0] != "@") {
+            return `"${text.replace(`"`, '').replace(`"`, '')}"`
+        }
         return text;
     }
 
     remove() {
-        if(this.error){
+        if (this.error) {
             this.error.remove();
         }
         for (let cell of this.usedCels) {
@@ -1361,70 +1387,90 @@ class Calculaction {
     }
 }
 
-class CalculationError{
-    constructor(code,description,result,title){
-        if(!CalculationError.prototype.codes) CalculationError.prototype.codes = new Map();
+class CalculationError {
+    constructor(code, description, result, title) {
+        if (!CalculationError.prototype.codes) CalculationError.prototype.codes = new Map();
         this.description = description;
-        this.result = result;
+        this.result = result + " ";
         this.title = title;
-        CalculationError.prototype.codes.set(code,this);
+        CalculationError.prototype.codes.set(code, this);
     }
 }
 
-class ErrorClue{
-    constructor(cell,code,additionalData = false){
+//A cell popover is a small circular element that attaches to the upper right corner of a cell 
+//and is used to display errors and comments;
+
+class CellPopover{
+    constructor(cell,title,text,color){
         this.element = document.createElement("a");
-        this.element.classList.add("error-clue","icon-flag");
-        this.element.style.left = `${cell.x+cellSize.x-30}px`;
-        this.element.style.top = `${cell.y-5}px`;
-        let description;
+        this.element.classList.add("cell-popover");
+        this.element.style.left = `${cell.x + cellSize.x - 10}px`;
+        this.element.style.top = `${cell.y}px`;
+        this.element.style.backgroundColor = color;
+
         this.cell = cell;
-        this.error = CalculationError.prototype.codes.get(code);
-        if(additionalData){ description = this.error.description + additionalData; }
-        else{ description = this.error.description; }
-        this.element.setAttribute("data-bs-toggle","popover");
-        this.element.setAttribute("title",this.error.title);
-        this.element.setAttribute("tabindex","0");
-        this.element.setAttribute("data-bs-trigger","hover");
-        this.element.setAttribute("data-bs-content",description);
-        canvasContainer.appendChild(this.element);
+        this.cell.sheet.cellPopovers.add(this);
+
+        this.element.setAttribute("data-bs-toggle", "popover");
+        this.element.setAttribute("title", title);
+        this.element.setAttribute("data-bs-content", text);
+        this.element.setAttribute("tabindex", "0");
+        this.element.setAttribute("data-bs-trigger", "hover");
+
         new bootstrap.Popover(this.element);
-        this.cell.sheet.errors.add(this);
+        canvasContainer.appendChild(this.element);
     }
 
-    getResult(){
-        return this.error.result;
-    }
-
-    remove(){
-        this.cell.sheet.errors.add(this);
+    remove() {
+        this.cell.sheet.cellPopovers.delete(this);
         this.element.remove()
     }
 }
 
-//StyleList Working like css on cells or widgets. 
-class StyleList{
-    constructor(){
-        this.fontFamily= "arial";
-        this.fontType= "normal";
-        this.fontSize= "12px";
-        this.textAlign="left";
-        this.roundTo=6;
-        this.endSymbol="";
-        this.color= "#ffffff";
-        this.fillColor= false;
-        this.strokeColor="#808080";
-        this.strokeColorOld=false;
-        this.strokeWidth=3;
+class ErrorPopover extends CellPopover{
+    constructor(cell, code, additionalData = false){
+        let error = CalculationError.prototype.codes.get(code);
+        if(!error) return false;
+        let description = error.description;
+        if(additionalData) description = description + additionalData;
+        super(cell,error.title,description,"#ff0a0ab3")
+        this.result = error.result;
+        this.element.classList.add("error-popover");
+    }
+
+    getResult() {
+        return this.result;
     }
 }
 
-class StyleListFilled extends StyleList{
-    constructor(){
+//StyleList Working like css on cells or widgets. 
+class StyleList {
+    constructor(otherList) {
+        this.fontFamily = "arial";
+        this.fontType = "normal";
+        this.fontSize = "12px";
+        this.textAlign = "left";
+        this.roundTo = 6;
+        this.endSymbol = "";
+        this.color = "#ffffff";
+        this.fillColor = false;
+        this.strokeColor = "#606060";
+        this.strokeColorOld = false;
+        this.strokeWidth = 3;
+        if(otherList){
+            for(let key of Object.keys(otherList)){
+                this[key] = otherList[key];
+            }
+        }
+    }
+}
+
+class StyleListFilled extends StyleList {
+    constructor() {
         super()
-        this.strokeColor=false;
+        this.strokeColor = false;
         this.chartStyles = "210, 180, 222";
-        this.percentMode= false;
+        this.percentMode = false;
         this.beTransparent = false;
         this.fillColor = "#eeeeee";
         this.color = "#000000";
@@ -1432,24 +1478,24 @@ class StyleListFilled extends StyleList{
     }
 }
 
-class StyleListFlush extends StyleList{
-    constructor(){
+class StyleListFlush extends StyleList {
+    constructor() {
         super()
-        this.strokeColor=false;
+        this.strokeColor = false;
         this.chartStyles = "210, 180, 222";
-        this.percentMode= false;
+        this.percentMode = false;
         this.beTransparent = true;
         this.fillColor = "transparent";
     }
 }
 
 // CANVAS FUNCTIONS
-function resizeCanvas(canvas){
+function resizeCanvas(canvas) {
     canvas.width = (26 * cellSize.x) + cellSize.x / 3 + 26;
-    canvas.height = 1000 * cellSize.y + 1000;
+    canvas.height = 1000 * cellSize.y + 2000;
 }
 
-function clearCanvas(){
+function clearCanvas() {
     ctx.clearRect(cellSize.x / 3, cellSize.y, canvas.width, canvas.height);
 }
 
@@ -1474,11 +1520,11 @@ function MoveByArrows(arrow) {
             y = selector.selected.address.row + 1;
         }
         canvasContainer.scroll({
-            top: y*cellSize.y-canvasContainer.offsetHeight/2,
-            left: x*cellSize.x-canvasContainer.offsetWidth/2,
+            top: y * cellSize.y - canvasContainer.offsetHeight / 2,
+            left: x * cellSize.x - canvasContainer.offsetWidth / 2,
             behavior: "smooth",
-          });
-        newCell = selectedSheet.cells.get(`${String.fromCharCode(x + 65)}:${y}`);
+        });
+        const newCell = selectedSheet.cells.get(`${String.fromCharCode(x + 65)}:${y}`);
         if (newCell) {
             selector.switchCell(newCell)
         }
@@ -1486,16 +1532,16 @@ function MoveByArrows(arrow) {
 
 }
 
-function callHyperlink(){
+function callHyperlink() {
     let url = selector.selected.styles.hyperlink;
-    if(!url.includes("http")){
-        url = "http://"+url;
+    if (!url.includes("http")) {
+        url = "http://" + url;
     }
     window.open(url, "_blank");
 }
 
-function trimText(text,maxWidth,ctx){
-     while (ctx.measureText(text).width > maxWidth) { text = text.slice(0, text.length - 1); }
-     return text
+function trimText(text, maxWidth, ctx) {
+    while (ctx.measureText(text).width > maxWidth) { text = text.slice(0, text.length - 1); }
+    return text
 }
 

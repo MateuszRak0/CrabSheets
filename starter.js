@@ -3,7 +3,7 @@ function prepareBoard(){
     resizeCanvas(canvas);
     ctx.clearRect(0,0,canvas.width,canvas.height)
     ctx.font = "bold 14px arial";
-    ctx.strokeStyle = "#808080";
+    ctx.strokeStyle = "#606060";
     for (let i = 0; i < 1001; i++) {
         new Legend(i, 0)
         if (i > 0 && i < 27) {
@@ -11,7 +11,6 @@ function prepareBoard(){
         }
     }
     ctx.font = "normal 14px arial";
-   // cellInput.prepareElement();
 }
 
 //Load symbols from json
@@ -135,13 +134,13 @@ addEventListener("keydown", (keyboard) => {
 
     }
     else if (keyboard.key == "c" && pressedKeys.has("Control")) {
-        cellCopier.copy();
+        copiedStorage.saveData();
     }
     else if (keyboard.key == "v" && pressedKeys.has("Control")) {
-        cellCopier.paste();
+        copiedStorage.pasteData();
     }
     else if (keyboard.key == "x" && pressedKeys.has("Control")) {
-        cellCopier.cut();
+        copiedStorage.saveData(true);
     }
     else if (["ArrowLeft", "ArrowRight", "ArrowDown", "ArrowUp"].includes(keyboard.key)) {
         keyboard.preventDefault();

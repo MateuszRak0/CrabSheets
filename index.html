@@ -45,7 +45,8 @@
                                     <li><a class="dropdown-item" href="#widget-fileInfo" data-bs-toggle="offcanvas"
                                             href="#widget-fileInfo" role="button"
                                             aria-controls="widget-fileInfo">Informacje</a></li>
-                                    <li><button class="dropdown-item" type="button" id="newFile" disabled>Nowy</button></li>
+                                    <li><button class="dropdown-item" type="button" id="newFile" disabled>Nowy</button>
+                                    </li>
                                     <li><button class="dropdown-item" type="button" disabled>Wczytaj</button></li>
                                     <li><button class="dropdown-item" type="button" disabled>Zapisz</button></li>
                                 </ul>
@@ -57,8 +58,12 @@
                                     Wstaw
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdownFile">
-                                    <li><button class="dropdown-item" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-styleTable" aria-controls="offcanvas-styleTable">Tabele</button></li>
-                                    <li><button class="dropdown-item" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-insert-timeline" aria-controls="offcanvas-insert-timeline">Oś czasu</button></li>
+                                    <li><button class="dropdown-item" type="button" data-bs-toggle="offcanvas"
+                                            data-bs-target="#offcanvas-styleTable"
+                                            aria-controls="offcanvas-styleTable">Tabele</button></li>
+                                    <li><button class="dropdown-item" type="button" data-bs-toggle="offcanvas"
+                                            data-bs-target="#offcanvas-insert-timeline"
+                                            aria-controls="offcanvas-insert-timeline">Oś czasu</button></li>
                                 </ul>
                             </li>
 
@@ -68,8 +73,31 @@
                                     Narzędzia
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdownFile">
-                                    <li><button class="dropdown-item" type="button" onclick="selectedClearData()">Wyczyść dane</button></li>
-                                    <li><button class="dropdown-item" type="button" onclick="selectedClearStyles()">Wyczyść style</button></li>
+                                    <li><button class="dropdown-item" type="button"
+                                            onclick="selectedClearData()">Wyczyść dane</button></li>
+                                    <li><button class="dropdown-item" type="button"
+                                            onclick="selectedClearStyles()">Wyczyść style</button></li>
+                                    <li>
+                                        <a class="dropdown-item" href="#">Przesuń zaznaczone &raquo; </a>
+                                        <ul class="dropdown-menu dropdown-submenu dropdown-menu-dark">
+                                            <li>
+                                                <button class="dropdown-item" type="button" name="moveSelected" 
+                                                onclick="selectedMove(0,-1)">W Góre</button>
+                                            </li>
+                                            <li>
+                                                <button class="dropdown-item" type="button" name="moveSelected"
+                                                onclick="selectedMove(0,1)">W Dół</button>
+                                            </li>
+                                            <li>
+                                                <button class="dropdown-item" type="button" name="moveSelected"
+                                                onclick="selectedMove(-1,0)">W Lewo</button>
+                                            </li>
+                                            <li>
+                                                <button class="dropdown-item" type="button" name="moveSelected"
+                                                onclick="selectedMove(1,0)">W Prawo</button>
+                                            </li>
+                                        </ul>
+                                    </li>
 
                                 </ul>
                             </li>
@@ -97,11 +125,13 @@
                                             data-bs-target="#dynamic-page" aria-controls="dynamic-page">Wprowadzenie</a>
                                     </li>
                                     <li><a class="dropdown-item disabled" type="button" data-bs-toggle="offcanvas"
-                                        data-bs-target="#dynamic-page" aria-controls="dynamic-page">Lista Funkcji</a>
-                                </li>
-                                <li><a class="dropdown-item disabled" type="button" data-bs-toggle="offcanvas"
-                                    data-bs-target="#dynamic-page" aria-controls="dynamic-page">Tabele i Wykresy</a>
-                                </li>
+                                            data-bs-target="#dynamic-page" aria-controls="dynamic-page">Lista
+                                            Funkcji</a>
+                                    </li>
+                                    <li><a class="dropdown-item disabled" type="button" data-bs-toggle="offcanvas"
+                                            data-bs-target="#dynamic-page" aria-controls="dynamic-page">Tabele i
+                                            Wykresy</a>
+                                    </li>
                                 </ul>
                             </li>
                         </ul>
@@ -228,13 +258,14 @@
                         <div class="d-flex mx-1">
 
                             <button type="button" class="p-0 input-icon btn btn-dark" data-bs-toggle="tooltip"
-                                data-bs-placement="left" title="symbol końcowy">
+                                id="add-end-symbol-1" data-bs-placement="left" title="oznacz wynik jako procent">
                                 <span class="icon-percent"></span>
                             </button>
 
 
                             <button type="button" class="p-0 input-icon btn btn-dark" data-bs-toggle="tooltip"
-                                data-bs-placement="right" title="Dodaj jednostkę">
+                                id="add-end-symbol-2" data-bs-placement="right"
+                                title="Dodaj symbol jednostki na końcu wyniku">
                                 <span class="icon-balance-scale"></span>
                             </button>
 
@@ -242,7 +273,7 @@
                         <div class="d-flex mx-1 mt-1">
 
                             <button type="button" class="p-0 input-icon btn btn-dark" data-bs-toggle="tooltip"
-                                data-bs-placement="left" title="Dodaj komentarz">
+                                data-bs-placement="left" title="Dodaj komentarz" id="add-comment">
                                 <span class="icon-comment"></span>
                             </button>
 
@@ -323,7 +354,7 @@
 
                     <!-- INSERT SYMBOL-->
                     <div class="d-flex mx-1 p-1 ps-2 border-start position-relative">
-                        <button class="btn btn-sm btn-dark" type="button" data-bs-toggle="offcanvas"
+                        <button class="btn btn-sm btn-dark disabled" type="button" data-bs-toggle="offcanvas"
                             data-bs-target="#offcanvas-select-symbol" aria-controls="offcanvas-select-symbol">
                             <span class="icon-dollar"></span>
                             <span class="d-block">Symbol</span>
@@ -340,8 +371,8 @@
 
                     <!-- Insert Component -->
                     <div class="d-flex mx-1 p-1 ps-2 border-start position-relative">
-                        <button class="btn btn-sm btn-dark" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapse-charts" aria-expanded="false" aria-controls="collapse-charts">
+                        <button class="btn btn-sm btn-dark disabled" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapse-components" aria-expanded="false" aria-controls="collapse-components">
                             <span class="icon-cubes"></span>
                             <span class="d-block">Kompontenty</span>
                         </button>
@@ -356,7 +387,7 @@
             </div>
 
 
-            <!-- Collapse Canvas Top Pivot -->
+            <!-- Collapses on top -->
             <div class="position-relative">
 
                 <!-- Select Chart Type -->
@@ -391,8 +422,22 @@
                         </div>
                     </div>
                     <button type="button" class="icon-angle-double-up btn-sm btn btn-primary w-100 py-0"
-                    aria-label="Close" data-bs-toggle="collapse" data-bs-target="#collapse-charts"
-                    aria-expanded="false" aria-controls="collapse-charts"></button>
+                        aria-label="Close" data-bs-toggle="collapse" data-bs-target="#collapse-charts"
+                        aria-expanded="false" aria-controls="collapse-charts"></button>
+                </div>
+
+                <!-- Select Component -->
+                <div class="collapse collapse-pined bg-dark w-100" aria-expanded="false" id="collapse-components">
+                    <div class="px-3 text-light d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center horizontal-scroll ">
+                            <div class="px-3">komponenty: </div>
+
+             
+                        </div>
+                    </div>
+                    <button type="button" class="icon-angle-double-up btn-sm btn btn-primary w-100 py-0"
+                        aria-label="Close" data-bs-toggle="collapse" data-bs-target="#collapse-components"
+                        aria-expanded="false" aria-controls="collapse-components"></button>
                 </div>
 
                 <!-- Widget-Image Settings -->
@@ -411,31 +456,55 @@
                         </div>
                         <button type="button" class="icon-angle-double-up btn-sm btn btn-primary w-100 py-0"
                             aria-label="Close" data-bs-toggle="collapse" data-bs-target="#collapse-image-options"
-                            aria-expanded="false" aria-controls="collapse-charts"></button>
+                            aria-expanded="false" aria-controls="collapse-image-options"></button>
                     </div>
                 </div>
 
-                <!-- Widget-Header Settings -->
+                <!-- Units symbols -->
+                <div class="collapse collapse-pined bg-dark w-100" aria-expanded="false" id="collapse-units-symbols">
+                    <div class="horizontal-scroll dark-scroll d-flex p-2">
+                        <select class="form-select form-select-sm me-2" aria-label="Default select example"
+                            id="units-select-category">
+                        </select>
+                        <select class="form-select form-select-sm me-2 w-auto" aria-label="Default select example"
+                            id="units-select">
+
+                        </select>
+                        <button class="btn btn-sm btn-danger me-2" aria-label="Close" data-bs-toggle="collapse"
+                            data-bs-target="#collapse-units-symbols" aria-expanded="false"
+                            aria-controls="collapse-units-symbols" onclick="addSymbolToResult(false)">Wyczyść</button>
+                        <button class="btn btn-sm btn-success me-2" aria-label="Close" data-bs-toggle="collapse"
+                            data-bs-target="#collapse-units-symbols" aria-expanded="false"
+                            aria-controls="collapse-units-symbols" onclick="addUnitToResult()">Zatwierdź</button>
+                    </div>
+                    <button type="button" class="icon-angle-double-up btn-sm btn btn-primary w-100 py-0"
+                        aria-label="Close" data-bs-toggle="collapse" data-bs-target="#collapse-units-symbols"
+                        aria-expanded="false" aria-controls="collapse-units-symbols"></button>
+                </div>
+
+                <!-- Add comment  -->
                 <div class="collapse collapse-pined bg-dark w-100 mx-auto" aria-expanded="false"
-                    id="collapse-header-options">
+                    id="collapse-add-comment">
                     <div class="text-light">
 
                         <div class="input-group w-auto my-1 px-2">
 
                             <form class="input-group">
                                 <input type="text" class="form-control bg-black-1 text-light border-0"
-                                    id="widgetTool-header-text" placeholder="Wpisz tekst Nagłówka">
-                                <button type="button" class="btn bg-black-1"
-                                    id="widgetTool-header-apply">Zatwierdź</button>
-                                <button type="reset" class="btn bg-black-1"
-                                    id="widgetTool-header-clear">Wyczyść</button>
+                                    id="add-comment-input" placeholder="Wpisz Tekst komentarza">
+                                <button type="button" class="btn bg-black-1" onclick="addComment()" aria-label="Close"
+                                    data-bs-toggle="collapse" data-bs-target="#collapse-add-comment"
+                                    aria-expanded="false" aria-controls="collapse-add-comment">Zatwierdź</button>
+                                <button type="reset" class="btn bg-black-1" onclick="removeComment()" aria-label="Close"
+                                    data-bs-toggle="collapse" data-bs-target="#collapse-add-comment"
+                                    aria-expanded="false" aria-controls="collapse-add-comment">Wyczyść</button>
                             </form>
 
                         </div>
 
                         <button type="button" class="icon-angle-double-up btn-sm btn btn-primary w-100 py-0"
-                            aria-label="Close" data-bs-toggle="collapse" data-bs-target="#collapse-header-options"
-                            aria-expanded="false" aria-controls="collapse-header-options"></button>
+                            aria-label="Close" data-bs-toggle="collapse" data-bs-target="#collapse-add-comment"
+                            aria-expanded="false" aria-controls="collapse-add-comment"></button>
                     </div>
                 </div>
 
@@ -462,7 +531,7 @@
         </div>
 
 
-        <!-- CANVAS -->
+        <!-- CANVAS & WIDGETS -->
         <div class=" bg-dark flex-grow-1 overflow-auto position-relative dark-scroll withBtn" id="canvas-container">
             <div id="widgetTools_base" class="hidden">
                 <button type="button" id="resizer"></button>
@@ -562,7 +631,7 @@
 
     </div>
 
-    <!-- approveActionWindow-->
+    <!-- approveActionWindow -->
     <div class="modal fade" id="approveActionWindow" tabindex="-1" aria-labelledby="exampleModalLabel"
         data-bs-backdrop="static" aria-hidden="true">
         <div class="modal-dialog">
@@ -618,7 +687,7 @@
         </div>
     </div>
 
-    <!-- File Info Page -->
+    <!-- File Info -->
     <div class="offcanvas offcanvas-start bg-dark text-light" data-bs-scroll="true" data-bs-backdrop="false"
         tabindex="-1" id="widget-fileInfo">
         <div class="offcanvas-header">
@@ -655,26 +724,27 @@
     </div>
 
     <!-- Chart Settings -->
-    <div class="offcanvas offcanvas-end bg-dark text-light close-left-widget " data-bs-scroll="true" data-bs-backdrop="false"
-        tabindex="-1" id="widgetTool-chart">
-        <button type="button" class="close-left d-none d-sm-block" data-bs-dismiss="offcanvas" aria-label="Close">></button>
+    <div class="offcanvas offcanvas-end bg-dark text-light close-left-widget " data-bs-scroll="true"
+        data-bs-backdrop="false" tabindex="-1" id="widgetTool-chart">
+        <button type="button" class="close-left d-none d-sm-block" data-bs-dismiss="offcanvas"
+            aria-label="Close">></button>
         <div class="offcanvas-header">
             <h5 class="offcanvas-title">Ustawienia wykresu</h5>
-            <button type="button" class="btn-close btn-close-white text-reset d-block d-sm-none" data-bs-dismiss="offcanvas"
-                aria-label="Close"></button>
-            
+            <button type="button" class="btn-close btn-close-white text-reset d-block d-sm-none"
+                data-bs-dismiss="offcanvas" aria-label="Close"></button>
+
         </div>
         <div class="offcanvas-body">
 
-            
+
             <div class="position-absolute end-0 start-0 top-0 z-5">
                 <div id="chartError-1" class="toast hide w-100" role="alert" aria-live="assertive" aria-atomic="true">
                     <div class="toast-header bg-danger border-0">
-                    <strong class="me-auto text-dark">Brak danych</strong>
-                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                        <strong class="me-auto text-dark">Brak danych</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                     </div>
                     <div class="toast-body bg-dark text-light border-bottom">
-                    Nie wpisałeś żanych danych do wykresu.
+                        Nie wpisałeś żanych danych do wykresu.
                     </div>
                 </div>
             </div>
@@ -684,72 +754,88 @@
 
                 <div class="accordion-item bg-dark text-light">
                     <h2 class="accordion-header" id="flush-headingTwo">
-                      <button class="accordion-button bg-black-1" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-                        Stylowanie
-                      </button>
+                        <button class="accordion-button bg-black-1" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                            Stylowanie
+                        </button>
                     </h2>
-                    <div id="flush-collapseTwo" class="accordion-collapse collapse show" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
-                      <div class="accordion-body px-0">
-                        <div class="fw-bold">Kolory:</div>
-                        <div class="d-flex flex-wrap justify-content-around">
-                            <div class="form-check form-check-inline mt-2">
-                                <input class="form-check-input" type="radio" id="chartStyle-1" value="210, 180, 222" name="chart-styles-color" checked>
-                                <label class="form-check-label ms-1" for="chartStyle-1">
-                                    <span class="color-example" style="background-color: rgb(210, 180, 222);"></span>
-                                    <span class="color-example" style="background-color: rgb(165, 105, 189);"></span>
-                                    <span class="color-example" style="background-color: rgb(108, 52, 131);"></span>
-                                </label>
-                            </div>
-    
-                            <div class="form-check form-check-inline mt-2">
-                                <input class="form-check-input" type="radio" id="chartStyle-2" value="174, 214, 241" name="chart-styles-color">
-                                <label class="form-check-label ms-1" for="chartStyle-2">
-                                    <span class="color-example" style="background-color: rgb(174, 214, 241) "></span>
-                                    <span class="color-example" style="background-color: #5DADE2;"></span>
-                                    <span class="color-example" style="background-color: #2E86C1;"></span>
-                                </label>
-                            </div>
-    
-                            <div class="form-check form-check-inline mt-2">
-                                <input class="form-check-input" type="radio" id="chartStyle-3" value="245, 203, 167" name="chart-styles-color"> 
-                                <label class="form-check-label ms-1" for="chartStyle-3">
-                                    <span class="color-example" style="background-color: rgb(245, 203, 167);"></span>
-                                    <span class="color-example" style="background-color: #EB984E ;"></span>
-                                    <span class="color-example" style="background-color: #D68910;"></span>
-                                </label>
-                            </div>
-    
-                            <div class="form-check form-check-inline mt-2">
-                                <input class="form-check-input" type="radio" id="chartStyle-4" value="190, 210, 227" name="chart-styles-color">
-                                <label class="form-check-label ms-1" for="chartStyle-4">
-                                    <span class="color-example" style="background-color: rgb(190, 210, 227);"></span>
-                                    <span class="color-example" style="background-color: #5D6D7E;"></span>
-                                    <span class="color-example" style="background-color: #2E4053;"></span>
-                                </label>
-                            </div>
+                    <div id="flush-collapseTwo" class="accordion-collapse collapse show"
+                        aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+                        <div class="accordion-body px-0">
+                            <div class="fw-bold">Kolory:</div>
+                            <div class="d-flex flex-wrap justify-content-around">
+                                <div class="form-check form-check-inline mt-2">
+                                    <input class="form-check-input" type="radio" id="chartStyle-1" value="210, 180, 222"
+                                        name="chart-styles-color" checked>
+                                    <label class="form-check-label ms-1" for="chartStyle-1">
+                                        <span class="color-example"
+                                            style="background-color: rgb(210, 180, 222);"></span>
+                                        <span class="color-example"
+                                            style="background-color: rgb(165, 105, 189);"></span>
+                                        <span class="color-example" style="background-color: rgb(108, 52, 131);"></span>
+                                    </label>
+                                </div>
 
-                            <div class="form-check form-check-inline mt-2">
-                                <input class="form-check-input" type="radio" id="chartStyle-5" value="227, 190, 190" name="chart-styles-color">
-                                <label class="form-check-label ms-1" for="chartStyle-5">
-                                    <span class="color-example" style="background-color: rgb(227, 190, 190);"></span>
-                                    <span class="color-example" style="background-color: #7e5d5d;"></span>
-                                    <span class="color-example" style="background-color: #532e2e;"></span>
-                                </label>
-                            </div>
+                                <div class="form-check form-check-inline mt-2">
+                                    <input class="form-check-input" type="radio" id="chartStyle-2" value="174, 214, 241"
+                                        name="chart-styles-color">
+                                    <label class="form-check-label ms-1" for="chartStyle-2">
+                                        <span class="color-example"
+                                            style="background-color: rgb(174, 214, 241) "></span>
+                                        <span class="color-example" style="background-color: #5DADE2;"></span>
+                                        <span class="color-example" style="background-color: #2E86C1;"></span>
+                                    </label>
+                                </div>
 
-                            <div class="form-check form-check-inline mt-2">
-                                <input class="form-check-input" type="radio" id="chartStyle-6" value="117, 150, 120" name="chart-styles-color">
-                                <label class="form-check-label ms-1" for="chartStyle-6">
-                                    <span class="color-example" style="background-color: rgb(117, 150, 120);"></span>
-                                    <span class="color-example" style="background-color: #6f995d;"></span>
-                                    <span class="color-example" style="background-color: #3b6127;"></span>
-                                </label>
+                                <div class="form-check form-check-inline mt-2">
+                                    <input class="form-check-input" type="radio" id="chartStyle-3" value="245, 203, 167"
+                                        name="chart-styles-color">
+                                    <label class="form-check-label ms-1" for="chartStyle-3">
+                                        <span class="color-example"
+                                            style="background-color: rgb(245, 203, 167);"></span>
+                                        <span class="color-example" style="background-color: #EB984E ;"></span>
+                                        <span class="color-example" style="background-color: #D68910;"></span>
+                                    </label>
+                                </div>
+
+                                <div class="form-check form-check-inline mt-2">
+                                    <input class="form-check-input" type="radio" id="chartStyle-4" value="190, 210, 227"
+                                        name="chart-styles-color">
+                                    <label class="form-check-label ms-1" for="chartStyle-4">
+                                        <span class="color-example"
+                                            style="background-color: rgb(190, 210, 227);"></span>
+                                        <span class="color-example" style="background-color: #5D6D7E;"></span>
+                                        <span class="color-example" style="background-color: #2E4053;"></span>
+                                    </label>
+                                </div>
+
+                                <div class="form-check form-check-inline mt-2">
+                                    <input class="form-check-input" type="radio" id="chartStyle-5" value="227, 190, 190"
+                                        name="chart-styles-color">
+                                    <label class="form-check-label ms-1" for="chartStyle-5">
+                                        <span class="color-example"
+                                            style="background-color: rgb(227, 190, 190);"></span>
+                                        <span class="color-example" style="background-color: #7e5d5d;"></span>
+                                        <span class="color-example" style="background-color: #532e2e;"></span>
+                                    </label>
+                                </div>
+
+                                <div class="form-check form-check-inline mt-2">
+                                    <input class="form-check-input" type="radio" id="chartStyle-6" value="117, 150, 120"
+                                        name="chart-styles-color">
+                                    <label class="form-check-label ms-1" for="chartStyle-6">
+                                        <span class="color-example"
+                                            style="background-color: rgb(117, 150, 120);"></span>
+                                        <span class="color-example" style="background-color: #6f995d;"></span>
+                                        <span class="color-example" style="background-color: #3b6127;"></span>
+                                    </label>
+                                </div>
                             </div>
-                        </div>
-                        <div class="fw-bold mt-2 mb-1 pt-1 border-top border-secondary">Preferencje:</div>
+                            <div class="fw-bold mt-2 mb-1 pt-1 border-top border-secondary">Preferencje:</div>
 
                             <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="chart-render-bg" value="true" checked>
+                                <input class="form-check-input" type="checkbox" id="chart-render-bg" value="true"
+                                    checked>
                                 <label class="form-check-label" for="chart-render-bg">Przezroczyste Tło</label>
                             </div>
 
@@ -758,20 +844,22 @@
                                 <label class="form-check-label" for="chart-render-legend">Wartość w %</label>
                             </div>
 
+                        </div>
                     </div>
-                    </div>
-                  </div>
+                </div>
 
 
                 <div class="accordion-item bg-dark text-light">
-                  <h2 class="accordion-header" id="flush-headingOne">
-                    <button class="accordion-button bg-black-1 collapsed " type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                      Zakres Danych
-                    </button>
-                  </h2>
-                  <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                    <div class="accordion-body px-0">
-                        <div class="fw-bold mb-2">Dodaj wszystkie zaznaczone komórki do:</div>
+                    <h2 class="accordion-header" id="flush-headingOne">
+                        <button class="accordion-button bg-black-1 collapsed " type="button" data-bs-toggle="collapse"
+                            data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                            Zakres Danych
+                        </button>
+                    </h2>
+                    <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
+                        data-bs-parent="#accordionFlushExample">
+                        <div class="accordion-body px-0">
+                            <div class="fw-bold mb-2">Dodaj wszystkie zaznaczone komórki do:</div>
 
                             <div>
                                 <button class="bg-black-1 btn ntn-sm">Kluczy</button>
@@ -784,32 +872,37 @@
                                 <label class="form-check-label" for="chartData-overwrite">Nadpisz stare dane</label>
                             </div>
 
-                       <div class="border-top border-secondary pt-1 mt-1 dark-scroll">
-                            <ol id="chartData-list">
-                                <!-- Chart data  -->
-                            </ol>
-                            <button class="btn-success btn btn-sm w-75 mx-auto d-block" id="chartData-addData">+</button>
-                       </div>
-                       <button type="button" class="btn btn-success d-block mt-4 ms-auto" id="chart-approve-changes">Zatwierdź</button>
+                            <div class="border-top border-secondary pt-1 mt-1 dark-scroll">
+                                <ol id="chartData-list">
+                                    <!-- Chart data  -->
+                                </ol>
+                                <button class="btn-success btn btn-sm w-75 mx-auto d-block"
+                                    id="chartData-addData">+</button>
+                            </div>
+                            <button type="button" class="btn btn-success d-block mt-4 ms-auto"
+                                id="chart-approve-changes">Zatwierdź</button>
 
+                        </div>
                     </div>
-                  </div>
                 </div>
-              </div>
-              
+            </div>
+
         </div>
     </div>
 
-    <!-- Style Like Table -->
-    <div class="offcanvas offcanvas-end bg-dark text-light close-left-widget scaling" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvas-styleTable">
-        <button type="button" class="close-left d-none d-sm-block" data-bs-dismiss="offcanvas" aria-label="Close">></button>
+    <!-- Insert Table -->
+    <div class="offcanvas offcanvas-end bg-dark text-light close-left-widget scaling" data-bs-scroll="true"
+        data-bs-backdrop="false" tabindex="-1" id="offcanvas-styleTable">
+        <button type="button" class="close-left d-none d-sm-block" data-bs-dismiss="offcanvas"
+            aria-label="Close">></button>
         <div class="offcanvas-header pb-0">
-          <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Wstaw Tabele</h5>
-          <button type="button" class="btn-close btn-close-white text-reset d-block d-sm-none" data-bs-dismiss="offcanvas"
-          aria-label="Close"></button>
+            <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Wstaw Tabele</h5>
+            <button type="button" class="btn-close btn-close-white text-reset d-block d-sm-none"
+                data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
-            <p>To narzedzie zmieni zaznaczone komórki tak aby wyglądały jak tabela oraz doda funkcje dla każdej Kolumny lub Wiersza</p>
+            <p>To narzedzie zmieni zaznaczone komórki tak aby wyglądały jak tabela oraz doda funkcje dla każdej Kolumny
+                lub Wiersza</p>
             <hr>
             <span class="mb-1 d-block fw-bold">Ostyluj w:</span>
             <select class="form-select" aria-label="Default select example" id="table-style-orient">
@@ -821,35 +914,60 @@
             <div class="d-flex">
                 <div class="form-check me-5">
                     <input class="form-check-input" type="checkbox" value="" id="table-style-extra-1">
-                    <label class="form-check-label" for="table-style-extra-1">
-                      Tytuł
+                    <label class="form-check-label" for="table-style-extra-1" data-bs-toggle="tooltip"
+                        data-bs-placement="top" title="Pogrubia i środkuje tekst na początku każdej grupy">
+                        Tytuł
                     </label>
                 </div>
                 <div class="form-check me-5">
-                    <input class="form-check-input" type="checkbox" value="" id="table-style-extra-2" data-bs-toggle="collapse" data-bs-target="#table-add-function" aria-expanded="false" aria-controls="table-add-function">
-                    <label class="form-check-label" for="table-style-extra-2">
-                      Wynik
+                    <input class="form-check-input" type="checkbox" value="" id="table-style-extra-2"
+                        data-bs-toggle="collapse" data-bs-target=".table-style" aria-expanded="false"
+                        aria-controls="table-add-function table-style-extra-3-box">
+                    <label class="form-check-label" for="table-style-extra-2" data-bs-toggle="tooltip"
+                        data-bs-placement="top" title="Przygotowuje ostatnią komórke grupy na wynik z funkcji">
+                        Wynik
                     </label>
                 </div>
+                <div class="form-check me-5">
+                    <div class="collapse table-style" id="table-style-extra-3-box">
+                        <input class="form-check-input" type="checkbox" value="" id="table-style-extra-3">
+                        <label class="form-check-label" for="table-style-extra-2" data-bs-toggle="tooltip"
+                            data-bs-placement="top"
+                            title="Pozostawia dodatkowe puste miejsce po lewej lub na górze tabeli">
+                            Legende
+                        </label>
+                    </div>
+                </div>
             </div>
-            <div class="collapse" id="table-add-function">
+            <div class="collapse table-style" id="table-add-function">
                 <span class="mt-3 mb-1 d-block fw-bold">Wynik z funkcji: </span>
                 <select class="form-select" aria-label="select table function" id="table-function">
-                    <option value="" selected>Bez funkcji</option>
-                    <option value="SUMA">Suma</option>
+                    <option value="SUMA" selected>Suma</option>
                     <option value="NAJWIEKSZA">Największa wartość</option>
                     <option value="NAJMNIEJSZA">Najmniejsza wartość</option>
                     <option value="SREDNIA_A">Średnia Arytmetyczna</option>
                     <option value="MEDIANA">Mediana</option>
                     <option value="GRUPA">Grupa</option>
                 </select>
-              </div>
+            </div>
             <hr>
             <span class="mt-3 mb-1 d-block fw-bold">Kolorystyka:</span>
             <div class="d-flex flex-wrap justify-content-around">
                 <div class="form-check form-check-inline mt-2">
-                    <input class="form-check-input" type="radio" id="tableStyle-1" value="#a569bd" name="table-style-color" checked>
+                    <input class="form-check-input" type="radio" id="tableStyle-1" value="" name="table-style-color"
+                        checked>
                     <label class="form-check-label ms-1" for="tableStyle-1">
+                        <!-- Bez stylów -->
+                        <span class="color-example" style="background-color: rgba(0, 0, 0, 0.5);"></span>
+                        <span class="color-example" style="background-color: rgba(0, 0, 0, 0.5);"></span>
+                        <span class="color-example" style="background-color: rgba(0, 0, 0, 0.5);"></span>
+                    </label>
+                </div>
+
+                <div class="form-check form-check-inline mt-2">
+                    <input class="form-check-input" type="radio" id="tableStyle-2" value="#a569bd"
+                        name="table-style-color">
+                    <label class="form-check-label ms-1" for="tableStyle-2">
                         <span class="color-example" style="background-color: rgb(210, 180, 222);"></span>
                         <span class="color-example" style="background-color: #a569bd;"></span>
                         <span class="color-example" style="background-color: rgb(108, 52, 131);"></span>
@@ -857,16 +975,8 @@
                 </div>
 
                 <div class="form-check form-check-inline mt-2">
-                    <input class="form-check-input" type="radio" id="tableStyle-2" value="#5DADE2" name="table-style-color">
-                    <label class="form-check-label ms-1" for="tableStyle-2">
-                        <span class="color-example" style="background-color: rgb(174, 214, 241) "></span>
-                        <span class="color-example" style="background-color: #5DADE2;"></span>
-                        <span class="color-example" style="background-color: #2E86C1;"></span>
-                    </label>
-                </div>
-
-                <div class="form-check form-check-inline mt-2">
-                    <input class="form-check-input" type="radio" id="tableStyle-3" value="#d38642" name="table-style-color"> 
+                    <input class="form-check-input" type="radio" id="tableStyle-3" value="#d38642"
+                        name="table-style-color">
                     <label class="form-check-label ms-1" for="tableStyle-3">
                         <span class="color-example" style="background-color: rgb(245, 203, 167);"></span>
                         <span class="color-example" style="background-color: #d38642 ;"></span>
@@ -875,7 +985,8 @@
                 </div>
 
                 <div class="form-check form-check-inline mt-2">
-                    <input class="form-check-input" type="radio" id="tableStyle-4" value="#5D6D7E" name="table-style-color">
+                    <input class="form-check-input" type="radio" id="tableStyle-4" value="#5D6D7E"
+                        name="table-style-color">
                     <label class="form-check-label ms-1" for="tableStyle-4">
                         <span class="color-example" style="background-color: rgb(190, 210, 227);"></span>
                         <span class="color-example" style="background-color: #5D6D7E;"></span>
@@ -884,7 +995,8 @@
                 </div>
 
                 <div class="form-check form-check-inline mt-2">
-                    <input class="form-check-input" type="radio" id="tableStyle-5" value="#7e5d5d" name="table-style-color">
+                    <input class="form-check-input" type="radio" id="tableStyle-5" value="#7e5d5d"
+                        name="table-style-color">
                     <label class="form-check-label ms-1" for="tableStyle-5">
                         <span class="color-example" style="background-color: rgb(227, 190, 190);"></span>
                         <span class="color-example" style="background-color: #7e5d5d;"></span>
@@ -893,7 +1005,8 @@
                 </div>
 
                 <div class="form-check form-check-inline mt-2">
-                    <input class="form-check-input" type="radio" id="tableStyle-6" value="#6f995d" name="table-style-color">
+                    <input class="form-check-input" type="radio" id="tableStyle-6" value="#6f995d"
+                        name="table-style-color">
                     <label class="form-check-label ms-1" for="tableStyle-6">
                         <span class="color-example" style="background-color: rgb(117, 150, 120);"></span>
                         <span class="color-example" style="background-color: #6f995d;"></span>
@@ -901,34 +1014,38 @@
                     </label>
                 </div>
             </div>
-            <button class="btn btn-success d-block mt-4 ms-auto" type="button" onclick="styleTable.makeTable()">Wstaw</button>
+            <button class="btn btn-success d-block mt-4 ms-auto" type="button"
+                onclick="styleTable.makeTable()">Wstaw</button>
 
         </div>
     </div>
 
     <!-- Insert Timeline -->
-    <div class="offcanvas offcanvas-end bg-dark text-light close-left-widget scaling" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvas-insert-timeline">
-        <button type="button" class="close-left d-none d-sm-block" data-bs-dismiss="offcanvas" aria-label="Close">></button>
+    <div class="offcanvas offcanvas-end bg-dark text-light close-left-widget scaling" data-bs-scroll="true"
+        data-bs-backdrop="false" tabindex="-1" id="offcanvas-insert-timeline">
+        <button type="button" class="close-left d-none d-sm-block" data-bs-dismiss="offcanvas"
+            aria-label="Close">></button>
         <div class="offcanvas-header">
-          <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Wstaw oś czasu</h5>
-          <button type="button" class="btn-close btn-close-white text-reset d-block d-sm-none" data-bs-dismiss="offcanvas"
-          aria-label="Close"></button>
+            <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Wstaw oś czasu</h5>
+            <button type="button" class="btn-close btn-close-white text-reset d-block d-sm-none"
+                data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
-            <p>To narzedzie automatycznie wstawi dane z wybranych poniżej wariantów do zaznaczonych komórek z zachowwaniem kolejności zaznaczania</p>
+            <p>To narzedzie automatycznie wstawi dane z wybranych poniżej wariantów do zaznaczonych komórek z
+                zachowwaniem kolejności zaznaczania</p>
             <hr>
             <span class="mt-3 mb-1 d-block fw-bold">Kierunek Upływu czasu:</span>
             <div class="d-flex">
                 <div class="form-check me-5">
                     <input class="form-check-input" type="radio" checked name="timeline-direction" value="true">
                     <label class="form-check-label" for="table-style-extra-1">
-                      Rośnij
+                        Rośnij
                     </label>
                 </div>
                 <div class="form-check me-5">
                     <input class="form-check-input" type="radio" name="timeline-direction" value="false">
                     <label class="form-check-label" for="table-style-extra-2">
-                      Malej
+                        Malej
                     </label>
                 </div>
             </div>
@@ -941,9 +1058,9 @@
                 <option value="year">Lat</option>
                 <option value="date">Daty</option>
             </select>
-            
+
             <hr>
-            
+
             <div class="row">
                 <div class="col-6 p-2">
                     <span class="mt-3 mb-1 d-block fw-bold">Wartość kroku:</span>
@@ -958,30 +1075,35 @@
                     </select>
                 </div>
             </div>
-            
+
             <hr>
             <span class="mt-3 mb-1 d-block fw-bold">Wybierz Zakres:</span>
             <div class="row">
                 <div class="col-6">
                     <span class="btn bg-black-1 text-light w-100 d-block">Zacznij od</span>
-                    <input type="time" class="bg-black-1 text-light p-2 mt-2 w-100 border-0" id="timeline-label-from"> 
+                    <input type="time" class="bg-black-1 text-light p-2 mt-2 w-100 border-0" id="timeline-label-from">
                     <label for="timeline-label-from"></label>
                 </div>
                 <div class="col-6">
                     <span class="btn bg-black-1 text-light w-100 d-block">Skończ na</span>
-                    <input type="time" class="bg-black-1 text-light p-2 mt-2 w-100 border-0" id="timeline-label-to" disabled> 
+                    <input type="time" class="bg-black-1 text-light p-2 mt-2 w-100 border-0" id="timeline-label-to"
+                        disabled>
                     <label for="timeline-label-to"></label>
                 </div>
             </div>
             <div class="mt-4 d-flex justify-content-end">
-                <button class="btn btn-success me-2" type="button" onclick="insertTimeLine.recalculate()">Przelicz</button>
-                <button class="btn btn-success" type="button" disabled id="timeline-approve" onclick="insertTimeLine.insert()">Wstaw</button>
+                <button class="btn btn-success me-2" type="button"
+                    onclick="insertTimeLine.recalculate()">Przelicz</button>
+                <button class="btn btn-success" type="button" disabled id="timeline-approve"
+                    onclick="insertTimeLine.insert()">Wstaw</button>
             </div>
 
 
         </div>
     </div>
 
+
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="core.js"></script>
     <script src="scripts/filehandler.js"></script>

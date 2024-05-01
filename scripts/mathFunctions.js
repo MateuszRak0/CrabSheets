@@ -441,7 +441,7 @@ new MathFunction("NAJMNIEJSZA",function(values){
 },"Zwraca najmniejsza wartość z wszystkich przesłanych argumentów lub przesłanych grup",true)
 
 
-//=============================== FUNKCJE  ============================================
+//=============================== FUNKCJE CZASU  ============================================
 
 // YYYY.MM.DD
 const $getDate = new MathFunction("_DATA:DZIS",function(values){
@@ -449,7 +449,7 @@ const $getDate = new MathFunction("_DATA:DZIS",function(values){
     return makeDateString(date);
 },"Zwraca dzisiejszą date w formacie 'Rok-Miesiąc-Dzień' Data będzie się aktualizowac przy każdym odpaleniu arkusza",false);
 
-new MathFunction("_DATA:DNI",function(values){
+new MathFunction("_DATA:OBLICZ",function(values){
     console.log(values)
     if(values.length<2){ return "@TOLOW" }
     else if (values.length > 2){ return "@TOMORE" }
@@ -500,7 +500,7 @@ const $getMonth = new MathFunction("_MSC",function(values){
     return this.baseResult;
 
     
-},"Zwraca nazwe dnia tygodnia z podanej liczby np: ||1 == Styczeń",true,"@VALUE");
+},"Zwraca nazwe miesiąca z podanej liczby np: |_MSC|1 = Styczeń",true,"@VALUE");
 
 // DZIEN
 const $getDay = new MathFunction("_DZIEN",function(values){
@@ -527,7 +527,7 @@ const $getDay = new MathFunction("_DZIEN",function(values){
     return this.baseResult;
 
     
-},"Zwraca nazwe miesiąca z podanej liczby np: |_MSC|1 == Styczeń",true,"@VALUE");
+},"Zwraca nazwe dnia tygodnia z podanej liczby np: ||2 = Wtorek",true,"@VALUE");
 
 // TIME HH:MM:SS
 const $getTime = new MathFunction("_CZAS",function(values){
@@ -682,3 +682,108 @@ new MathFunction("&SWITCH",function(values){
         }
     }
 },"Zwraca wartość zależnie od przesłanego argumentu prawda/fałsz gdzie wzór to |SWITCH|A,B,C gdzie A - true/False  |  B - Wartość zwracana gdy true  |  C - Wartość zwracana gdy false",true);
+
+
+
+class Unit{
+    constructor(prefix,name){
+        this.prefix = prefix;
+        this.name = name;
+    }
+}
+
+// UNITS
+const unitsMenager = {
+    selectNode:document.getElementById("units-select-category"),
+    units:{},
+
+    addUnit:function(unit,category){
+        if(!this.units[category]){
+            this.units[category] = [];
+            let optionNode = document.createElement("option");
+            optionNode.value = category;
+            optionNode.innerHTML = category;
+            this.selectNode.appendChild(optionNode)
+            if(!this.selectNode.value){ optionNode.selected = true }
+        } 
+        this.units[category].push(unit);
+    },
+
+    loadUnitsCategory:function(category){
+        const unitsBox = document.getElementById("units-select");
+        unitsBox.innerHTML = "";
+        let units = this.units[category];
+        for(let unit of units){
+            let unitNode = document.createElement("option");
+            unitNode.value = unit.prefix;
+            unitNode.innerHTML = `${unit.prefix} - ${unit.name}`;
+            unitsBox.appendChild(unitNode);
+        }
+    }
+};
+
+document.getElementById("units-select-category").addEventListener("input",(e)=>{unitsMenager.loadUnitsCategory(e.target.value)});
+
+
+unitsMenager.addUnit(new Unit( "PLN" , "Polski Złoty") , "waluta" );
+unitsMenager.addUnit(new Unit( "EUR" , "Euro") , "waluta" );
+unitsMenager.addUnit(new Unit( "USD" , "Dolar amerykański") , "waluta" );
+unitsMenager.addUnit(new Unit( "CAD" , "Dolar kanadyjski") , "waluta" );
+unitsMenager.addUnit(new Unit( "AED" , "Dirham ZEA") , "waluta" );
+unitsMenager.addUnit(new Unit( "JPY" , "Jen japoński") , "waluta" );
+unitsMenager.addUnit(new Unit( "GBP" , "Funt brytyjskiy") , "waluta" );
+unitsMenager.addUnit(new Unit( "CHF" , "Frank szwajcarski") , "waluta" );
+unitsMenager.addUnit(new Unit( "SEK" , "Szwedzka korona") , "waluta" );
+
+
+unitsMenager.addUnit(new Unit( "g" , "Gram") , "masa" );
+unitsMenager.addUnit(new Unit( "dag" , "Dekagram") , "masa" );
+unitsMenager.addUnit(new Unit( "kg" , "Kilogram") , "masa" );
+unitsMenager.addUnit(new Unit( "t" , "Tona") , "masa" );
+unitsMenager.addUnit(new Unit( "lb" , "Funt") , "masa" );
+unitsMenager.addUnit(new Unit( "oz" , "uncja") , "masa" );
+
+unitsMenager.addUnit(new Unit( "mm" , "milimetr") , "dystans" );
+unitsMenager.addUnit(new Unit( "cm" , "centymetr") , "dystans" );
+unitsMenager.addUnit(new Unit( "dm" , "decymetr") , "dystans" );
+unitsMenager.addUnit(new Unit( "m" , "metr") , "dystans" );
+unitsMenager.addUnit(new Unit( "km" , "kilometr") , "dystans" );
+
+unitsMenager.addUnit(new Unit( "m/s" , "metr na sekunde") , "predkosc" );
+unitsMenager.addUnit(new Unit( "km/h" , "kilometr na godzine") , "predkosc" );
+unitsMenager.addUnit(new Unit( "mph" , "mila na godzine") , "predkosc" );
+unitsMenager.addUnit(new Unit( "kt" , "wezel ( mila morska na gordzine )") , "predkosc" );
+unitsMenager.addUnit(new Unit( "ma" , "mach") , "predkosc" );
+
+unitsMenager.addUnit(new Unit( "°C" , "stopień Celsjusza") , "temperatura" );
+unitsMenager.addUnit(new Unit( "°F" , "stopień Farentheita") , "temperatura" );
+unitsMenager.addUnit(new Unit( "°R" , "stopień Reaumura") , "temperatura" );
+unitsMenager.addUnit(new Unit( "°Rank" , "stopień Rankina") , "temperatura" );
+unitsMenager.addUnit(new Unit( "K" , "Kelvin") , "temperatura" );
+
+unitsMenager.addUnit(new Unit( "Pa" , "Paskal") , "ciśnienie" );
+unitsMenager.addUnit(new Unit( "bar" , "Bar") , "ciśnienie" );
+unitsMenager.addUnit(new Unit( "kPa" , "Kilopaskal") , "ciśnienie" );
+unitsMenager.addUnit(new Unit( "MPa" , "Megapaskal") , "ciśnienie" );
+unitsMenager.addUnit(new Unit( "psi" , "funt na cal kwadratowy") , "ciśnienie" );
+
+unitsMenager.addUnit(new Unit( "mm²", "milimetr kwadratowy") , "obszar" );
+unitsMenager.addUnit(new Unit( "cm²", "centymetr kwadratowy	") , "obszar" );
+unitsMenager.addUnit(new Unit( "dm²", "decymetr kwadratowy") , "obszar" );
+unitsMenager.addUnit(new Unit( "m²" , "metr kwadratowy") , "obszar" );
+unitsMenager.addUnit(new Unit( "a" , "ar ( 100m² )") , "obszar" );
+unitsMenager.addUnit(new Unit( "ha" , "hektar ( 10 000m² )") , "obszar" );
+unitsMenager.addUnit(new Unit( "km²" , "kilometr kwadratowy ( 1 000 000m² )") , "obszar" );
+
+unitsMenager.addUnit(new Unit( "yr" , "Rok") , "czas" );
+unitsMenager.addUnit(new Unit( "d" , "Dzień") , "czas" );
+unitsMenager.addUnit(new Unit( "hr" , "Godzina") , "czas" );
+unitsMenager.addUnit(new Unit( "min" , "Minuta") , "czas" );
+unitsMenager.addUnit(new Unit( "s" , "Sekunda") , "czas" );
+
+unitsMenager.addUnit(new Unit( "HP" , "Angielski koń parowy") , "moc" );
+unitsMenager.addUnit(new Unit( "PS" , "Koń mechaniczny") , "moc" );
+unitsMenager.addUnit(new Unit( "W" , "Wat") , "moc" );
+
+
+unitsMenager.loadUnitsCategory(Object.keys(unitsMenager.units)[0]);

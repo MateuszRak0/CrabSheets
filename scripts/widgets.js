@@ -201,7 +201,6 @@ class WidgetTools{
 
 const mainContent = document.getElementById("mainContent");
 const widgetTools_image = new WidgetTools(document.getElementById("collapse-image-options"));
-const widgetTools_header = new WidgetTools(document.getElementById("collapse-header-options"));
 const widgetTools_chart = new WidgetTools(document.getElementById("widgetTool-chart"));
 
 
@@ -282,21 +281,23 @@ class WidgetHeader extends WidgetInteractive{
         super();
         this.type="header";
         this.text="";
-        this.tools = widgetTools_header
         this.container.classList.add("widget-header");
         this.container.style.width = "130px";
         this.container.style.height = "60px";
-        this.container.innerHTML = "<span class='w-100'>Przykładowy Nagłówek</span>";
+        this.textInput = document.createElement("input");
+        this.textInput.value = "Nagłówek";
+        this.textInput.type = "text";
+        this.container.appendChild(this.textInput);
         this.styles.textAlign = "center";
         this.refreshStyles();
     }
 
     refreshStyles(){
-        this.container.style.textAlign = this.styles.textAlign;
-        this.container.style.color = this.styles.color;
-        this.container.style.fontSize = this.styles.fontSize;
-        this.container.style.textDecoration = this.styles.fontType;
-        this.container.style.fontFamily = this.styles.fontFamily;
+        this.textInput.style.textAlign = this.styles.textAlign;
+        this.textInput.style.color = this.styles.color;
+        this.textInput.style.fontSize = this.styles.fontSize;
+        this.textInput.style.textDecoration = this.styles.fontType;
+        this.textInput.style.fontFamily = this.styles.fontFamily;
         super.refreshStyles()
     }
 }
@@ -372,17 +373,6 @@ widgetTools_image.apply = function(){
     this.selectedWidget.container.style.backgroundImage = `url('${data}')`
 }
 
-//Header
-widgetTools_header.textInput = document.getElementById("widgetTool-header-text");
-
-widgetTools_header.loadData = function(){
-    this.textInput.value = this.selectedWidget.text;
-}
-
-widgetTools_header.apply = function(){
-    this.selectedWidget.container.innerHTML = "<div class='w-100'> "+this.textInput.value+"</div>";
-    this.selectedWidget.text = this.textInput.value;
-}
 
 //resize Main-content to make place for a widget 
 document.getElementById("widgetTool-chart").addEventListener("shown.bs.offcanvas",(e)=>{
@@ -426,7 +416,7 @@ for(let btn of document.getElementsByClassName("widget-remove-btn")){
     btn.addEventListener("click",()=>{widgetTools_base.removeWidget()})
 }
 
-document.getElementById("widgetTool-header-apply").addEventListener("click",()=>{widgetTools_header.apply()});
+
 document.getElementById("addWidget-image").addEventListener("click",()=>{ return new WidgetImage() })
 document.getElementById("addWidget-header").addEventListener("click",()=>{ return new WidgetHeader() })
 document.getElementById("widgetTool-image-apply").addEventListener("click",()=>{widgetTools_image.apply()})

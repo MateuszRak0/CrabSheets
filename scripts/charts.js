@@ -601,7 +601,7 @@ new StyleInput_CheckBox(document.getElementById("chart-render-bg"),"beTransparen
 new StyleInput_CheckBox(document.getElementById("chart-render-legend"),"percentMode");
 
 
-document.getElementById("addChart-line").addEventListener("click",()=>{new LineChart(selectedSheet)});
+document.getElementById("addChart-line").addEventListener("click",()=>{new LineChart(selectedSheet);});
 document.getElementById("addChart-area").addEventListener("click",()=>{new AreaChart(selectedSheet)});
 document.getElementById("addChart-bar").addEventListener("click",()=>{new BarChart(selectedSheet)});
 document.getElementById("addChart-pie").addEventListener("click",()=>{new PieChart(selectedSheet)});

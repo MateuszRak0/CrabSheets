@@ -22,11 +22,12 @@ function newFile(){
 function downloadFile() {
     if (openedFile) {
         let data = openedFile.packToSaving();
-        let file = new Blob([data], { type: "text/plain" })
-        let a = document.createElement("a");
-        a.href = URL.createObjectURL(file);
-        a.download = openedFile.name + ".json";
-        a.click();
+        console.dir(data)
+        // let file = new Blob([data], { type: "text/plain" })
+        // let a = document.createElement("a");
+        // a.href = URL.createObjectURL(file);
+        // a.download = openedFile.name + ".json";
+        // a.click();
     }
 }
 

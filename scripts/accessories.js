@@ -211,7 +211,7 @@ const hyperlinkEditor = {
                 let text = this.inputTextNode.value;
                 if (text.length == 0 || text == " ") text = "Link";
                 selector.selected.text = text;
-                selector.selected.styles.fontColor = "#189BCC";
+                selector.selected.styles.color = "#189BCC";
                 selector.selected.refresh();
             }
         }
@@ -222,60 +222,81 @@ const styleTable = {
     orientation:"vertical",
     extra1:false,
     extra2:false,
+    extra3:false,
     color:"#ff0000",
-    function:false,
+    function:"SUMA",
 
     update:function(){
        this.orientation = document.getElementById("table-style-orient").value;
        this.function = document.getElementById("table-function").value;
        this.extra1 = document.getElementById("table-style-extra-1").checked;
        this.extra2 = document.getElementById("table-style-extra-2").checked;
+       this.extra3 = document.getElementById("table-style-extra-3").checked;
        for(let input of document.getElementsByName("table-style-color")){ if(input.checked){ this.color = input.value} }
     },
 
     makeTable:function(){
         this.update();
         let groups = {};
+        let textPos = "center";
         for(let cell of selector.selectedCells){
             let x = cell.address.column;
             let y = cell.address.row;
             if(this.orientation == "vertical"){
                 if(!groups[x]){ groups[x] = [] };
                 groups[x].push(cell);
-                
+                textPos = "right";
             }
             else{
                 if(!groups[y]){ groups[y] = [] };
                 groups[y].push(cell);
             }
         }
-        for(let group of Object.values(groups)){
+        let groupsValues = [...Object.values(groups)];
+        for(let groupNum=0; groupNum<groupsValues.length; groupNum++){
+            let group = groupsValues[groupNum];
             let bufforGroup = [...group];
             for(let i=0; i<group.length; i++){
                 let cell = group[i];
+                if(cell.styles.textAlign == "left") cell.styles.textAlign = "center";
                 let buffor = this.color;
-                if((this.extra1 && i == 0)){
-                    if(!cell.text) cell.text = `Tytuł`;
-                    cell.styles.textAlign = "center";
-                    cell.styles.fontType= "bold";
-                    cell.styles.fontSize= "16px";
-                    bufforGroup.shift();
+                if(groupNum == 0 && this.extra3 && this.extra2){
+                    if(i == group.length-1){
+                        cell.text = `${this.function}: `
+                    }
+                    else if(this.extra1 && i == 0){
+                        if(!cell.text || cell.text == "Tytuł") cell.text = "Nazwa tabeli";
+                        cell.styles.fontType= "bold";
+                        cell.styles.fontSize= "16px";
+                    }
                 }
-                if(this.extra2 && i == group.length-1){
-                    bufforGroup.pop();
-                    if(this.function){
+                else{
+                    if((this.extra1 && i == 0)){
+                        if(!cell.text) cell.text = `Tytuł`;
+                        cell.styles.fontType= "bold";
+                        cell.styles.fontSize= "14px";
+                        bufforGroup.shift();
+                    }
+                    if(this.extra2 && i == group.length-1){
+                        bufforGroup.pop();
                         cell.text = `=|${this.function}|`;
                         for(let bufforCell of bufforGroup){
                             cell.text += `${bufforCell.fakeAddress},`
                         }
+                        cell.styles.textAlign = "right";
                         cell.text = cell.text.substring(0, cell.text.length - 1);
-                        cell.refresh();
+                        
                     }
+
                 }
                 if(i % 2 == 0){ buffor += "cc" }
-                cell.styles.strokeColor = "#303030";
-                cell.styles.fillColor = buffor;
-                cell.fill();
+            
+                if(this.color){
+                    // cell.styles.strokeColor = "#303030";
+                    cell.styles.fillColor = buffor;
+                }
+
+                cell.refresh();
                 cell.focus();
             }
         }
@@ -475,6 +496,48 @@ const insertTimeLine = {
     }
 }
 
+const copiedStorage = {
+    storagedData:false,
+
+    saveData:function(clearAfterSave){
+        this.storagedData = [];
+        for(let cell of selector.getSelected()){
+            this.storagedData.push(this.makeFakeCell(cell));
+            if(clearAfterSave){ cell.clearData() };
+        }
+    },
+
+    makeFakeCell:function(cell){
+        let fakeCell = new Object()
+        fakeCell.address = cell.address;
+        fakeCell.text = cell.text;
+        fakeCell.styles = new StyleList(cell.styles);
+        if(cell.calculaction){
+            fakeCell.calculaction = new Object();
+            fakeCell.calculaction.usedCels = [...cell.calculaction.usedCels];
+        }
+        return fakeCell
+    },
+
+    pasteData:function(){
+        if(selector.selected){
+            const anchorCell = this.storagedData[0];
+            diffrentX = selector.selected.address.column - anchorCell.address.column ;
+            diffrentY = selector.selected.address.row - anchorCell.address.row ;
+            const buffor = getMovedList(this.storagedData,diffrentX,diffrentY);
+            if(buffor){
+                for(let data of buffor){
+                    data.cell.text = data.text;
+                    data.cell.styles = new StyleList(data.style);
+                    data.cell.refresh();
+                }
+                cellInput.show(selector.selected)
+            }
+        }
+        
+         
+    },
+}
 
 class Message {
     constructor(title, description, approve, deny = "Rozumiem") {
@@ -551,7 +614,7 @@ class Timeline {
 
 }
 
-// Toolbar inputs Handler class 
+// Stylelist inputs \/ 
 class StyleInput {
     constructor(styleName) {
         this.styleName = styleName;
@@ -572,28 +635,53 @@ class StyleInput {
             }
         }
     }
-
-
 }
 
-class StyleInput_Button {
-    constructor(styleName, modalNode, btnNode) {
+class StyleInput_Dropdown{
+    constructor(styleName, bootstrapObject, btnNode) {
         this.styleName = styleName;
         StyleInput.inputs.push(this);
-        this.bootstrapElement = new bootstrap.Modal(modalNode);
+        this.bootstrapElement = bootstrapObject;
         this.btnNode = btnNode;
         this.btnNode.addEventListener("click", () => { this.show() });
+        
     }
 
-    show() {
-        if (selector.selected) {
+    show(){
+        if (selector.selected || selector.selectedCells.size > 0) {
             this.bootstrapElement.show();
         }
     }
 
     load(cell) {
         let value = cell.styles[this.styleName];
-        if (value) {
+        if(value) {
+            this.btnNode.classList.add("active");
+        }
+        else {
+            this.btnNode.classList.remove("active");
+        }
+    }
+
+}
+
+class StyleInput_Button{
+    constructor(styleName,value,btnNode,callback) {
+        this.styleName = styleName;
+        this.value = value;
+        StyleInput.inputs.push(this);
+        this.btnNode = btnNode;
+        this.callback = callback;
+        this.btnNode.addEventListener("click", () => { this.apply() });
+    }
+
+    apply(){
+        if(typeof this.callback === "function") this.callback(this.value);
+    }
+
+    load(cell) {
+        let value = cell.styles[this.styleName];
+        if(value == this.value) {
             this.btnNode.classList.add("active");
         }
         else {
@@ -730,7 +818,41 @@ new StyleInput_Color(document.getElementById("input-font-color"), "color");
 new StyleInput_Color(document.getElementById("input-background-color"), "fillColor");
 new StyleInput_Color(document.getElementById("input-border-color"), "strokeColor");
 new StyleInput_Number(document.getElementById("input-round-result"), "roundTo", 0, 99);
-new StyleInput_Button("hyperlink", document.getElementById("addHyperlink-modal"), document.getElementById("addHyperlink-btn-show"));
+new StyleInput_Button("endSymbol","%",document.getElementById("add-end-symbol-1"),addSymbolToResult);
+
+new StyleInput_Dropdown(
+    "comment",
+    new bootstrap.Collapse(document.getElementById("collapse-add-comment"),{
+        toggle: false
+    }),
+    document.getElementById("add-comment")
+);
+
+new StyleInput_Dropdown(
+    "hyperlink",
+    new bootstrap.Modal(document.getElementById("addHyperlink-modal")),
+    document.getElementById("addHyperlink-btn-show")
+);
+
+{
+    let buffor = new StyleInput_Dropdown(
+        "endSymbol", 
+        new bootstrap.Collapse(document.getElementById("collapse-units-symbols"),{
+            toggle: false
+          }),
+        document.getElementById("add-end-symbol-2"));
+
+    buffor.load = function(cell){
+        let value = cell.styles[this.styleName];
+        if(value && value != "%") {
+            this.btnNode.classList.add("active");
+        }
+        else {
+            this.btnNode.classList.remove("active");
+        }
+    }
+}
+
 
 //Messages
 const msg_remove = new Message("Czy jesteś pewny ?", "Ta operacja usunięcia nie może zostać cofnięta dobrze się zastanów", "Usuń", "Zostaw");
@@ -753,31 +875,34 @@ function insertTimeData(e) {
     }
 }
 
-function selectedClearData() {
-    if (selector.selected) {
-        cellInput.clearData();
-        selector.selected.clearData();
-        selector.resetOldData();
+function addUnitToResult(){
+    const symbol = document.getElementById("units-select").value;
+    if(symbol) addSymbolToResult(symbol);
+}
+
+function addSymbolToResult(symbol){
+    let cells = selector.getSelected();
+    for(let cell of cells){
+        if(cell.styles.endSymbol == symbol) symbol = false;
+        cell.styles.endSymbol = symbol
     }
-    else {
-        if (selector.selectedCells.size > 0) {
-            for (let cell of selector.selectedCells) {
-                cell.text = "";
-                cell.refresh();
-            }
-            selector.resetOldData();
+}
+
+function selectedClearData() {
+    let cells = selector.getSelected();
+    if(cells){
+        for (let cell of cells) {
+            cell.clearData()
         }
+        cellInput.clearData();
+        selector.resetOldData();
     }
 }
 
 function selectedClearStyles() {
-    if (selector.selected) {
-        selector.selected.styles = new selector.selected.styles.constructor();
-        selector.selected.fill();
-    }
-    else if (selector.selectedCells.size > 0) {
-
-        for (let cell of selector.selectedCells) {
+    let cells = selector.getSelected();
+    if(cells){
+        for (let cell of cells) {
             cell.styles = cell.styles = new cell.styles.constructor();
         }
     }
@@ -787,16 +912,71 @@ function selectedClearStyles() {
     }
 }
 
-function hexToRgb(hex) {
-    const bigint = parseInt(hex.slice(1), 16);
-    const r = (bigint >> 16) & 255;
-    const g = (bigint >> 8) & 255;
-    const b = bigint & 255;
-    return [r, g, b];
+function addComment(){
+    const cell = selector.selected
+    if(cell){
+        if(cell.styles.comment) cell.styles.comment.remove();
+        const comment = document.getElementById("add-comment-input").value
+        cell.styles.comment = new CellPopover(cell,"Komentarz",comment,"#a5ff0ab3");
+    }
 }
 
-function rgbToHex(r, g, b) {
-    return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+function removeComment(){
+    const cell = selector.selected
+    if(cell){
+        if(cell.styles.comment) cell.styles.comment.remove();
+        cell.styles.comment = false;
+    }
+}
+
+function getMovedList(cells,x,y){
+    if(cells){
+        const buffor = [];
+        for(let cell of cells){
+            let text = cell.text;
+            const newCell = selectedSheet.getCell(cell.address.column + x,cell.address.row + y);
+            if(newCell){
+                if(cell.calculaction){
+                    for(let usedCell of cell.calculaction.usedCels){
+                        const usednewCell = selectedSheet.getCell(usedCell.address.column + x,usedCell.address.row + y);
+                        if(usednewCell){
+                            text = text.replace(usedCell.fakeAddress,usednewCell.fakeAddress);
+                        }
+                        else{
+                            return false
+                        }
+                    }
+                }
+                buffor.push({
+                    "cell":newCell,
+                    "text":text,
+                    "style":cell.styles
+                })
+            }
+        }
+        return buffor;
+    }
+}
+
+function selectedMove(x,y){
+    let cells = selector.getSelected();
+    if(cells){
+        const buffor = getMovedList(cells,x,y);
+        for(let cell of cells){
+            cell.styles = new StyleList()
+            cell.clearData();
+        }
+
+        for(let data of buffor){
+            data.cell.text = data.text;
+            data.cell.styles = new StyleList(data.style);
+            data.cell.refresh();
+        }
+
+        cellInput.hide();
+        display.clearFuncInput();
+        selector.resetOldData();
+    }
 }
 
 // LISTENERS to accesories
@@ -819,7 +999,6 @@ document.getElementById("input-insert-date").addEventListener("input", insertTim
 document.getElementById("input-insert-time").addEventListener("input", insertTimeData);
 
 document.getElementById("timeline-format").addEventListener("input",(e)=>{insertTimeLine.updateFormat(e)});
-document.getElementsByName("timeline-direction").forEach(input=>{input.addEventListener("input",(e)=>{insertTimeLine.updateGrowing(e)});})
+document.getElementsByName("timeline-direction").forEach(input=>{input.addEventListener("input",(e)=>{insertTimeLine.updateGrowing(e)})});
 document.getElementById("timeline-step").addEventListener("input",(e)=>{insertTimeLine.updateStep(e)});
 document.getElementById("timeline-stepType").addEventListener("input",(e)=>{insertTimeLine.updateStepType(e)});
-
