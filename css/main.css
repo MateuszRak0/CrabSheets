@@ -16,6 +16,11 @@
     display: block;
     }
 
+
+#mainContent{
+    position: relative;
+    z-index: 1;
+}
 /* Body colors & Page Sizing */
 body{
     background-color: #000000;
@@ -83,6 +88,11 @@ body{
     background-color: rgba(0, 0, 0, 0.1);
 }
 
+.hideScroll{
+    -ms-overflow-style: none; /* IE 11 */
+    scrollbar-width: none; /* Firefox 64 */
+}
+
 .horizontal-scroll{
     overflow-x: auto;
     scroll-behavior: smooth;
@@ -109,6 +119,14 @@ body{
 
 .text-main{
     color: #ffe3ae;
+}
+
+.text-main2{
+    color: #919191;
+}
+
+.text-main2:hover{
+    color: #9e9e9e;
 }
 
 /*bg.black-1 in inputs*/
@@ -179,9 +197,9 @@ span.input-icon:active, .input-icon:active span{
 }
 
 .collapse-pined{
-    position: absolute;
-    top: 0;
-    left: 0;
+    position: relative;
+    /* top: 0;
+    left: 0; */
     z-index: 15;
 }
 
@@ -360,4 +378,14 @@ input[type="file"]{
 
 .navbar-brand:hover img{
     transform: rotate(10deg);
+}
+
+#contextMenu{
+    height: fit-content;
+    max-height: 0;
+    overflow: hidden;
+}
+
+#contextMenu.show{
+    max-height: 60vh !important;
 }

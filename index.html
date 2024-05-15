@@ -14,12 +14,12 @@
     <link rel="stylesheet" href="css/widgets.css">
 </head>
 
-<body>
+<body ondragstart="return false;" ondrop="return false;">
 
     <div class="fill d-flex flex-column" id="mainContent">
 
         <!-- TOPBAR & TOOLS -->
-        <div class="bg-dark text-light px-0 mb-1 border-bottom border-secondary">
+        <div class="bg-dark text-light px-0 mb-1 border-bottom border-secondary position-relative z-5">
 
             <!-- NAVBAR -->
             <nav class="navbar navbar-expand-md navbar-dark bg-black-1 p-0 ">
@@ -42,13 +42,14 @@
                                     Plik
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdownFile">
-                                    <li><a class="dropdown-item" href="#widget-fileInfo" data-bs-toggle="offcanvas"
-                                            href="#widget-fileInfo" role="button"
-                                            aria-controls="widget-fileInfo">Informacje</a></li>
-                                    <li><button class="dropdown-item" type="button" id="newFile" disabled>Nowy</button>
+                             
+                                    <li><button class="dropdown-item" type="button" id="newFile">Nowy</button>
                                     </li>
-                                    <li><button class="dropdown-item" type="button" disabled>Wczytaj</button></li>
-                                    <li><button class="dropdown-item" type="button" disabled>Zapisz</button></li>
+                                    <li><button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#loadFileWindow">Otwórz</button></li>
+                                    <li><button class="dropdown-item" type="button" onclick="downloadFile()">Zapisz</button></li>
+                                    <li><a class="dropdown-item" href="#widget-fileInfo" data-bs-toggle="offcanvas"
+                                        href="#widget-fileInfo" role="button"
+                                        aria-controls="widget-fileInfo">Informacje</a></li>
                                 </ul>
                             </li>
 
@@ -64,6 +65,8 @@
                                     <li><button class="dropdown-item" type="button" data-bs-toggle="offcanvas"
                                             data-bs-target="#offcanvas-insert-timeline"
                                             aria-controls="offcanvas-insert-timeline">Oś czasu</button></li>
+                                    <li><button class="dropdown-item" type="button" id="insert-variableData">Dane Przestawne</button></li>
+                                    <li><button class="dropdown-item" type="button" name="insert-progressBar">Pasek postępu</button></li>
                                 </ul>
                             </li>
 
@@ -73,10 +76,25 @@
                                     Narzędzia
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdownFile">
-                                    <li><button class="dropdown-item" type="button"
-                                            onclick="selectedClearData()">Wyczyść dane</button></li>
-                                    <li><button class="dropdown-item" type="button"
-                                            onclick="selectedClearStyles()">Wyczyść style</button></li>
+
+                                    <li>
+                                        <a class="dropdown-item" href="#">Wyczyść &raquo; </a>
+                                        <ul class="dropdown-menu dropdown-submenu dropdown-menu-dark">
+                                            <li>
+                                                <button class="dropdown-item" type="button" onclick="selectedClearData()">dane</button>
+                                            </li>
+                                            <li>
+                                                <button class="dropdown-item" type="button" onclick="selectedClearStyles()">style</button>
+                                            </li>
+                                            <li>
+                                                <button class="dropdown-item" type="button" onclick="selectedClearWWidgets()">Komponenty</button>
+                                            </li>
+                                        </ul>
+                                    </li>
+
+                        
+                                    <li><button class="dropdown-item" type="button" id="makeConstant">Oznacz jako Stałą</button>
+                                    </li>
                                     <li>
                                         <a class="dropdown-item" href="#">Przesuń zaznaczone &raquo; </a>
                                         <ul class="dropdown-menu dropdown-submenu dropdown-menu-dark">
@@ -102,18 +120,33 @@
                                 </ul>
                             </li>
 
-
                             <li class="nav-item dropdown ms-2">
                                 <a class="nav-link  dropdown-toggle" href="#" id="navbarDropdownFile" role="button"
                                     data-bs-toggle="dropdown" aria-expanded="false">
-                                    Widok
+                                    Preferencje
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdownFile">
-                                    <li><button class="dropdown-item" type="button" disabled>Coming soon</button></li>
-                                    <li><button class="dropdown-item" type="button" disabled>Coming soon</button></li>
+                                    <li>
+                                        <a class="dropdown-item" href="#">Kopiowanie &raquo; </a>
+                                        <ul class="dropdown-menu dropdown-submenu dropdown-menu-dark">
+                                            <li>
+                                                <input class="btn-check" type="radio" name="copy-options" id="copy-options-1" value="0" checked>
+                                                <label class="btn btn-secondary dropdown-item" for="copy-options-1">Zmień zależności w obliczeniach</label>  
+                                            </li>
+                                            <li>                                           
+                                                <input class="btn-check" type="radio" name="copy-options" id="copy-options-2" value="1">
+                                                <label class="btn btn-secondary dropdown-item" for="copy-options-2" >Niezmieniaj obliczeń</label>                                       
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <input class="btn-check" type="checkbox" id="auto-saving">
+                                        <label class="btn btn-secondary dropdown-item" for="auto-saving">Auto-Zapis</label>  
+                                    </li>
+
+                                    <li><button class="dropdown-item" type="button" onclick="askAboutCookies()">Zgoda cookies</button></li>
                                 </ul>
                             </li>
-
 
                             <li class="nav-item dropdown ms-2">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownFile" role="button"
@@ -179,7 +212,6 @@
                         </select>
                     </div>
 
-
                     <!-- TEXT SIZE -->
                     <div class="p-1 ps-2 mx-1 border-start">
                         <div class="text-center"><b>A</b><span class="icon-resize-vertical"></span></div>
@@ -199,7 +231,7 @@
 
                     <!-- TEXT ALIGN -->
                     <div class="p-1  ps-2 mx-1 border-start">
-                        <div class="text-center col-12"><b>A</b><span class="icon-resize-horizontal"></span></div>
+                        <div class="text-center col-12"><span class="icon-left-bold"></span><b>A</b><span class="icon-right-bold"></span></div>
 
                         <div class="d-flex">
                             <div class="input-icon">
@@ -233,7 +265,7 @@
                     <div class="p-1  ps-2 mx-1 border-start">
                         <div class="text-center col-12" data-bs-toggle="tooltip" data-bs-placement="left"
                             title="zaokrąglij wynik do miejsc po przecinku"><b>00.<span
-                                    id="input-round-result">10</span></b></div>
+                                    id="input-round-result">04</span></b></div>
 
                         <div class="d-flex">
 
@@ -255,9 +287,9 @@
                     <!-- TEXT ADDONS  -->
                     <div class="d-flex flex-column mx-1 p-1 ps-2 border-start">
 
-                        <div class="d-flex mx-1">
+                        <div class="d-flex mx-2">
 
-                            <button type="button" class="p-0 input-icon btn btn-dark" data-bs-toggle="tooltip"
+                            <button type="button" class="p-0 input-icon btn btn-dark me-1" data-bs-toggle="tooltip"
                                 id="add-end-symbol-1" data-bs-placement="left" title="oznacz wynik jako procent">
                                 <span class="icon-percent"></span>
                             </button>
@@ -270,9 +302,9 @@
                             </button>
 
                         </div>
-                        <div class="d-flex mx-1 mt-1">
+                        <div class="d-flex mx-2 mt-1">
 
-                            <button type="button" class="p-0 input-icon btn btn-dark" data-bs-toggle="tooltip"
+                            <button type="button" class="p-0 input-icon btn btn-dark me-1" data-bs-toggle="tooltip"
                                 data-bs-placement="left" title="Dodaj komentarz" id="add-comment">
                                 <span class="icon-comment"></span>
                             </button>
@@ -347,34 +379,24 @@
                     <!-- INSERT HEADER-->
                     <div class="d-flex mx-1 p-1 ps-2 border-start position-relative">
                         <button class="btn btn-sm btn-dark" type="button" id="addWidget-header">
-                            <span class="icon-medium"></span><span class="icon-circle"></span>
-                            <span class="d-block">Nagłówek</span>
+                            <span class="icon-doc-text"></span>
+                            <span class="d-block">Tekst</span>
                         </button>
                     </div>
 
-                    <!-- INSERT SYMBOL-->
+                    <!-- INSERT CHECKBOX -->
                     <div class="d-flex mx-1 p-1 ps-2 border-start position-relative">
-                        <button class="btn btn-sm btn-dark disabled" type="button" data-bs-toggle="offcanvas"
-                            data-bs-target="#offcanvas-select-symbol" aria-controls="offcanvas-select-symbol">
-                            <span class="icon-dollar"></span>
-                            <span class="d-block">Symbol</span>
+                        <button class="btn btn-sm btn-dark" type="button" name="insert-checkBox">
+                            <span class="icon-check"></span>
+                            <span class="d-block">Pole Wyboru</span>
                         </button>
                     </div>
 
-                    <!-- INSERT IMAGE -->
+                    <!-- INSERT PROGRESS-->
                     <div class="d-flex mx-1 p-1 ps-2 border-start position-relative">
-                        <button class="btn btn-sm btn-dark" type="button" id="addWidget-image">
-                            <span class="icon-picture"></span>
-                            <span class="d-block">Zdjęcie</span>
-                        </button>
-                    </div>
-
-                    <!-- Insert Component -->
-                    <div class="d-flex mx-1 p-1 ps-2 border-start position-relative">
-                        <button class="btn btn-sm btn-dark disabled" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapse-components" aria-expanded="false" aria-controls="collapse-components">
-                            <span class="icon-cubes"></span>
-                            <span class="d-block">Kompontenty</span>
+                        <button class="btn btn-sm btn-dark" type="button" name="insert-progressBar">
+                            <span class="icon-progress-3"></span>
+                            <span class="d-block">Pasek postęp</span>
                         </button>
                     </div>
 
@@ -426,38 +448,34 @@
                         aria-expanded="false" aria-controls="collapse-charts"></button>
                 </div>
 
-                <!-- Select Component -->
-                <div class="collapse collapse-pined bg-dark w-100" aria-expanded="false" id="collapse-components">
-                    <div class="px-3 text-light d-flex justify-content-between align-items-center">
-                        <div class="d-flex align-items-center horizontal-scroll ">
-                            <div class="px-3">komponenty: </div>
+                <!-- ProgressBar Tools -->
+                <div class="collapse collapse-pined bg-dark w-100" aria-expanded="false" id="collapse-progressBar">
+                   
+                        <div class="row horizontal-scroll px-2 align-items-end">
+                            <div class="col-3">
+                                <span class="text-secondary">Minimalna Wartość</span>
+                                <input type="text" class="form-control form-control-sm bg-black-1 border-0"  id="progressBar-min">
+                            </div>
 
-             
+                            <div class="col-3">
+                                <span class="text-secondary">Aktualna Wartość</span>
+                                <input type="text" class="form-control form-control-sm me-2 bg-black-1 border-0" id="progressBar-actual">
+                             </div>
+
+                            <div class="col-3">
+                                <span class="text-secondary">Maksymalna Wartość</span>
+                                <input type="text" class="form-control form-control-sm me-2 bg-black-1 border-0" id="progressBar-max">
+                            </div>
+
+                            <div class="col-3">
+                                <button class="btn btn-success btn-sm w-100"  aria-label="Close" data-bs-toggle="collapse" data-bs-target="#collapse-progressBar"
+                                aria-expanded="false" aria-controls="collapse-progressBar" id="progressBar-apply">Zatwierdź</button>
+                            </div>
                         </div>
-                    </div>
+                    
                     <button type="button" class="icon-angle-double-up btn-sm btn btn-primary w-100 py-0"
-                        aria-label="Close" data-bs-toggle="collapse" data-bs-target="#collapse-components"
-                        aria-expanded="false" aria-controls="collapse-components"></button>
-                </div>
-
-                <!-- Widget-Image Settings -->
-                <div class="collapse collapse-pined bg-dark w-100" aria-expanded="false" id="collapse-image-options">
-                    <div class="text-light">
-
-                        <div class="input-group w-auto my-1 px-2">
-                            <input type="file" class="form-control bg-black-1 text-light border-0"
-                                placeholder="Wybierz Zdjęcie" id="widgetTool-image-input">
-                            <button type="button" class="btn bg-black-1 d-block icon-right-bold"
-                                id="widgetTool-image-apply">Zatwierdź</button>
-                            <button type="button" class="btn bg-black-1 d-block icon-resize-normal "
-                                id="image-size-fill">Dopasuj</button>
-                            <button type="button" class="btn bg-black-1 d-block icon-resize-full"
-                                id="image-size-cover">Zachowaj</button>
-                        </div>
-                        <button type="button" class="icon-angle-double-up btn-sm btn btn-primary w-100 py-0"
-                            aria-label="Close" data-bs-toggle="collapse" data-bs-target="#collapse-image-options"
-                            aria-expanded="false" aria-controls="collapse-image-options"></button>
-                    </div>
+                        aria-label="Close" data-bs-toggle="collapse" data-bs-target="#collapse-progressBar"
+                        aria-expanded="false" aria-controls="collapse-progressBar"></button>
                 </div>
 
                 <!-- Units symbols -->
@@ -512,7 +530,7 @@
 
             <!-- CELL DATA DISPLAY -->
             <div class="bg-black-1 py-1 px-2">
-                <div class="input-group input-group-sm rounded-pill">
+                <div class="input-group input-group-sm">
                     <span class="input-group-text bg-dark px-2 text-light border-0 hover-effect"
                         id="cellData-cords">-:-</span>
                     <button class="btn btn-dark" type="button" id="cellData-mode">Funkcja:</button>
@@ -530,7 +548,6 @@
             </div>
         </div>
 
-
         <!-- CANVAS & WIDGETS -->
         <div class=" bg-dark flex-grow-1 overflow-auto position-relative dark-scroll withBtn" id="canvas-container">
             <div id="widgetTools_base" class="hidden">
@@ -539,35 +556,35 @@
             </div>
             <input type="text" id="cellInput" class="position-absolute hidden">
             <div id="mathFunctions-container" class="position-absolute d-flex flex-column p-1 dark-scroll hidden"></div>
-            <!-- <div class="switchTable">
-                <select aria-label="" id="">
-                    <option value="horizontal">Styczeń</option>
-                    <option value="vertical" selected>Luty</option>
-                </select>
-            </div> -->
+            <div class="position-fixed z-10 d-flex flex-column" id="contextMenu">
+                <button class="btn btn-sm bg-black-1 d-block" type="button" onclick='copiedStorage.saveData()'>Kopiuj</button>
+                <button class="btn btn-sm bg-black-1 d-block" type="button" onclick='copiedStorage.saveData(true)'>Wytnij</button>
+                <button class="btn btn-sm bg-black-1 d-block" type="button" onclick='copiedStorage.pasteData()'>Wklej</button>
+            </div>
             <canvas id="mainCanvas" class="position-relative" width="2000" height="2000"></canvas>
         </div>
-
 
         <!-- FOOTER -->
         <div class="px-2 py-1 bg-dark text-light d-flex">
             <div class="me-3">
 
                 <div class="input-group flex-nowrap">
-                    <button class="btn btn-sm p-1 btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="right"
+
+                    <button class="btn btn-sm p-1 btn-dark" data-bs-toggle="tooltip" data-bs-placement="right"
+                    title="Usuń Wybrany" id="sheet-remove">
+                    <span class="icon-doc-remove"></span>
+                    </button>
+
+                    <button class="btn btn-sm p-1 btn-dark" data-bs-toggle="tooltip" data-bs-placement="right"
+                    title="Kopiuj Wybrany" id="sheet-copy">
+                    <span class="icon-docs"></span>
+                    </button>
+
+                    <button class="btn btn-sm p-1 btn-dark" data-bs-toggle="tooltip" data-bs-placement="right"
                         title="Dodaj Nowy" id="sheet-new">
                         <span class="icon-doc-add"></span>
                     </button>
 
-                    <button class="btn btn-sm p-1 btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="right"
-                        title="Kopiuj Wybrany" id="sheet-copy">
-                        <span class="icon-docs"></span>
-                    </button>
-
-                    <button class="btn btn-sm p-1 btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="right"
-                        title="Usuń Wybrany" id="sheet-remove">
-                        <span class="icon-doc-remove"></span>
-                    </button>
                 </div>
 
             </div>
@@ -575,7 +592,7 @@
             <div class="bg-black-1 d-flex flex flex-grow-1">
 
                 <!-- Scroll Back -->
-                <button class="btn btn-sm  px-1 btn-secondary" value="-1" name="available-sheets-scroll-control">
+                <button class="btn btn-sm p-0 btn-secondary" value="-1" name="available-sheets-scroll-control">
                     <span class="icon-left-bold"></span>
                 </button>
 
@@ -591,7 +608,7 @@
 
 
                 <!-- Scroll Forward -->
-                <button class="btn btn-sm  px-1 btn-secondary" value="1" name="available-sheets-scroll-control">
+                <button class="btn btn-sm  p-0 btn-secondary" value="1" name="available-sheets-scroll-control">
                     <span class="icon-right-bold"></span>
                 </button>
 
@@ -602,44 +619,15 @@
 
     </div>
 
-
-    <!-- OFFCANVAS LIST -->
-    <!-- SYMBOLS -->
-    <div class="offcanvas offcanvas-bottom bg-black-1 pe-1 pb-2" data-bs-scroll="true" data-bs-backdrop="false"
-        tabindex="-1" id="offcanvas-select-symbol">
-        <div class="offcanvas-header bg-dark p-1 mb-1">
-            <h5 class="offcanvas-title text-light fw-bolder">Lista symboli</h5>
-            <button type="button" class="btn-close btn-close-white text-reset" data-bs-dismiss="offcanvas"
-                aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body pt-0 px-0 ps-1 dark-scroll">
-            <div class="d-flex flex-wrap pt-0 horizontal-scroll py-2" id="collapse-symbol-container">
-                <!-- Symbols added by pageEvents.JS -->
-            </div>
-        </div>
-    </div>
-
-    <!-- DYNAMIC PAGE -->
-    <div class="offcanvas offcanvas-end bg-black-1 w-100 p-1" data-bs-scroll="true" data-bs-backdrop="false"
-        tabindex="-1" id="dynamic-page">
-        <div class="offcanvas-header bg-primary py-3">
-            <h5 class="offcanvas-title text-light fw-bolder">Wprowadzenie</h5>
-            <button type="button" class="ms-auto btn-close btn-close-white text-reset" data-bs-dismiss="offcanvas"
-                aria-label="Close"></button>
-        </div>
-        <iframe src="help.html" frameborder="0" class="fill"></iframe>
-
-    </div>
-
+<!-- MODALS -->
     <!-- approveActionWindow -->
-    <div class="modal fade" id="approveActionWindow" tabindex="-1" aria-labelledby="exampleModalLabel"
+    <div class="modal fade" id="approveActionWindow" tabindex="-1"
         data-bs-backdrop="static" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content bg-dark text-light">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="approveActionWindow-title">Modal title</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
+                <div class="modal-header justify-content-start">
+                    <img src="animal-2029675.svg" alt="CrabOffice logo" style="width: 35px;">
+                    <h5 class="modal-title ms-2" id="approveActionWindow-title">Modal title</h5>
                 </div>
                 <div class="modal-body" id="approveActionWindow-description">
                     Example Descr
@@ -652,6 +640,41 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- LoadFileInput -->
+    <div class="modal fade" id="loadFileWindow" tabindex="-1"
+        data-bs-backdrop="static" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content bg-dark text-light">
+                <div class="modal-header">
+                    <h5 class="modal-title">Wybierz plik do wczytania</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="file" class="form-control" id="loadFileInput">
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" onclick="loadFile()" data-bs-dismiss="modal"
+                    aria-label="Close">Wczytaj</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- OFFCANVAS -->
+
+    <!-- DYNAMIC PAGE -->
+    <div class="offcanvas offcanvas-end bg-black-1 w-100 p-1" data-bs-scroll="true" data-bs-backdrop="false"
+        tabindex="-1" id="dynamic-page">
+        <div class="offcanvas-header bg-primary py-3">
+            <h5 class="offcanvas-title text-light fw-bolder">Wprowadzenie</h5>
+            <button type="button" class="ms-auto btn-close btn-close-white text-reset" data-bs-dismiss="offcanvas"
+                aria-label="Close"></button>
+        </div>
+        <iframe src="help.html" frameborder="0" class="fill"></iframe>
+
     </div>
 
     <!-- Add Hyperlink Window -->
@@ -699,32 +722,32 @@
         <div class="offcanvas-body dark-scroll">
             <div>
                 Data Utworzenia:
-                <input type="text" class="form-control" readonly id="file-date">
+                <input type="text" class="form-control form-control-sm" readonly id="file-date">
             </div>
 
             <div class="mt-2">
                 <span class="text-light">Nazwa: </span>
-                <input type="text" class="form-control" id="file-name" placeholder="Bez Nazwy">
+                <input type="text" class="form-control form-control-sm" id="file-name" placeholder="Bez Nazwy">
             </div>
 
             <div class="mt-2">
                 <span class="text-light">Autor: </span>
-                <input type="text" class="form-control" id="file-author" placeholder="Brak Autora">
+                <input type="text" class="form-control form-control-sm" id="file-author" placeholder="Brak Autora">
             </div>
 
             <div class="mt-2 mb-3">
                 <span class="text-light">Opis: </span>
-                <textarea class="form-control" cols="30" rows="10" id="file-description"
+                <textarea class="form-control form-control-sm" cols="30" rows="10" id="file-description"
                     placeholder="Brak Opis"></textarea>
             </div>
 
-            <button class="d-block ms-auto btn btn-primary">Zapisz</button>
+            <button class="d-block ms-auto btn btn-primary" onclick="fileInfo.save()">Zapisz</button>
 
         </div>
     </div>
 
     <!-- Chart Settings -->
-    <div class="offcanvas offcanvas-end bg-dark text-light close-left-widget " data-bs-scroll="true"
+    <div class="offcanvas offcanvas-end bg-dark text-light close-left-widget z-5" data-bs-scroll="true"
         data-bs-backdrop="false" tabindex="-1" id="widgetTool-chart">
         <button type="button" class="close-left d-none d-sm-block" data-bs-dismiss="offcanvas"
             aria-label="Close">></button>
@@ -736,16 +759,14 @@
         </div>
         <div class="offcanvas-body">
 
-
-            <div class="position-absolute end-0 start-0 top-0 z-5">
-                <div id="chartError-1" class="toast hide w-100" role="alert" aria-live="assertive" aria-atomic="true">
-                    <div class="toast-header bg-danger border-0">
-                        <strong class="me-auto text-dark">Brak danych</strong>
-                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                    </div>
-                    <div class="toast-body bg-dark text-light border-bottom">
-                        Nie wpisałeś żanych danych do wykresu.
-                    </div>
+            <div id="sysMsg-error-chart" class="toast position-absolute bottom-0 start-0 bg-dark w-100" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <img src="animal-2029675.svg" alt="CrabOffice logo" style="width: 35px;">
+                    <strong class="me-auto">PanCrab</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body text-dark bg-light">
+                    Najpierw wpisz jakieś dane !
                 </div>
             </div>
 
@@ -873,7 +894,7 @@
                             </div>
 
                             <div class="border-top border-secondary pt-1 mt-1 dark-scroll">
-                                <ol id="chartData-list">
+                                <ol id="chartData-list" class="data-list">
                                     <!-- Chart data  -->
                                 </ol>
                                 <button class="btn-success btn btn-sm w-75 mx-auto d-block"
@@ -953,20 +974,10 @@
             <hr>
             <span class="mt-3 mb-1 d-block fw-bold">Kolorystyka:</span>
             <div class="d-flex flex-wrap justify-content-around">
-                <div class="form-check form-check-inline mt-2">
-                    <input class="form-check-input" type="radio" id="tableStyle-1" value="" name="table-style-color"
-                        checked>
-                    <label class="form-check-label ms-1" for="tableStyle-1">
-                        <!-- Bez stylów -->
-                        <span class="color-example" style="background-color: rgba(0, 0, 0, 0.5);"></span>
-                        <span class="color-example" style="background-color: rgba(0, 0, 0, 0.5);"></span>
-                        <span class="color-example" style="background-color: rgba(0, 0, 0, 0.5);"></span>
-                    </label>
-                </div>
 
                 <div class="form-check form-check-inline mt-2">
                     <input class="form-check-input" type="radio" id="tableStyle-2" value="#a569bd"
-                        name="table-style-color">
+                        name="table-style-color" checked>
                     <label class="form-check-label ms-1" for="tableStyle-2">
                         <span class="color-example" style="background-color: rgb(210, 180, 222);"></span>
                         <span class="color-example" style="background-color: #a569bd;"></span>
@@ -1013,6 +1024,17 @@
                         <span class="color-example" style="background-color: #3b6127;"></span>
                     </label>
                 </div>
+
+                <div class="form-check form-check-inline mt-2">
+                    <input class="form-check-input" type="radio" id="tableStyle-1" value="" name="table-style-color">
+                    <label class="form-check-label ms-1" for="tableStyle-1">
+                        <!-- Bez stylów -->
+                        <span class="color-example" style="background-color: rgba(0, 0, 0, 0.5);"></span>
+                        <span class="color-example" style="background-color: rgba(0, 0, 0, 0.5);"></span>
+                        <span class="color-example" style="background-color: rgba(0, 0, 0, 0.5);"></span>
+                    </label>
+                </div>
+
             </div>
             <button class="btn btn-success d-block mt-4 ms-auto" type="button"
                 onclick="styleTable.makeTable()">Wstaw</button>
@@ -1077,6 +1099,7 @@
             </div>
 
             <hr>
+     
             <span class="mt-3 mb-1 d-block fw-bold">Wybierz Zakres:</span>
             <div class="row">
                 <div class="col-6">
@@ -1091,6 +1114,12 @@
                     <label for="timeline-label-to"></label>
                 </div>
             </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="timeline-include-range">
+                <label class="form-check-label" for="timeline-include-range" checked>
+                  automatycznie oblicz zakres do
+                </label>
+              </div>
             <div class="mt-4 d-flex justify-content-end">
                 <button class="btn btn-success me-2" type="button"
                     onclick="insertTimeLine.recalculate()">Przelicz</button>
@@ -1102,6 +1131,66 @@
         </div>
     </div>
 
+    <!-- VariableData -->
+    <div class="offcanvas offcanvas-end w-25" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvas-variable-data">
+        <div class="offcanvas-header bg-black-1 text-light">
+          <h5 class="offcanvas-title">Dane Przestawne</h5>
+          <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body bg-dark text-light">
+          <div class=" pb-3">
+            Zmieniaj dane w wielu komórkach jednocześnie za pomocą prostej rozsuwanej listy
+          </div>
+          <hr>
+          <div class="d-flex flex-column">
+            <button class="btn btn-secondary mt-1" id="variableData-add-set">Nowy zakres</button>
+            <ol id="variableDataOptions" class="data-list">
+                
+            </ol>
+          </div>
+          <button class="btn d-block ms-auto btn-success" id="variableData-save-data">Zapisz</button>
+   
+          
+
+        </div>
+      </div>
+
+<!-- Toasts - Sys Messeges -->
+    <!-- CAN'T MOVE -->
+        <div id="sysMsg-error-space" class="toast position-fixed bottom-0 end-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <img src="animal-2029675.svg" alt="CrabOffice logo" style="width: 35px;">
+                <strong class="me-auto">PanCrab</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                Nie udało się wykonać tej operacji z powodu niewystarczającej ilości miejsca dla danych lub obliczeń
+            </div>
+        </div>
+    <!-- Download File will start soon -->
+    <div id="sysMsg-info-download" class="toast position-fixed top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <img src="animal-2029675.svg" alt="CrabOffice logo" style="width: 35px;">
+            <strong class="me-auto">PanCrab</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body bg-light">
+            Pobieranie pliku
+            <br>
+            Jeżeli pobieranie się nie rozpoczyna <a href="" id="fileDownloadLink">kliknij tutaj</a>.
+        </div>
+    </div>
+    <!-- CAN'T MOVE -->
+    <div id="sysMsg-error-insert" class="toast position-fixed bottom-0 end-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <img src="animal-2029675.svg" alt="CrabOffice logo" style="width: 35px;">
+            <strong class="me-auto">PanCrab</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            Najpierw zaznacz komórke do której chcesz wstawić wybrany komponent
+        </div>
+    </div>
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>

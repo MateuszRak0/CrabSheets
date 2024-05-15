@@ -1,3 +1,15 @@
+function addStaticWidget(constructor){
+    const cells = selector.getSelected();
+    if(cells.length > 0){
+        for(let cell of cells){
+            new constructor(false,false,cell);
+        }
+    }
+    else{
+        sysMsg_error_insert.show();
+    }
+}
+
 const widgetTools_base = {
     selectedWidget:false,
     editorNode:document.getElementById("widgetTools_base"),
@@ -33,7 +45,7 @@ const widgetTools_base = {
 
     actionStart:function(e,widget){
         if(this.selectedWidget){
-            if(this.selectedWidget == widget){
+            if(this.selectedWidget == widget && widget.moving){
                 this.startMove(e);
             }
             else{
@@ -47,16 +59,7 @@ const widgetTools_base = {
                 this.selectedWidget.container.classList.add("active")
                 this.positionEditor();
                 StyleInput.loadCell(widget);
-                if(selector.selected){
-                    selector.selected.refresh();
-                    selector.selected = false;
-                    display.restartData();
-                    cellInput.hide();
-                    selector.resetOldData();
-                }
-                else{
-                    selector.resetOldData();
-                }
+                afterCellEdit();
             }
         }
         else{
@@ -64,16 +67,7 @@ const widgetTools_base = {
             StyleInput.loadCell(widget);
             this.selectedWidget.container.classList.add("active")
             this.positionEditor();
-
-            if(selector.selected){
-                selector.selected.refresh();
-                selector.selected = false;
-                display.restartData();
-                cellInput.hide();
-            }
-            else{
-                selector.resetOldData();
-            }
+            afterCellEdit()
         }
 
     },
@@ -116,12 +110,14 @@ const widgetTools_base = {
     },
 
     resizeStart:function(e){
-        this.selectedWidget.container.classList.add("resizing");
-        this.startX = this.selectedWidget.container.offsetLeft ;
-        this.startY = this.selectedWidget.container.offsetTop;
-        this.nextFunc = this.inResize
-        this.editorNode.classList.add("hidden")
-        selector.blocked = true;
+        if(this.selectedWidget.moving){
+            this.selectedWidget.container.classList.add("resizing");
+            this.startX = this.selectedWidget.container.offsetLeft ;
+            this.startY = this.selectedWidget.container.offsetTop;
+            this.nextFunc = this.inResize
+            this.editorNode.classList.add("hidden")
+            selector.blocked = true;
+        }
     },
 
     inResize:function(e){
@@ -185,8 +181,8 @@ class WidgetTools{
     show(widget){
         if(widget != this.selectedWidget){
             this.selectedWidget = widget;
-            this.loadData();
         }
+        this.loadData();
         this.widgetObject.show();
     }
 
@@ -198,39 +194,30 @@ class WidgetTools{
     }
 }
 
-
 const mainContent = document.getElementById("mainContent");
-const widgetTools_image = new WidgetTools(document.getElementById("collapse-image-options"));
 const widgetTools_chart = new WidgetTools(document.getElementById("widgetTool-chart"));
-
+const widgetTool_variableData = new WidgetTools(document.getElementById("offcanvas-variable-data"));
+const widgetTool_progressBar = new WidgetTools(document.getElementById("collapse-progressBar"));
 
 // Widgets / Components
-
-class WidgetInteractive{
-    constructor(){
-        this.styles = new StyleListFilled()//baseStyles();
+class Widget{
+    constructor(sheet,loadedWidget){
+        this.styles = new StyleListFilled();
         this.container = document.createElement("div");
-        this.container.classList.add("interacive-widget");
+        this.sheet = sheet || selectedSheet;
         canvasContainer.appendChild(this.container);
         this.container.addEventListener("mousedown",(e)=>{
             widgetTools_base.actionStart(e,this);
             if(this.tools){ this.tools.show(this)};
         });
-        this.container.style.left = `${100+canvasContainer.scrollLeft}px`; this.container.style.top = `${100+canvasContainer.scrollTop}px`;
-        selectedSheet.widgets.add(this);
-        this.maxSize = {
-            x:999,
-            y:999,
+        if(loadedWidget){
+            this.container.style.left = loadedWidget.posX;
+            this.container.style.top = loadedWidget.posY;
+            this.container.style.width = loadedWidget.sizeX;
+            this.container.style.height = loadedWidget.sizeY;
+            this.styles = new this.styles.constructor(loadedWidget.styles);
         }
-    }
-    
-    destroy(){
-        this.container.removeEventListener("mousedown",(e)=>{
-            widgetTools_base.actionStart(e,this);
-            if(this.tools){ this.tools.show(this)};
-        });
-        this.container.remove();
-        selectedSheet.widgets.delete(this);
+        this.sheet.widgets.add(this)
     }
 
     show(){
@@ -252,41 +239,301 @@ class WidgetInteractive{
         return {x:x,y:y}
     }
 
+    destroy(){
+        this.container.removeEventListener("mousedown",(e)=>{
+            widgetTools_base.actionStart(e,this);
+            if(this.tools){ this.tools.show(this)};
+        });
+        this.container.remove();
+        selectedSheet.widgets.delete(this);
+    }
+
+    packToSaving(){
+        return {
+            posX:this.container.style.left,
+            posY:this.container.style.top,
+            sizeX:this.container.style.width,
+            sizeY:this.container.style.height,
+            styles:this.styles,
+        }
+    }
+
     refreshStyles(){
         let fillColor =  this.styles.fillColor || "transparent";
         this.container.style.backgroundColor = fillColor;
         if(this.styles.strokeColor){
-            this.container.style.border = `${this.styles.strokeWidth}px solid ${this.styles.strokeColor}`;
+            this.container.style.border = `3px solid ${this.styles.strokeColor}`;
+        }
+        else{
+            this.container.style.border = "";
         }
     }
 }
 
-//IMG
-class WidgetImage extends WidgetInteractive{
-    constructor(){
-        super();
-        this.type="image";
-        this.tools = widgetTools_image;
-        this.file;
-        this.container.classList.add("widget-image");
-        this.container.style.backgroundImage = `url('camera.png')`;
-        this.container.style.width = "100px";
-        this.container.style.height = "70px";
+// Static ( pined to cell )
+class WidgetStatic extends Widget{
+    constructor(sheet,loadedWidget,cell){
+        super(sheet,loadedWidget);
+        this.cell = cell;
+        if(loadedWidget && !cell) this.cell = sheet.cells.get(loadedWidget.pinedTo);
+        this.cell.locked = this; // Lock cell under the widget to prevent click on it
+        this.container.classList.add("static-widget");
+        this.container.style.left = `${this.cell.x}px`;
+        this.container.style.top = `${this.cell.y}px`;
+    }
+
+    packToSaving(){
+        const buffor = super.packToSaving();
+        buffor.pinedTo = this.cell.stringAddress;
+        return buffor
+    }
+
+    destroy(){
+        this.cell.locked = false;
+        super.destroy();
+    }
+}
+
+class WidgetVariableData extends WidgetStatic{
+    constructor(sheet,loadedWidget,cell){
+        super(sheet,loadedWidget,cell);
+        this.styles = new StyleListFlush();
+        this.type="VARDATA";
+        this.tools = widgetTool_variableData;
+        this.select = document.createElement("select");
+        this.select.addEventListener("input",(e)=>{this.loadDataToCells(e)})
+        this.container.appendChild(this.select);
+        this.container.classList.add("switchTable");
+        this.options = {};
+        this.usedCells = [];
+        this.value = "0";
+
+        if(loadedWidget){
+            for(let option of Object.values(loadedWidget.data.options)){
+                this.addOption(option.name,option.values)
+            }
+            this.options = loadedWidget.data.options;
+            for(let cell of loadedWidget.data.cells){ this.usedCells.push(sheet.cells.get(cell)) }
+            this.loadDataToCells(false,true);
+            
+        }
+        else{
+            this.addOption();
+        }
+    }
+
+    refreshStyles(){
+        this.select.style.textAlign = this.styles.textAlign;
+        this.select.style.color = this.styles.color;
+        this.select.style.fontSize = this.styles.fontSize;
+        this.select.style.textDecoration = this.styles.fontType;
+        this.select.style.fontFamily = this.styles.fontFamily;
+        super.refreshStyles()
+        super.refreshStyles()
+    }
+
+    loadDataToCells(e,firstLoad){
+        if(this.usedCells){
+            if(!firstLoad){
+                this.saveDataToCells()
+                this.value = e.target.value;
+            } 
+            for(let cell of this.usedCells){
+                let loaded = this.options[this.value].values[cell.stringAddress];
+                (!loaded) ? cell.text = "" : cell.text = loaded;
+                cell.refresh()
+            }
+        }
+    }
+
+    saveDataToCells(){
+        this.options[this.value].values = {};
+        for(let cell of this.usedCells){
+            this.options[this.value].values[cell.stringAddress] = cell.text;
+        }
+    }
+
+    updata(names){
+        this.usedCells = selector.getSelected();
+        this.clearData();
+        for(let name of names ){ this.addOption(name) };
+        this.select.value = "0";
+    }
+
+    clearData(){
+        this.options = {};
+        this.select.innerHTML = "";
+    }
+
+    addOption(name,values={}){
+        let option = document.createElement("option");
+        option.innerHTML = name || "Zakres 1";
+        option.value = Object.keys(this.options).length;
+        this.select.appendChild(option);
+        this.options[option.value] = {
+            name:option.innerHTML,
+            values:values
+        }
+    }
+
+    packToSaving(){
+        const buffor = super.packToSaving();
+        buffor.type = "VARTABLE";
+        buffor.data = {
+            options:this.options,
+            cells:[],
+        };
+        for(let cell of this.usedCells) buffor.data.cells.push(cell.stringAddress);
+        return buffor
+    }
+
+    destroy(){
+        this.select.removeEventListener("input",(e)=>{this.loadDataToCells(e)})
+        super.destroy();
+    }
+}
+
+class WidgetProgressBar extends WidgetStatic{
+    constructor(sheet,loadedWidget,cell){
+        super(sheet,loadedWidget,cell);
+        this.tools = widgetTool_progressBar;
+        this.type="PROGRESS";
+        this.container.classList.add("progress");
+        this.progress = document.createElement("div");
+        this.progress.classList.add("progress-bar","progress-bar-striped");
+        this.container.appendChild(this.progress);
+        this.usedCells = new Set();
+        this.data = {
+            min:0,
+            actual:50,
+            max:100,
+        }
+
+        if(loadedWidget){
+            this.data.min = loadedWidget.data.min;
+            this.data.max = loadedWidget.data.max;
+            this.data.actual = loadedWidget.data.actual;
+        }
+        else{
+            this.styles.fillColor = "#007bff";
+        }
+        this.refreshStyles();
+        this.refresh();
+    }
+
+    changeValue(max,min,actual){
+        const length = (max-min);
+        let step = (actual / Math.abs(length)) * 100;
+        if(step < 0){  this.progress.classList.add("bg-danger")}
+        else{ this.progress.classList.remove("bg-danger") }
+        step = `${step.toFixed(2)}%`;
+        this.progress.style.width = step;
+        this.progress.innerHTML = step;
+    }
+
+    lookForCellAddress(value){
+        let cell = lookForCellAddress(value,this.sheet);
+        if(cell){
+            this.usedCells.add(cell);
+            cell.usedInCharts.add(this);
+            let text = cell.getText();
+            if(text.length == 0) text = 0;
+            return text
+        }
+    else{
+        return value
+    }
+    }
+
+    update(){
+        for(let cell of this.usedCells){ cell.usedInCharts.delete(this); }
+        this.usedCells = new Set();
+        this.refresh();
+    }
+
+    refresh(){
+        let max = this.lookForCellAddress(this.data.max);
+        let min = this.lookForCellAddress(this.data.min);
+        let actual = this.lookForCellAddress(this.data.actual);
+        this.changeValue(max,min,actual);
+    }
+
+    refreshStyles(){
+        this.progress.style.color = this.styles.color;
+        this.progress.style.backgroundColor = this.styles.fillColor
+        if(this.styles.strokeColor){
+            this.container.style.border = `3px solid ${this.styles.strokeColor}`;
+        }
+    }
+
+    packToSaving(){
+        const buffor = super.packToSaving();
+        buffor.type = "PROGRESS";
+        buffor.data = this.data;
+        return buffor
+    }
+}
+
+class WidgetCheckBox extends WidgetStatic{
+    constructor(sheet,loadedWidget,cell){
+        super(sheet,loadedWidget,cell);
+        this.styles = new StyleListFlush();
+        this.type="CHECKBOX";
+        this.container.classList.add("widget-checkbox");
+        this.checkbox = document.createElement("input");
+        this.checkbox.type = "checkbox";
+        this.input = document.createElement("input");
+        this.input.type = "text";
+        this.container.appendChild(this.checkbox);
+        this.container.appendChild(this.input);
+        if(loadedWidget){
+            this.checkbox.checked = loadedWidget.data.checked;
+            this.input.value = loadedWidget.data.value;
+        }
+    }
+    
+    refreshStyles(){
+        super.refreshStyles();
+        this.input.style.color = this.styles.color;
+    }
+
+    packToSaving(){
+        const buffor = super.packToSaving();
+        buffor.type = "CHECKBOX";
+        buffor.data = {
+            checked:this.checkbox.checked,
+            value:this.input.value
+        };
+        return buffor
+    }
+}
+
+// Interactive ( Moving and resize)
+class WidgetInteractive extends Widget{
+    constructor(sheet,loadedWidget){
+        super(sheet,loadedWidget);
+        if(!loadedWidget){
+            this.container.style.left = `${100+canvasContainer.scrollLeft}px`; this.container.style.top = `${100+canvasContainer.scrollTop}px`;
+            this.container.style.width = "200px"; this.container.style.height = "140px";
+        }
+        this.container.classList.add("interacive-widget");
+        this.moving = true;
+        this.maxSize = {
+            x:999,
+            y:999,
+        }
     }
 }
 
 //Header
 class WidgetHeader extends WidgetInteractive{
-    constructor(){
-        super();
-        this.type="header";
-        this.text="";
+    constructor(sheet,loadedWidget){
+        super(sheet,loadedWidget);
+        this.type="TEXT";
         this.container.classList.add("widget-header");
-        this.container.style.width = "130px";
-        this.container.style.height = "60px";
-        this.textInput = document.createElement("input");
-        this.textInput.value = "Nagłówek";
-        this.textInput.type = "text";
+        this.textInput = document.createElement("textarea");
+        this.textInput.value = "Naciśnij aby zmienić Tekst";
+        if(loadedWidget) this.textInput.value = loadedWidget.data;
         this.container.appendChild(this.textInput);
         this.styles.textAlign = "center";
         this.refreshStyles();
@@ -300,22 +547,36 @@ class WidgetHeader extends WidgetInteractive{
         this.textInput.style.fontFamily = this.styles.fontFamily;
         super.refreshStyles()
     }
+
+    destroy(){
+        this.textInput.removeEventListener("input",(e)=>{console.log(e)})
+        super.destroy();
+    }
+
+    packToSaving(){
+        const buffor = super.packToSaving();
+        buffor.type = "TEXT";
+        buffor.data = this.textInput.value;
+        return buffor
+    }
 }
 
 //Chart widget
 class WidgetChart extends WidgetInteractive{
-    constructor(chartObject){
-        super();
+    constructor(chartObject,sheet,loadedWidget){
+        super(sheet,loadedWidget);
         this.chartObject = chartObject;
+        this.type="CHART";
         this.canvas = document.createElement("canvas");
         this.container.appendChild(this.canvas);
         this.tools = widgetTools_chart;
         this.ctx = this.canvas.getContext("2d");
         this.container.classList.add("widget-chart");
-        this.container.style.width = "200px"; this.container.style.height = "140px";
-        this.styles.chartStyles = "210, 180, 222";
-        this.styles.beTransparent = false;
-        this.styles.percentMode= false;
+        if(!loadedWidget){
+            this.styles.chartStyles = "210, 180, 222";
+            this.styles.beTransparent = false;
+            this.styles.percentMode= false;
+        }
         this.refresh(true);
         
     }
@@ -355,61 +616,132 @@ class WidgetChart extends WidgetInteractive{
         super.show();
         this.refresh();
     }
+
+    packToSaving(){
+        const buffor = super.packToSaving();
+        buffor.type = "CHART";
+        buffor.chartType = this.chartObject.type;
+        buffor.data = this.chartObject.pairs;
+        return buffor
+    }
 }
 
 
-//Tools Functions
-
-//IMG
-widgetTools_image.imgInput = document.getElementById("widgetTool-image-input");
-widgetTools_image.imageFill = function(){ this.selectedWidget.container.classList.remove("bg-cover") };
-widgetTools_image.imageCover = function(){ this.selectedWidget.container.classList.add("bg-cover") };
-
-widgetTools_image.apply = function(){
-    let img = new Image()
-    let data = this.imgInput.files[0]
-    data = URL.createObjectURL(data);
-    img.src = data;
-    this.selectedWidget.container.style.backgroundImage = `url('${data}')`
+//Progress Bar
+widgetTool_progressBar.loadData = function(){
+    document.getElementById("progressBar-min").value = this.selectedWidget.data.min;
+    document.getElementById("progressBar-max").value = this.selectedWidget.data.max;
+    document.getElementById("progressBar-actual").value = this.selectedWidget.data.actual;
 }
 
+widgetTool_progressBar.apply = function(){
+    if(this.selectedWidget){
+        this.selectedWidget.data.min =  document.getElementById("progressBar-min").value;
+        this.selectedWidget.data.max = document.getElementById("progressBar-max").value;
+        this.selectedWidget.data.actual =  document.getElementById("progressBar-actual").value;
+        this.selectedWidget.update();
+    }
+}
+
+//VariableData
+widgetTool_variableData.dataInputs = [];
+
+widgetTool_variableData.loadData = function(){
+    this.clearData()
+    for(let option of Object.values(this.selectedWidget.options)){
+        this.addDataInput(option.name);
+    }
+    selector.resetOldData();
+
+    if(this.selectedWidget.usedCells){
+        for(let cell of this.selectedWidget.usedCells){ selector.addAreaCell(cell) }
+    } 
+        
+    
+    
+}
+
+widgetTool_variableData.addDataInput = function(name){
+    this.dataInputs.push(new DataInput(name,document.getElementById("variableDataOptions")));
+}
+
+widgetTool_variableData.clearData = function(){
+    this.dataInputs.forEach(input => { input.destroy() });
+    this.dataInputs = [];
+}
+
+widgetTool_variableData.apply = function(){
+    let values = [];
+    for(let dataInput of this.dataInputs){
+        values.push(dataInput.getData())
+    }
+    this.selectedWidget.updata(values)
+}
 
 //resize Main-content to make place for a widget 
-document.getElementById("widgetTool-chart").addEventListener("shown.bs.offcanvas",(e)=>{
-    if(mainContent.offsetWidth + 20 < window.innerWidth) return false;
-    mainContent.style.width = `${mainContent.offsetWidth - e.target.offsetWidth}px`;
-    //If more than 50% of chart is hidden scroll position to center
-    if(widgetTools_chart.selectedWidget.container.offsetLeft + widgetTools_chart.selectedWidget.container.offsetWidth/2 > canvasContainer.offsetWidth + canvasContainer.scrollLeft  - e.target.offsetWidth){
-        let newPos = canvasContainer.scrollLeft + e.target.offsetWidth;
-        canvasContainer.scroll({
-            top: canvasContainer.scrollTop,
-            left: newPos,
-            behavior: "smooth",
-          });
-        mainContent.changedWidth = e.target.offsetWidth;
-    }
-    else{
-        mainContent.changedWidth = false;
-    }
-})
+const contentResizer = {
+    showed:false,
+    changedWidth:false,
+    addMonitor:function(node,bootstrapOBJ){
+        node.addEventListener("shown.bs.offcanvas",(e)=>{this.show(e,bootstrapOBJ)});
+        node.addEventListener("hidden.bs.offcanvas",(e)=>{this.hide(e)});
+    },
 
-document.getElementById("widgetTool-chart").addEventListener("hidden.bs.offcanvas",(e)=>{
-    mainContent.style.width = "";
-    if(mainContent.changedWidth){
-        let newPos = canvasContainer.scrollLeft - mainContent.changedWidth;
-        canvasContainer.scroll({
-            top: canvasContainer.scrollTop,
-            left: newPos,
-            behavior: "smooth",
-          });
-    }
-})
+    show(node,bootstrapOBJ){
+        const target = node.target;
+        this.showed = bootstrapOBJ;
+        mainContent.style.width = `${window.innerWidth - target.offsetWidth}px`;
+        if(widgetTools_base.selectedWidget) this.scrollPosition(target);
+    },
 
-addEventListener("resize",(e)=>{
-    if(widgetTools_chart.widgetObject._isShown && (window.innerWidth > 576) ){
-        mainContent.style.width = `${window.innerWidth - widgetTools_chart.widgetObject._element.offsetWidth}px`;
+    scrollPosition(target){
+        if(widgetTools_base.selectedWidget.container.offsetLeft + widgetTools_base.selectedWidget.container.offsetWidth/2 > canvasContainer.offsetWidth + canvasContainer.scrollLeft  - target.offsetWidth){
+            let newPos = canvasContainer.scrollLeft + target.offsetWidth;
+            canvasContainer.scroll({
+                top: canvasContainer.scrollTop,
+                left: newPos,
+                behavior: "smooth",
+              });
+            this.changedWidth = target.offsetWidth;
+        }
+        else{
+            this.changedWidth = false;
+        }
+    },
+
+    scrollPositionBack(){
+        if(this.changedWidth){
+            let newPos = canvasContainer.scrollLeft - this.changedWidth;
+            canvasContainer.scroll({
+                top: canvasContainer.scrollTop,
+                left: newPos,
+                behavior: "smooth",
+              });
+            this.changedWidth = false;
+        }
+    },
+
+    hide(e){
+        if(e.target != this.showed._element) return false
+        mainContent.style.width = "";
+        this.showed = false;
+        this.scrollPositionBack()
+    },
+
+    resize(){
+        if(this.showed){
+            mainContent.style.width = `${window.innerWidth - this.showed._element.offsetWidth}px`;
+        }
     }
-})
+}
+
+contentResizer.addMonitor(document.getElementById("widgetTool-chart"),widgetTools_chart.widgetObject);
+contentResizer.addMonitor(document.getElementById("offcanvas-variable-data"),widgetTool_variableData.widgetObject);
+contentResizer.addMonitor(document.getElementById("offcanvas-styleTable"),new bootstrap.Offcanvas(document.getElementById("offcanvas-styleTable")));
+contentResizer.addMonitor(document.getElementById("offcanvas-insert-timeline"),new bootstrap.Offcanvas(document.getElementById("offcanvas-insert-timeline")));
+
+addEventListener("resize",contentResizer.resize.bind(contentResizer))//(e)=>{
+
 
 //HANDLERS
 for(let btn of document.getElementsByClassName("widget-remove-btn")){
@@ -417,10 +749,21 @@ for(let btn of document.getElementsByClassName("widget-remove-btn")){
 }
 
 
-document.getElementById("addWidget-image").addEventListener("click",()=>{ return new WidgetImage() })
-document.getElementById("addWidget-header").addEventListener("click",()=>{ return new WidgetHeader() })
-document.getElementById("widgetTool-image-apply").addEventListener("click",()=>{widgetTools_image.apply()})
-document.getElementById("image-size-fill").addEventListener("click",()=>{widgetTools_image.imageFill()});
-document.getElementById("image-size-cover").addEventListener("click",()=>{widgetTools_image.imageCover()});
-document.getElementById("chart-approve-changes").addEventListener("click",(e)=>{widgetTools_chart.apply(e)})
-document.getElementById("chartData-addData").addEventListener("click",()=>{widgetTools_chart.addData()})
+for(let btn of document.getElementsByName("insert-checkBox")){
+    btn.addEventListener("click",()=>{ addStaticWidget(WidgetCheckBox)});
+}
+for(let btn of document.getElementsByName("insert-progressBar")){
+    btn.addEventListener("click",()=>{ addStaticWidget(WidgetProgressBar)});
+}
+
+document.getElementById("insert-variableData").addEventListener("click",()=>{ addStaticWidget(WidgetVariableData)});
+document.getElementById("addWidget-header").addEventListener("click",()=>{ new WidgetHeader()});
+document.getElementById("chart-approve-changes").addEventListener("click",(e)=>{widgetTools_chart.apply(e)});
+document.getElementById("chartData-addData").addEventListener("click",()=>{widgetTools_chart.addData()});
+document.getElementById("variableData-add-set").addEventListener("click",()=>{widgetTool_variableData.addDataInput("Zakres bez nazwy")})
+document.getElementById("variableData-save-data").addEventListener("click",()=>{widgetTool_variableData.apply()})
+
+document.getElementById("progressBar-min").addEventListener("click",(e)=>{selector.selectInput(e)});
+document.getElementById("progressBar-max").addEventListener("click",(e)=>{selector.selectInput(e)});
+document.getElementById("progressBar-actual").addEventListener("click",(e)=>{selector.selectInput(e)});
+document.getElementById("progressBar-apply").addEventListener("click",()=>{widgetTool_progressBar.apply()})

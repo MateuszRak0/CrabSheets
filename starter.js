@@ -1,39 +1,15 @@
 //Prepare canvas and render Legend on it.
 function prepareBoard(){
-    resizeCanvas(canvas);
-    ctx.clearRect(0,0,canvas.width,canvas.height)
+    resizeCanvas();
     ctx.font = "bold 14px arial";
     ctx.strokeStyle = "#606060";
-    for (let i = 0; i < 1001; i++) {
+    for (let i = 0; i < 501; i++) {
         new Legend(i, 0)
         if (i > 0 && i < 27) {
             new Legend(0, i);
         }
     }
     ctx.font = "normal 14px arial";
-}
-
-//Load symbols from json
-const symbolsContainer = document.getElementById("collapse-symbol-container");
-async function downloadSymbols() {
-    const response = await fetch("https://raw.githubusercontent.com/w3c/html/master/entities.json");
-    const symbols = await response.json();
-    unpackSymbols(symbols)
-}
-
-function unpackSymbols(symbols){
-    let makeBtn = function(symbol){
-        let btn = document.createElement("button");
-        btn.innerHTML = `<b>${symbol}</b>`;
-        symbolsContainer.appendChild(btn);
-        btn.classList.add("btn", "btn-dark", "btn-symbol","p-0");
-    }
-
-    let keys = Object.keys(symbols);
-
-    for(let symbol of keys){
-       makeBtn(symbol)
-    }
 }
 
 //scrolling mechanism of Toolbar and Available Sheets
@@ -57,7 +33,6 @@ return new bootstrap.Tooltip(tooltipTriggerEl,{trigger: 'hover'})
 //downloadSymbols();
 prepareBoard();
 cellInput.load();
-newFile();
 addScrolling("tool-bar-scroll-control",document.getElementById("tools-bar"));
 addScrolling("available-sheets-scroll-control",document.getElementById("available-sheets"));
 
@@ -76,7 +51,7 @@ new CalculationError("TOLOW","Nie wysłano wystarczająco argumentów do funckji
 new CalculationError("NARG","Nie wysyła się żadnych argumentów do funkcji: ","@ZA DUŻO","Błąd Funkcji");
 new CalculationError("NLOGIC","Nie wysłano argumentu logicznego (true/false) do funkcji: ","@BRAK LOGIKI","Brak Logiki");
 new CalculationError("NPAIRS","W przesłanych argumentach brakuje jednej wartości aby uzyskać klucz:wartość w funkcji: ","@BRAK LOGIKI","Brak jednego argumentu");
-new CalculationError("NAN","Uzyskany wynik to nie liczba. Dzieje się tak poprez błąd w zapisie np dodanie liczby do Tekstu","NaN","NaN");
+new CalculationError("NAN","Uzyskany wynik to nie liczba. Dzieje się tak poprzez błąd w zapisie na przykład dodanie liczby do tekstu lub daty","NaN","NaN");
 new CalculationError("VALUE","Argument który przesłałeś do funkcji jest w złym formacie albo jest poza zakresem funkcji: ","@ZLY ARG","Zły argument");
 
 //Event Listeners
@@ -85,10 +60,12 @@ document.getElementById("sheet-copy").addEventListener("click", ()=>{openedFile.
 document.getElementById("sheet-remove").addEventListener("click", () => { openedFile.removeSelectedSheet() });
 
 canvas.addEventListener("mousedown", (e) => { 
-    selector.actionStart(e);
+    if(e.button == 0) selector.actionStart(e);
 });
 
-canvas.addEventListener( "mouseup", (e)=>{ selector.actionEnd(e) });
+canvas.addEventListener( "mouseup", (e)=>{ 
+    if(e.button == 0) selector.actionEnd(e);
+ });
 
 cellInput.element.addEventListener("input", (e)=>{
     if(document.activeElement == cellInput.element)cellInput.typing(e);
@@ -120,27 +97,19 @@ addEventListener("keydown", (keyboard) => {
         selectedClearData();
     }
     else if (keyboard.key == "Enter") {
-        if (selector.selected){
-            canvas.classList.remove("cursor-addCell");
-            selector.selected.refresh();
-            selector.selected = false;
-            cellInput.hide();
-            display.restartData();
-            hideFunctions();
-        }
-        if(selector.selectedCells.size > 0){
-            selector.resetOldData();
-        }
-
+        afterCellEdit();
     }
     else if (keyboard.key == "c" && pressedKeys.has("Control")) {
         copiedStorage.saveData();
+        keyboard.preventDefault();
     }
     else if (keyboard.key == "v" && pressedKeys.has("Control")) {
         copiedStorage.pasteData();
+        keyboard.preventDefault();
     }
     else if (keyboard.key == "x" && pressedKeys.has("Control")) {
         copiedStorage.saveData(true);
+        keyboard.preventDefault();
     }
     else if (["ArrowLeft", "ArrowRight", "ArrowDown", "ArrowUp"].includes(keyboard.key)) {
         keyboard.preventDefault();
@@ -152,7 +121,7 @@ addEventListener("keydown", (keyboard) => {
         }
     }
 
-    if (document.activeElement.type != "text" && document.activeElement.type != "number") {
+    if (document.activeElement.tagName.toUpperCase() != "INPUT" && document.activeElement.tagName.toUpperCase() != "TEXTAREA") {
         if (keyboard.key == " ") {
             keyboard.preventDefault();
         }
@@ -174,6 +143,29 @@ addEventListener("keyup", (keyboard) => {
 addEventListener("click",(e)=>{selector.unselectInput(e)});
 canvasContainer.addEventListener("mousemove",(e)=>{widgetTools_base.actionMove(e)});
 canvasContainer.addEventListener("mouseup",(e)=>{widgetTools_base.actionEnd(e)});
+canvasContainer.addEventListener("contextmenu",(e)=>{
+    const element = document.getElementById("contextMenu");
+    element.style.left = `${e.pageX}px`;
+    element.style.top = `${e.pageY}px`;
+    element.classList.add("show")
+    e.preventDefault();
+})
 document.getElementById("resizer").addEventListener("mousedown",(e)=>{widgetTools_base.resizeStart(e)})
 
+addEventListener("mousedown",(e)=>{
+    if(e.button != 2) setTimeout(()=>{document.getElementById("contextMenu").classList.remove("show")},100);
+})
 
+
+if(localStorage.getItem("cookiesAproved") == null){
+    newFile()
+    askAboutCookies()
+}
+else{
+    if(localStorage.getItem("auto-save") == null){
+        newFile()
+    }
+    else{
+        approveActionWindow.show(msg_loadFile,loadFromLocalStorage,newFile);
+    }
+}

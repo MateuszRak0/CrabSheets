@@ -1,3 +1,6 @@
+const sysMsg_error_space = new bootstrap.Toast(document.getElementById("sysMsg-error-space"));
+const sysMsg_info_download = new bootstrap.Toast(document.getElementById("sysMsg-info-download"));
+const sysMsg_error_insert = new bootstrap.Toast(document.getElementById("sysMsg-error-insert"));
 //Display
 class UniversalInput{
     constructor(id){
@@ -91,6 +94,18 @@ class UniversalInput{
 
 }
 
+class FakeCell{
+    constructor(cell){
+        this.address = cell.address;
+        this.text = cell.text;
+        this.styles = new StyleList(cell.styles);
+        if(cell.calculaction){
+            this.calculaction = new Object();
+            this.calculaction.usedCels = [...cell.calculaction.usedCels];
+        }
+    }
+}
+
 const fontSizeselectNode = document.getElementById("input-font-size");
 const fontSizeOptions = document.getElementsByClassName("additional-font-size-option");
 
@@ -128,12 +143,8 @@ const display = {
         if (selector.selected) {
             let value = this.cellFunc.value;
             selector.selected.text = value;
-            cellInput.element.value = value;
             this.cellFunc.value = "";
-            selector.selected.refresh(false);
-            selector.resetOldData();
-            selector.selected = false;
-            cellInput.hide();
+            afterCellEdit();
         }
 
     },
@@ -185,11 +196,13 @@ const approveActionWindow = {
 
     actionApprove: function () {
         if (typeof this.aproveFunc === "function") { this.aproveFunc(); }
+        else{ return true }
         this.resetData();
     },
 
     actionDeny: function () {
         if (typeof this.denyFunc === "function") { this.denyFunc(); }
+        else{ return false }
         this.resetData();
     }
 }
@@ -498,45 +511,88 @@ const insertTimeLine = {
 
 const copiedStorage = {
     storagedData:false,
-
-    saveData:function(clearAfterSave){
+    
+    saveData:function(clearAfterSave = false){
         this.storagedData = [];
-        for(let cell of selector.getSelected()){
-            this.storagedData.push(this.makeFakeCell(cell));
-            if(clearAfterSave){ cell.clearData() };
+        const cells = selector.getSelected()
+        if(cells){
+            for(let cell of cells){
+                this.storagedData.push(new FakeCell(cell));
+                if(clearAfterSave){ 
+                    cell.styles = new StyleListCell();
+                    cell.clearData();
+                    cell.focus("#C41E3A")
+                 };
+                
+            }
         }
+        else if(widgetTools_base.selectedWidget){
+            this.storagedData = widgetTools_base.selectedWidget.packToSaving();
+        }
+
     },
 
-    makeFakeCell:function(cell){
-        let fakeCell = new Object()
-        fakeCell.address = cell.address;
-        fakeCell.text = cell.text;
-        fakeCell.styles = new StyleList(cell.styles);
-        if(cell.calculaction){
-            fakeCell.calculaction = new Object();
-            fakeCell.calculaction.usedCels = [...cell.calculaction.usedCels];
+    checkOptions:function(){
+        for(let radioNode of document.getElementsByName("copy-options")){
+            if(radioNode.checked){
+                if(radioNode.value == "0"){ return true };
+                return false 
+            }
         }
-        return fakeCell
     },
 
     pasteData:function(){
-        if(selector.selected){
-            const anchorCell = this.storagedData[0];
-            diffrentX = selector.selected.address.column - anchorCell.address.column ;
-            diffrentY = selector.selected.address.row - anchorCell.address.row ;
-            const buffor = getMovedList(this.storagedData,diffrentX,diffrentY);
-            if(buffor){
-                for(let data of buffor){
-                    data.cell.text = data.text;
-                    data.cell.styles = new StyleList(data.style);
-                    data.cell.refresh();
+        if(!this.storagedData) return false;
+        if(this.storagedData.constructor == Array){
+            const cells = selector.getSelected();
+            if(cells){
+                for(let cell of cells){
+                    const anchorCell = this.storagedData[0];
+                    diffrentX = cell.address.column - anchorCell.address.column ;
+                    diffrentY = cell.address.row - anchorCell.address.row ;
+                    const buffor = getMovedList(this.storagedData,diffrentX,diffrentY,this.checkOptions());
+                    if(buffor){
+                        for(let data of buffor){
+                            data.cell.text = data.text;
+                            data.cell.styles = new StyleList(data.style);
+                            data.cell.refresh();
+                        }
+                    }
                 }
-                cellInput.show(selector.selected)
+                cellInput.show(cells[0])
             }
         }
-        
-         
+        else{
+            unpackWidget(selectedSheet,this.storagedData,true);
+        }
     },
+}
+
+class DataInput{
+    constructor(value,parentNode){
+        this.container = document.createElement("li");
+        this.container.classList.add("chartData");
+        this.input = document.createElement("input");
+        this.input.classList.add("w-auto");
+        this.input.type = "text"; this.input.value = value;
+        this.removeBtn = document.createElement("button");
+        this.removeBtn.classList.add("icon-cancel", "btn-dark","btn");
+        this.removeBtn.addEventListener("click",(e)=>{this.destroy()});
+
+        parentNode.appendChild(this.container)
+        this.container.appendChild(this.input);
+        this.container.appendChild(this.removeBtn);
+    }
+
+    destroy(){
+        this.removeBtn.removeEventListener("click",(e)=>{this.destroy()});
+        this.input.remove();
+        this.container.remove();
+    }
+
+    getData(){
+        return this.input.value;
+    }
 }
 
 class Message {
@@ -757,6 +813,9 @@ class StyleInput_Color extends StyleInput {
     load(cell) {
         let buffor = cell.styles[this.styleName] || "#b8b8b8";
         this.btn.value = buffor;
+        if(buffor == "#212529"){
+            buffor = "#ffffff2f"
+        }
         this.sample.style.color = buffor;
     }
 }
@@ -788,8 +847,8 @@ class StyleInput_Number extends StyleInput {
     }
 
     apply(e) {
-        if (selector.selected) {
-            let cell = selector.selected;
+        const cells = selector.getSelected();
+        for(let cell of cells){
             cell.styles[this.styleName]
             cell.styles[this.styleName] += parseInt(e.currentTarget.value);
             let value = cell.styles[this.styleName];
@@ -800,7 +859,6 @@ class StyleInput_Number extends StyleInput {
     }
 
 }
-
 
 StyleInput.inputs = [];
 StyleInput.loadCell = function (cell) {
@@ -818,15 +876,32 @@ new StyleInput_Color(document.getElementById("input-font-color"), "color");
 new StyleInput_Color(document.getElementById("input-background-color"), "fillColor");
 new StyleInput_Color(document.getElementById("input-border-color"), "strokeColor");
 new StyleInput_Number(document.getElementById("input-round-result"), "roundTo", 0, 99);
+
 new StyleInput_Button("endSymbol","%",document.getElementById("add-end-symbol-1"),addSymbolToResult);
 
-new StyleInput_Dropdown(
-    "comment",
-    new bootstrap.Collapse(document.getElementById("collapse-add-comment"),{
-        toggle: false
-    }),
-    document.getElementById("add-comment")
-);
+
+
+{
+    let buffor = new StyleInput_Dropdown(
+        "comment",
+        new bootstrap.Collapse(document.getElementById("collapse-add-comment"),{
+            toggle: false
+        }),
+        document.getElementById("add-comment")
+    );
+
+    buffor.load = function(cell){
+        let value = cell.styles[this.styleName];
+        if(value){
+            this.btnNode.classList.add("active");
+            document.getElementById("add-comment-input").value = value.text;
+        }
+        else{
+            this.btnNode.classList.remove("active");
+            document.getElementById("add-comment-input").value == " "
+        }
+    }
+}
 
 new StyleInput_Dropdown(
     "hyperlink",
@@ -853,12 +928,12 @@ new StyleInput_Dropdown(
     }
 }
 
-
 //Messages
 const msg_remove = new Message("Czy jesteś pewny ?", "Ta operacja usunięcia nie może zostać cofnięta dobrze się zastanów", "Usuń", "Zostaw");
 const msg_hyperlink = new Message("Otworzyć odnośnik ?", "Pamiętaj arkusze od obcych osób lub z nieznanych źródeł mogą zawierać odnośniki do złośliwych stron", "Tak", "Nie");
 const msg_newFile = new Message("Utworzyć nowy plik ?", "Wszystkie niezapisane zmiany w bieżacym pliku zostaną utracone", "Tak", "Nie");
-
+const msg_loadFile = new Message("Byłeś tu niedawno ?", "Możesz kontynuować pracę nad ostatnim projektem od momentu w którym został zamknięty", "kontynuuj", "Zacznij od nowa");
+const msg_cookies = new Message("Zgoda na używanie plików cookies", "Hej pliki cookie używamy tylko i wyłącznie do automatycznego zapisywania twojej ostatniej pracy jeżeli nie wyrazisz na nie zgody opcja auto-zapisu będzie wyłączona<hr>Czy wyrażasz zgodę na przechowywanie oraz uzyskiwanie dostępu do informacji przechowywanych w plikach cookies?", "Zgadzam się", "Nie zgadzam się");
 // 
 function changeFontSizesOptions(biger = false) {
     for (let option of fontSizeOptions) {
@@ -903,7 +978,7 @@ function selectedClearStyles() {
     let cells = selector.getSelected();
     if(cells){
         for (let cell of cells) {
-            cell.styles = cell.styles = new cell.styles.constructor();
+            cell.styles = cell.styles = new StyleListCell();
         }
     }
     else if(widgetTools_base.selectedWidget){
@@ -912,9 +987,19 @@ function selectedClearStyles() {
     }
 }
 
+function selectedClearWWidgets() {
+    let cells = selector.getSelected();
+    if(cells){
+        for (let cell of cells) {
+            if(cell.locked) cell.locked.destroy()
+        }
+    }
+}
+
 function addComment(){
     const cell = selector.selected
     if(cell){
+        
         if(cell.styles.comment) cell.styles.comment.remove();
         const comment = document.getElementById("add-comment-input").value
         cell.styles.comment = new CellPopover(cell,"Komentarz",comment,"#a5ff0ab3");
@@ -924,12 +1009,13 @@ function addComment(){
 function removeComment(){
     const cell = selector.selected
     if(cell){
+        console.log(cell.styles.comment)
         if(cell.styles.comment) cell.styles.comment.remove();
         cell.styles.comment = false;
     }
 }
 
-function getMovedList(cells,x,y){
+function getMovedList(cells,x,y,change=true){
     if(cells){
         const buffor = [];
         for(let cell of cells){
@@ -938,13 +1024,17 @@ function getMovedList(cells,x,y){
             if(newCell){
                 if(cell.calculaction){
                     for(let usedCell of cell.calculaction.usedCels){
-                        const usednewCell = selectedSheet.getCell(usedCell.address.column + x,usedCell.address.row + y);
-                        if(usednewCell){
-                            text = text.replace(usedCell.fakeAddress,usednewCell.fakeAddress);
+                        if(change && !usedCell.styles.constant){
+                            const usednewCell = selectedSheet.getCell(usedCell.address.column + x,usedCell.address.row + y);
+                            if(usednewCell){
+                                text = text.replaceAll(usedCell.fakeAddress,usednewCell.fakeAddress);
+                            }
+                            else{
+                                sysMsg_error_space.show();
+                                return false
+                            }
                         }
-                        else{
-                            return false
-                        }
+            
                     }
                 }
                 buffor.push({
@@ -952,6 +1042,10 @@ function getMovedList(cells,x,y){
                     "text":text,
                     "style":cell.styles
                 })
+            }
+            else{
+                sysMsg_error_space.show();
+                return false
             }
         }
         return buffor;
@@ -961,21 +1055,24 @@ function getMovedList(cells,x,y){
 function selectedMove(x,y){
     let cells = selector.getSelected();
     if(cells){
-        const buffor = getMovedList(cells,x,y);
-        for(let cell of cells){
-            cell.styles = new StyleList()
-            cell.clearData();
+        const buffor = getMovedList(cells,x,y,true);
+        if(buffor){
+            for(let cell of cells){
+                cell.styles = new StyleListCell()
+                cell.clearData();
+            }
+            selector.resetOldData();
+            for(let data of buffor){
+                data.cell.text = data.text;
+                data.cell.styles = new StyleListCell(data.style);
+                data.cell.refresh();
+                selector.addAreaCell(data.cell);
+            }
+    
+            cellInput.hide();
+            display.clearFuncInput();
+            
         }
-
-        for(let data of buffor){
-            data.cell.text = data.text;
-            data.cell.styles = new StyleList(data.style);
-            data.cell.refresh();
-        }
-
-        cellInput.hide();
-        display.clearFuncInput();
-        selector.resetOldData();
     }
 }
 
@@ -1002,3 +1099,10 @@ document.getElementById("timeline-format").addEventListener("input",(e)=>{insert
 document.getElementsByName("timeline-direction").forEach(input=>{input.addEventListener("input",(e)=>{insertTimeLine.updateGrowing(e)})});
 document.getElementById("timeline-step").addEventListener("input",(e)=>{insertTimeLine.updateStep(e)});
 document.getElementById("timeline-stepType").addEventListener("input",(e)=>{insertTimeLine.updateStepType(e)});
+
+document.getElementById("makeConstant").addEventListener("click",()=>{
+    for(let cell of selector.getSelected()){
+        if(cell.styles.constant){ delete cell.styles.constant; }
+        else{ cell.styles.constant = true }
+    }
+})

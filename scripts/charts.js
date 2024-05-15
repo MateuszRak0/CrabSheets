@@ -35,6 +35,19 @@ function renderChartColors(r,g,b,steps){
     return colors
 }
 
+function lookForCellAddress(value,sheet){
+    if(value[0] == cellSymbol){
+        value = value.substring(1)
+        let cell = sheet.cells.get(value);
+        if(cell){
+            return cell
+        }
+    }
+    else{
+        return false
+    }
+}
+
 class ChartData{
     constructor(key,value,parent){
         this.parent = parent;
@@ -60,8 +73,6 @@ class ChartData{
         if(key) this.inputKey.value = key;
         if(value) this.inputValue.value = value;
     }
-
-
 
     destroy(whenShow){
         this.unselectCell(this.inputKey.value,whenShow);
@@ -93,19 +104,23 @@ class ChartData{
 }
 
 class Chart{
-    constructor(sheet){
+    constructor(sheet,loadedChart){
         this.sheet = sheet;
-        this.widget = new WidgetChart(this);
+        this.widget = new WidgetChart(this,sheet,loadedChart);
         this.pairs = [];
         this.usedCells = new Set();
         this.drawBase(...this.getSpace());
-
         this.minValue;
         this.maxValue;
         this.sum;
         this.sumAbs;
         this.keys;
         this.values;
+        if(loadedChart){
+            this.pairs = loadedChart.data;
+            this.refresh();
+            this.widget.refreshStyles();
+        }
     }
 
     getSpace(){
@@ -120,17 +135,14 @@ class Chart{
     }
 
     lookForCellAddress(value){
-        if(value[0] == cellSymbol){
-            value = value.substring(1)
-            let cell = selectedSheet.cells.get(value);
+        let cell = lookForCellAddress(value,this.widget.sheet);
             if(cell){
-                this.usedCells.add(cell)
+                this.usedCells.add(cell);
                 cell.usedInCharts.add(this);
                 let text = cell.getText();
                 if(text.length == 0) text = 0;
                 return text
             }
-        }
         else{
             return value
         }
@@ -140,7 +152,6 @@ class Chart{
         let dataList = [];
         this.keys = [];
         this.values = [];
-
         this.sum = 0;
         this.sumAbs = 0;
         for(let data of this.pairs){
@@ -151,11 +162,23 @@ class Chart{
                 this.sumAbs += Math.abs(value);
              };
             dataList.push({key:key,value:value})
-            this.keys.push(key); 
+            if(key) this.keys.push(key); 
             this.values.push(value);
         }
         this.minValue = Math.min(...this.values);
         this.maxValue = Math.max(...this.values);
+        if(!this.widget.styles.percentMode){
+            this.minValue = (this.minValue < 0) ? (Math.abs(this.minValue)*1.1)*-1 : this.minValue*.9;
+            this.maxValue = (this.maxValue < 0) ? (Math.abs(this.maxValue)*.9)*-1 : this.maxValue*1.1; 
+            this.minValue = this.minValue.toFixed(2);
+            this.maxValue = this.maxValue.toFixed(2);
+        }
+      
+
+        if(this.minValue == Infinity || this.maxValue == Infinity){
+            this.minValue = 0;
+            this.maxValue = 100;
+        };
         return dataList;
     }
 
@@ -184,8 +207,8 @@ class Chart{
 }
 
 class BasicChart extends Chart{
-    constructor(){
-        super()
+    constructor(sheet,loadedChart){
+        super(sheet,loadedChart)
         this.startX;
         this.startY;
         this.widget.refreshStyles();
@@ -196,8 +219,11 @@ class BasicChart extends Chart{
         let colors = [...this.widget.styles.chartStyles.split(",")];
         colors = renderChartColors(...colors,3);
         let ctx = this.widget.ctx;
-        let startX = 30;
-        let startY = spaceY-30;
+        let letters = Math.max(new String(this.maxValue).length,new String(this.minValue).length);
+        if(this.widget.styles.percentMode) letters += 2;
+        let startX = letters*7;
+        let startY = spaceY-15;
+        if(this.keys.length > 0) startY -= 15;
         ctx.fillStyle = colors.pop();
         ctx.fillRect(startX,startY,spaceX-startX-3,4);
         ctx.fillRect(startX,3,4,startY);
@@ -209,16 +235,16 @@ class BasicChart extends Chart{
         }
     }
 
-    drawLegendX(x,key,value,stepX){
+    drawLegendX(x,key,value,stepX,startY){
         this.widget.ctx.fillStyle = this.widget.styles.color;
         this.widget.ctx.font = "bold 10px arial";
         if(!key) key = "";
         if(!value) value = 0;
         key = trimText(key,stepX-10,this.widget.ctx);
         value = trimText(value,stepX-10,this.widget.ctx);
-        let y = this.widget.canvas.height - 18;
+        let y = startY + 16;
         this.widget.ctx.fillText(value,x,y);
-        this.widget.ctx.fillText(key,x,y+15);
+        this.widget.ctx.fillText(key,x,y+14);
         ctx.font = "bold 12px arial";
     }
 
@@ -228,7 +254,6 @@ class BasicChart extends Chart{
         let y75 = Math.ceil((startY+10)/2 - (startY)/4);
         let y50 = Math.ceil((startY+10)/2);
         this.widget.ctx.fillText(minValue,3,startY);
-        this.widget.ctx.fillText(maxValue,3,14);
         this.widget.ctx.fillText(maxValue,3,14);
         if(minusValue){
             this.widget.ctx.fillText(`${Math.round(minusValue)}%`,3,spaceY+5);
@@ -246,10 +271,11 @@ class BasicChart extends Chart{
 }
 
 class PieChart extends Chart{
-    constructor(){
-        super()
+    constructor(sheet,loadedChart){
+        super(sheet,loadedChart)
         this.widget.styles = new StyleListFlush();
         this.widget.refreshStyles();
+        this.type = "PIE";
     }
 
     drawBase(spaceX,spaceY){
@@ -301,8 +327,9 @@ class PieChart extends Chart{
 }
 
 class LineChart extends BasicChart{
-    constructor(){
-        super()
+    constructor(sheet,loadedChart){
+        super(sheet,loadedChart)
+        this.type = "LINE";
     }
 
     drawPercent(spaceX,spaceY,startX,startY,colors){
@@ -335,7 +362,7 @@ class LineChart extends BasicChart{
             ctx.fillRect( startX + x -3, startY - y -3, 6, 6 );
             let keyValue = value*percent;
             keyValue = `${keyValue.toFixed(2)}%`;
-            this.drawLegendX(startX + x,this.keys[i],keyValue,stepX);
+            this.drawLegendX(startX + x,this.keys[i],keyValue,stepX,startY);
         }
         ctx.stroke();
         ctx.restore();
@@ -343,14 +370,6 @@ class LineChart extends BasicChart{
 
     drawRest(spaceX,spaceY,startX,startY,colors){
         let ctx = this.widget.ctx;
-        if(this.minValue == Infinity || this.maxValue == Infinity){
-            this.minValue = 0;
-            this.maxValue = 100;
-        };
-        if(this.minValue >= 0 && this.maxValue <= 100){ 
-            this.minValue = 0; 
-            this.maxValue = 100; 
-        }
         let stepY = (spaceY-10)/Math.abs(this.maxValue - this.minValue);
         let stepX = (spaceX-10)/Math.max(this.keys.length,this.values.length);
         if(stepX < 10) stepX = 10;
@@ -369,7 +388,7 @@ class LineChart extends BasicChart{
             }
             else{ ctx.lineTo(startX + x, startY - y); }
             ctx.fillRect( startX + x -3, startY - y -3, 6, 6 );
-            this.drawLegendX(startX + x + 15,this.keys[i],value,stepX);
+            this.drawLegendX(startX + x + 15,this.keys[i],value,stepX,startY);
         }
         ctx.stroke();
         ctx.restore();
@@ -377,8 +396,9 @@ class LineChart extends BasicChart{
 }
 
 class AreaChart extends BasicChart{
-    constructor(){
-        super()
+    constructor(sheet,loadedChart){
+        super(sheet,loadedChart)
+        this.type = "AREA";
     }
 
     drawPercent(spaceX,spaceY,startX,startY,colors){
@@ -415,7 +435,7 @@ class AreaChart extends BasicChart{
             }
             let keyValue = value*percent;
             keyValue = `${keyValue.toFixed(2)}%`;
-            this.drawLegendX(startX + x,this.keys[i],keyValue,stepX);
+            this.drawLegendX(startX + x,this.keys[i],keyValue,stepX,startY);
         }
         ctx.fill();
         ctx.restore();
@@ -423,14 +443,6 @@ class AreaChart extends BasicChart{
 
     drawRest(spaceX,spaceY,startX,startY,colors){
         let ctx = this.widget.ctx;
-        if(this.minValue == Infinity || this.maxValue == Infinity){
-            this.minValue = 0;
-            this.maxValue = 100;
-        };
-        if(this.minValue >= 0 && this.maxValue <= 100){ 
-            this.minValue = 0; 
-            this.maxValue = 100; 
-        }
         let stepY = (spaceY-10)/Math.abs(this.maxValue - this.minValue);
         let stepX = (spaceX-10)/Math.max(this.keys.length,this.values.length);
         if(stepX < 10) stepX = 10;
@@ -452,7 +464,7 @@ class AreaChart extends BasicChart{
                 ctx.lineTo(startX + x, startY);
                 ctx.lineTo(startX, startY);
             }
-            this.drawLegendX(startX + x + 15,this.keys[i],value,stepX);
+            this.drawLegendX(startX + x + 15,this.keys[i],value,stepX,startY);
         }
         ctx.fill();
         ctx.restore();
@@ -460,8 +472,9 @@ class AreaChart extends BasicChart{
 }
 
 class BarChart extends BasicChart{
-    constructor(){
-        super()
+    constructor(sheet,loadedChart){
+        super(sheet,loadedChart)
+        this.type = "BAR";
     }
 
     drawPercent(spaceX,spaceY,startX,startY){
@@ -496,7 +509,7 @@ class BarChart extends BasicChart{
             ctx.restore();
             let keyValue = value*percent;
             keyValue = `${keyValue.toFixed(2)}%`;
-            this.drawLegendX(startX + x,this.keys[i],keyValue,stepX);
+            this.drawLegendX(startX + x,this.keys[i],keyValue,stepX,startY);
         }
     } 
 
@@ -504,14 +517,6 @@ class BarChart extends BasicChart{
         let colors = [...this.widget.styles.chartStyles.split(",")];
         let ctx = this.widget.ctx;
         colors = renderChartColors(...colors,this.values.length);
-        if(this.minValue == Infinity || this.maxValue == Infinity){
-            this.minValue = 0;
-            this.maxValue = 100;
-        };
-        if(this.minValue >= 0 && this.maxValue <= 100){ 
-            this.minValue = 0; 
-            this.maxValue = 100; 
-        }
         let stepY = (spaceY-10)/Math.abs(this.maxValue - this.minValue);
         let stepX = (spaceX-25)/Math.max(this.keys.length,this.values.length);
         if(stepX < 25) stepX = 25;
@@ -530,17 +535,16 @@ class BarChart extends BasicChart{
             if(y < 1) y = 1;
             ctx.fillRect( startX + x +15, startY - y,20,y);
             ctx.restore();
-            this.drawLegendX(startX + x + 15,this.keys[i],value,stepX);
+            this.drawLegendX(startX + x + 15,this.keys[i],value,stepX,startY);
         }
         
     } 
-
 }
 
 // CHART TOOLS
 widgetTools_chart.dataListNode = document.getElementById("chartData-list");
 widgetTools_chart.dataList = [];
-widgetTools_chart.error = new bootstrap.Toast(document.getElementById("chartError-1"))
+widgetTools_chart.error = new bootstrap.Toast(document.getElementById("sysMsg-error-chart"));
 
 widgetTools_chart.clearData = function(){
     this.dataList.forEach(element => {

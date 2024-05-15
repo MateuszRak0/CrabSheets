@@ -96,6 +96,7 @@ function sortValues(value1,value2){
     return {smaler:value1, biger:value2}
 }
 
+
 // MathFunction Object
 class MathFunction{
     constructor(prefix,mathFunc,description = "Example Description",needElements = true,baseResult=0){
@@ -250,6 +251,15 @@ new MathFunction("MEDIANA",function(values){
 
 },"Oblicza mediane z przesłanych wartości i grup",true)
 
+//DODATNIA
+new MathFunction("DODATNIA",function(value){
+    if(value.length > 1){ return "@TOMORE" }
+    value = value[0];
+    if(value < 0) return value*-1;
+    return value
+
+},"Zamienia wartość ujemną na dodatnią z wartościa dodatnią nie robi nic",true)
+
 //==================== ŚREDNIE ================
 //Arytmetyczna
 new MathFunction("SREDNIA_A",function(values){
@@ -282,6 +292,46 @@ new MathFunction("SREDNIA_W",function(values){
     return globalNumber/globalWeight;
 },"Oblicza średnią Ważona gdzie wzór to: |SREDNIA_W|W1,N1,W2,N2... gdzie W = Waga , N = Liczba lub Grupa");
 
+//============== PROCENTY ==================
+new MathFunction("%POWIEKSZ",function(values){
+    if(values.length > 2){ return "@TOMORE" }
+    else if(values.length < 2){ return "@TOLOW" }
+    const A =  parseFloat(values[0]); const B = parseFloat(values[1]);
+    return A + (  ( A/100 ) * B  );
+},"Powiększa wartość A a podany procent(B) wzór: |FUNC|A,B ",true);
+
+new MathFunction("%POMNIEJSZ",function(values){
+    if(values.length > 2){ return "@TOMORE" }
+    else if(values.length < 2){ return "@TOLOW" }
+    const A =  parseFloat(values[0]); const B = parseFloat(values[1]);
+    return A - (  ( A/100 ) * B  );
+},"Pomniejsza wartość A a podany procent(B) wzór: |FUNC|A,B ",true);
+
+new MathFunction("%ILE_Z",function(values){
+    if(values.length > 2){ return "@TOMORE" }
+    else if(values.length < 2){ return "@TOLOW" }
+    const A =  parseFloat(values[0]); const B = parseFloat(values[1]);
+    if(A == 0) return 0
+    return (B / Math.abs(A)) * 100;
+},"Zwraca jaką wartościa procentową liczby A jest liczba B  wzór: |FUNC|A,B ",true);
+
+new MathFunction("%ZAMIEN_ULAMEK",function(values){
+    if(values.length > 1){ return "@TOMORE" }
+    return values[0]*100 ;
+},"Zamienia ułamek dziesiętny na procenty",true);
+
+new MathFunction("%ZAMIEN_PROCENT",function(values){
+    if(values.length > 1){ return "@TOMORE" }
+    return values[0]/100 ;
+},"Zamienia procenty na ułamek dziesiętny",true);
+
+new MathFunction("%ROZNICA",function(values){
+    if(values.length > 2){ return "@TOMORE" }
+    else if(values.length < 2){ return "@TOLOW" }
+    const A =  parseFloat(values[0]); const B = parseFloat(values[1]);
+    return 100 - ( (A*100)/B );
+    
+},"O ile procent jedna wartość(A) wzrosła/zmalała w stosunku do drugiej(B)  wzór: |FUNC|A,B ",true);
 
 //============== TRYGONOMETRIA I KĄTY ==================
 //RADIANY
@@ -369,6 +419,13 @@ new MathFunction("GRUPA:DODAJ",function(values){
     }
     return makeGroup.func(buffor);
 },"Tworzy grupę z podanych elementów + X wzór |FUNC|X,elementy...",true)
+
+new MathFunction("GRUPA:WYJMIJ",function(values){
+    if(values.length < 2) return "@TOLOW";
+    values = unpackAllGroups(values);
+    let key = values.pop();
+    return values[key-1] ;
+},"Wyjmuje wartość z grupy(A) po indeksie(B) licząc od początku wzór: |FUNC|A,B",true)
 
 new MathFunction("GRUPA:MINUS",function(values){
     let operator = values.shift();
@@ -527,7 +584,7 @@ const $getDay = new MathFunction("_DZIEN",function(values){
     return this.baseResult;
 
     
-},"Zwraca nazwe dnia tygodnia z podanej liczby np: ||2 = Wtorek",true,"@VALUE");
+},"Zwraca nazwe dnia tygodnia z podanej liczby np: |FUNC|2 = Wtorek",true,"@VALUE");
 
 // TIME HH:MM:SS
 const $getTime = new MathFunction("_CZAS",function(values){
@@ -563,14 +620,7 @@ new MathFunction("$PHI",function(values){
 //++++++++++++++++++++++++++++++ BRAMKI I FUNKCJE LOGICZNE ++++++++++++++++++++++++++++++++++++++++++++++
 
 // WIEKSZE
-new MathFunction("&BIGER",function(values){
-    if(values.length > 2){return "@TOMORE";} 
-    else if(values.length < 2){return "@TOLOW";}
-    return values[0] > values[1]
-    
-},"Zwraca TRUE lub FALSE gdy wartość 1 jest większa od drugiej",true)
-
-new MathFunction("&BIGER:GROUP",function(values){
+new MathFunction("&BIGGER",function(values){
     if(values.length < 2){return "@TOLOW";}
     let operator = values.shift();
     values = unpackAllGroups(values);
@@ -580,13 +630,7 @@ new MathFunction("&BIGER:GROUP",function(values){
 },"Zwraca TRUE gdy wszystkie elementy są większe niz wartość X wzór: |FUNC|X,Elementy..",true)
 
 // MNIEJSZE
-new MathFunction("&SMALER",function(values){
-    if(values.length > 2){return "@TOMORE";} 
-    else if(values.length < 2){return "@TOLOW";} 
-    return values[0] < values[1]
-},"Zwraca TRUE lub FALSE gdy wartość 1 jest mniejsza od drugiej",true)
-
-new MathFunction("&SMALER:GROUP",function(values){
+new MathFunction("&SMALLER",function(values){
     if(values.length < 2){return "@TOLOW";}
     let operator = values.shift();
     values = unpackAllGroups(values);
@@ -687,7 +731,7 @@ new MathFunction("&SWITCH",function(values){
 
 class Unit{
     constructor(prefix,name){
-        this.prefix = prefix;
+        this.prefix = " " + prefix;
         this.name = name;
     }
 }
