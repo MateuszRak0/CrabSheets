@@ -661,7 +661,6 @@ class Sheet {
 
         this.element.appendChild(this.button);
         this.element.appendChild(this.nameInput);
-        // this.button.checked = true;
 
         Sheet.prototype.listElement.appendChild(this.element);
     }
@@ -861,12 +860,14 @@ class Cell {
             if (!this.calculaction) {
                 if (this.text != undefined && this.text.charAt(0) == "=") {
                     this.calculaction = new Calculaction(this);
+                    this.styles.textAlign = "right";
                 }
             }
             else {
                 if (this.text.charAt(0) != "=") {
                     this.calculaction.remove();
                     this.calculaction = false;
+                    this.styles.textAlign = "left";
                 }
                 else {
                     this.calculaction.startScan(false);

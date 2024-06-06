@@ -1,20 +1,23 @@
 /* NESTED DROPDOWN FROM https://mdbootstrap.com/docs/standard/extended/dropdown-multilevel/*/
 .dropdown-menu li {
     position: relative;
-    }
-    .dropdown-menu .dropdown-submenu {
+}
+
+.dropdown-menu .dropdown-submenu {
     display: none;
     position: absolute;
     left: 100%;
     top: -7px;
-    }
-    .dropdown-menu .dropdown-submenu-left {
+}
+
+.dropdown-menu .dropdown-submenu-left {
     right: 100%;
     left: auto;
-    }
-    .dropdown-menu > li:hover > .dropdown-submenu {
+}
+
+.dropdown-menu > li:hover > .dropdown-submenu {
     display: block;
-    }
+}
 
 
 #mainContent{
@@ -117,18 +120,6 @@ body{
     background-color: #1c1c1c !important;
 }
 
-.text-main{
-    color: #ffe3ae;
-}
-
-.text-main2{
-    color: #919191;
-}
-
-.text-main2:hover{
-    color: #9e9e9e;
-}
-
 /*bg.black-1 in inputs*/
 
 button.bg-black-1, input[type="text"].bg-black-1,input[type="button"].bg-black-1{
@@ -141,21 +132,6 @@ button.bg-black-1, input[type="text"].bg-black-1,input[type="button"].bg-black-1
     background-color: #0f0f0f !important;
 }
 
-
-/* Bootstrap mods */
-.form-control:focus{
-    box-shadow: none !important;
-}
-
-.btn:focus{
-    box-shadow: none !important;
-}
-
-
-.navbar .nav-link{
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
-}
 
 
 /* Compontent .input-icon */
@@ -202,17 +178,6 @@ span.input-icon:active, .input-icon:active span{
     left: 0; */
     z-index: 15;
 }
-
-
-/* Component .btn-symbol */
-.btn-symbol{
-    font-size: 16px !important;
-    width: 30px;
-    height: 30px;
-    margin: 2px;
-    padding: 0;
-}
-
 
 /* Component Error-clue */
 
@@ -388,4 +353,34 @@ input[type="file"]{
 
 #contextMenu.show{
     max-height: 60vh !important;
+}
+
+
+/* Dynamic Page */
+#dynamic-page{
+    height: 100%;
+    width: 100%;
+    background-color: #ffe3ae;
+}
+
+#dynamic-page-frame{
+    min-height: 100%;
+    height: fit-content;
+}
+ 
+#dynamic-page .offcanvas-body{
+    overflow-y: hidden;
+}
+
+#tutorialMSG{
+    max-width: 30vw;
+    left: calc(50% - 15vw);
+    top: 30%;
+}
+
+#tutorialMSG-content{
+    margin-top: 6px;
+    font-weight: 500;
+    font-size: .9rem;
+    text-align: left;
 }

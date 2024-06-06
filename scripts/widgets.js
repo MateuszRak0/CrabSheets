@@ -27,7 +27,8 @@ const widgetTools_base = {
             this.editorNode.style.top = `${parseInt(this.selectedWidget.container.style.top)-1}px`;
             this.editorNode.style.width = `${this.selectedWidget.container.clientWidth+5}px`;
             this.editorNode.style.height = `${this.selectedWidget.container.clientHeight+5}px`;
-            changeFontSizesOptions(true);
+            if(this.selectedWidget.moving) changeFontSizesOptions(true);
+            
         }
     },
 
@@ -626,6 +627,21 @@ class WidgetChart extends WidgetInteractive{
     }
 }
 
+class WidgetNewChart extends WidgetInteractive{
+    constructor(sheet,loadedWidget){
+        super(sheet,loadedWidget);
+        this.container.classList.add("d-flex","align-items-end")
+    }
+
+    addBar(percent){
+        let bar = document.createElement("div");
+        bar.style.width = '15px';
+        bar.style.height = `${percent}%`;
+        bar.style.marginRight = '5px';
+        bar.style.backgroundColor = "#ff0000"
+        this.container.appendChild(bar);
+    }
+}
 
 //Progress Bar
 widgetTool_progressBar.loadData = function(){

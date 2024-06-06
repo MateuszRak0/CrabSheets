@@ -1,6 +1,5 @@
 Font license info
 
-
 ## Font Awesome
 
    Copyright (C) 2016 by Dave Gandy

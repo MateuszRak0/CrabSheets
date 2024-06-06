@@ -558,6 +558,48 @@ widgetTools_chart.addData = function(key,value){
     this.dataList.add(data)
 }
 
+widgetTools_chart.addToKeys = function(){
+    const cells = selector.getSelected();
+    const overwrite = document.getElementById("chartData-overwrite").checked;
+    const availableInputs = [...this.dataList];
+    if(cells){
+        for(let i = 0; i < cells.length; i++){
+            const cell = cells[i];
+            const address = cellSymbol+cell.stringAddress;
+            if(overwrite){
+                let dataInput = availableInputs[i];
+                if(dataInput){ dataInput.updateData(address) }
+                else{ this.addData(address) }
+            }
+            else{
+                this.addData(address)
+            }
+        }
+    }
+    selector.resetOldData();
+}
+
+widgetTools_chart.addToValues = function(){
+    const cells = selector.getSelected();
+    const overwrite = document.getElementById("chartData-overwrite").checked;
+    const availableInputs = [...this.dataList];
+    if(cells){
+        for(let i = 0; i < cells.length; i++){
+            const cell = cells[i];
+            const address = cellSymbol+cell.stringAddress;
+            if(overwrite){
+                let dataInput = availableInputs[i];
+                if(dataInput){ dataInput.updateData(false,address) }
+                else{ this.addData(false,address) }
+            }
+            else{
+                this.addData(false,address)
+            }
+        }
+    }
+    selector.resetOldData();
+}
+
 widgetTools_chart.focusUsedCells = function(){
     for(let usedCell of this.selectedWidget.chartObject.usedCells){
         usedCell.focus("#a0ff58ce");
@@ -609,5 +651,5 @@ document.getElementById("addChart-line").addEventListener("click",()=>{new LineC
 document.getElementById("addChart-area").addEventListener("click",()=>{new AreaChart(selectedSheet)});
 document.getElementById("addChart-bar").addEventListener("click",()=>{new BarChart(selectedSheet)});
 document.getElementById("addChart-pie").addEventListener("click",()=>{new PieChart(selectedSheet)});
-document.getElementById("chartData-overwrite").addEventListener("input",(e)=>{recordMultiData.overwrite = e.target.checked})
+document.getElementById("chartData-overwrite")
 

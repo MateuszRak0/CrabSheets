@@ -253,10 +253,6 @@
     width: 100%;
 }
 
-.data-list .chartData:first-of-type button{
-    color: #4e4e4e;
-    pointer-events: none;
-}
 
 .chartData input{
     width: 39%;

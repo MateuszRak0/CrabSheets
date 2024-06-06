@@ -1,6 +1,8 @@
 const sysMsg_error_space = new bootstrap.Toast(document.getElementById("sysMsg-error-space"));
 const sysMsg_info_download = new bootstrap.Toast(document.getElementById("sysMsg-info-download"));
 const sysMsg_error_insert = new bootstrap.Toast(document.getElementById("sysMsg-error-insert"));
+const sysMsg_error_sort = new bootstrap.Toast(document.getElementById("sysMsg-error-sort"));
+const sysMsg_error_load = new bootstrap.Toast(document.getElementById("sysMsg-error-load"));
 //Display
 class UniversalInput{
     constructor(id){
@@ -130,7 +132,7 @@ const display = {
     switchDisplayedData: function () {
         if (this.showResult) {
             this.showResult = false;
-            this.dataTypeBtn.innerHTML = "Funkcja: "
+            this.dataTypeBtn.innerHTML = "Wzór: "
         }
         else {
             this.showResult = true;
@@ -996,6 +998,46 @@ function selectedClearWWidgets() {
     }
 }
 
+function selectedSort(direction){
+    const cells = selector.getSelected()
+    let buffor = [];
+    let results = {};
+    let onlyNums = true;
+    if(cells){
+        for(let cell of cells){
+            if(cell.calculaction && cell.calculaction.usedCels.size > 0){
+                sysMsg_error_sort.show();
+                return false;
+            }
+            else{
+                let text = cell.getText()
+                buffor.push(text);
+                results[text] = cell.text;
+                if( isNaN(text)) onlyNums = false;
+            }
+        }
+
+        for(let cell of cells){
+            cell.text = "";
+        }
+        if(onlyNums){
+            buffor.sort(function(a, b) {
+                return a - b;
+              });
+        }
+        else{
+            buffor.sort()
+        }
+
+        if(direction < 0) buffor.reverse();
+        for(let cell of cells){
+            cell.text = results[buffor.shift()];
+            cell.refresh()
+        }
+    }
+    
+}
+
 function addComment(){
     const cell = selector.selected
     if(cell){
@@ -1075,6 +1117,12 @@ function selectedMove(x,y){
         }
     }
 }
+
+// function switchDynamicPage(e){
+//     document.getElementById("dynamic-page-frame").src = e.target.value;
+// }
+
+// for(let btn of document.getElementsByClassName("helpLink")){ btn.addEventListener("click",switchDynamicPage) }
 
 // LISTENERS to accesories
 approveActionWindow.approveBtn.addEventListener("click", () => { approveActionWindow.actionApprove() });

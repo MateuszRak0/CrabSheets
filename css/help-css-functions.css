@@ -1,0 +1,37 @@
+body::-webkit-scrollbar{
+    appearance: none;
+}
+
+body::-webkit-scrollbar-track{
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+body::-webkit-scrollbar-thumb{
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+body::-webkit-scrollbar-corner{
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.bg-second{
+    background-color: rgb(236, 236, 236);
+}
+
+#functions-lists .row:nth-child(even) {
+    background-color: rgb(201, 201, 201);
+}
+
+
+
+@media only screen and (max-width: 576px) {
+    #functions-lists .row div:first-of-type{
+        font-weight: 600;
+        color: black;
+    }
+
+    #functions-lists .row div:nth-of-type(2){
+        font-weight: 300;
+        color: rgb(45, 45, 45);
+    }
+}

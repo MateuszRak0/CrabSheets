@@ -36,8 +36,7 @@ function downloadFile() {
         let a = document.getElementById("fileDownloadLink");
         a.href = URL.createObjectURL(file);
         a.download = openedFile.name + ".json";
-        console.log(data)
-        //a.click();
+        a.click();
     }
 }
 
@@ -51,8 +50,14 @@ function loadFile() {
 
 function handleLoadedFile(e) {
     let loadedData = e.target.result;
-    loadedData = JSON.parse(loadedData);
-    newFile(loadedData)
+    try {
+        loadedData = JSON.parse(loadedData);
+        newFile(loadedData);
+      }
+      catch(err) {
+        sysMsg_error_load.show();
+        newFile();
+      }
 }
 
 function unpackWidget(sheet,loadedWidget,copied){

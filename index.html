@@ -5,13 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Mateusz Rak">
-    <meta name="keywords" content="TAG1, TAG2, TAG3">
-    <meta name="description" content="OPIS STRONY">
-    <title>Document</title>
+    <title>CrabSheets</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/fontello.css">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/widgets.css">
+    <link rel="icon" type="image/x-icon" href="animal-2029675.svg">
 </head>
 
 <body ondragstart="return false;" ondrop="return false;">
@@ -19,10 +18,10 @@
     <div class="fill d-flex flex-column" id="mainContent">
 
         <!-- TOPBAR & TOOLS -->
-        <div class="bg-dark text-light px-0 mb-1 border-bottom border-secondary position-relative z-5">
+        <div class="bg-dark text-light px-0 mb-1 border-bottom border-secondary position-relative z-10">
 
             <!-- NAVBAR -->
-            <nav class="navbar navbar-expand-md navbar-dark bg-black-1 p-0 ">
+            <nav class="navbar navbar-expand-md navbar-dark bg-black-1 p-0">
                 <div class="container-fluid p-0">
                     <a class="navbar-brand fs-6  text-light fw-bolder py-0 ps-1 pe-4" href="#">
                         <img src="animal-2029675.svg" alt="CrabOffice logo" style="width: 35px;">
@@ -64,7 +63,9 @@
                                             aria-controls="offcanvas-styleTable">Tabele</button></li>
                                     <li><button class="dropdown-item" type="button" data-bs-toggle="offcanvas"
                                             data-bs-target="#offcanvas-insert-timeline"
-                                            aria-controls="offcanvas-insert-timeline">Oś czasu</button></li>
+                                            aria-controls="offcanvas-insert-timeline">Oś czasu</button>
+                                    </li>
+                                    <li><button class="dropdown-item" type="button" onclick="showSimilarFunctions()">Funkcje</button></li>
                                     <li><button class="dropdown-item" type="button" id="insert-variableData">Dane Przestawne</button></li>
                                     <li><button class="dropdown-item" type="button" name="insert-progressBar">Pasek postępu</button></li>
                                 </ul>
@@ -93,8 +94,7 @@
                                     </li>
 
                         
-                                    <li><button class="dropdown-item" type="button" id="makeConstant">Oznacz jako Stałą</button>
-                                    </li>
+                                    <li><button class="dropdown-item" type="button" id="makeConstant">Oznacz jako Stałą</button></li>
                                     <li>
                                         <a class="dropdown-item" href="#">Przesuń zaznaczone &raquo; </a>
                                         <ul class="dropdown-menu dropdown-submenu dropdown-menu-dark">
@@ -113,6 +113,20 @@
                                             <li>
                                                 <button class="dropdown-item" type="button" name="moveSelected"
                                                 onclick="selectedMove(1,0)">W Prawo</button>
+                                            </li>
+                                        </ul>
+                                    </li>
+
+                                    <li>
+                                        <a class="dropdown-item" href="#">Sortuj zaznaczone &raquo; </a>
+                                        <ul class="dropdown-menu dropdown-submenu dropdown-menu-dark">
+                                            <li>
+                                                <button class="dropdown-item" type="button" name="moveSelected" 
+                                                onclick="selectedSort(1)">Rosnąco (A-Z / 0-9)</button>
+                                            </li>
+                                            <li>
+                                                <button class="dropdown-item" type="button" name="moveSelected"
+                                                onclick="selectedSort(-1)">Malejąco (Z-A / 9-0)</button>
                                             </li>
                                         </ul>
                                     </li>
@@ -154,17 +168,8 @@
                                     Pomoc
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdownFile">
-                                    <li><a class="dropdown-item" type="button" data-bs-toggle="offcanvas"
-                                            data-bs-target="#dynamic-page" aria-controls="dynamic-page">Wprowadzenie</a>
-                                    </li>
-                                    <li><a class="dropdown-item disabled" type="button" data-bs-toggle="offcanvas"
-                                            data-bs-target="#dynamic-page" aria-controls="dynamic-page">Lista
-                                            Funkcji</a>
-                                    </li>
-                                    <li><a class="dropdown-item disabled" type="button" data-bs-toggle="offcanvas"
-                                            data-bs-target="#dynamic-page" aria-controls="dynamic-page">Tabele i
-                                            Wykresy</a>
-                                    </li>
+                                    <li> <a href="help-encyklopedia.html" target="_blank" class="dropdown-item">Encyklopedia</a> </li>
+                                    <li> <a href="help-functions.html" target="_blank" class="dropdown-item">Lista Funkcji</a> </li>
                                 </ul>
                             </li>
                         </ul>
@@ -533,7 +538,7 @@
                 <div class="input-group input-group-sm">
                     <span class="input-group-text bg-dark px-2 text-light border-0 hover-effect"
                         id="cellData-cords">-:-</span>
-                    <button class="btn btn-dark" type="button" id="cellData-mode">Funkcja:</button>
+                    <button class="btn btn-dark" type="button" id="cellData-mode">Wzór:</button>
                     <input type="text" class="form-control  text-light bg-dark px-2 border-0" id="cellData-input">
                     <button class="btn btn-dark border-0" type="button" data-bs-toggle="tooltip"
                         data-bs-placement="left" title="Zatwierdź" id="cellData-aprove">
@@ -664,19 +669,6 @@
     </div>
 
 <!-- OFFCANVAS -->
-
-    <!-- DYNAMIC PAGE -->
-    <div class="offcanvas offcanvas-end bg-black-1 w-100 p-1" data-bs-scroll="true" data-bs-backdrop="false"
-        tabindex="-1" id="dynamic-page">
-        <div class="offcanvas-header bg-primary py-3">
-            <h5 class="offcanvas-title text-light fw-bolder">Wprowadzenie</h5>
-            <button type="button" class="ms-auto btn-close btn-close-white text-reset" data-bs-dismiss="offcanvas"
-                aria-label="Close"></button>
-        </div>
-        <iframe src="help.html" frameborder="0" class="fill"></iframe>
-
-    </div>
-
     <!-- Add Hyperlink Window -->
     <div class="modal fade" id="addHyperlink-modal" tabindex="-1" aria-labelledby="addHyperlink-title"
         aria-hidden="true">
@@ -883,9 +875,8 @@
                             <div class="fw-bold mb-2">Dodaj wszystkie zaznaczone komórki do:</div>
 
                             <div>
-                                <button class="bg-black-1 btn ntn-sm">Kluczy</button>
-                                <button class="bg-black-1 btn ntn-sm">Wartości</button>
-                                <button class="bg-black-1 btn ntn-sm">Rozpoznaj</button>
+                                <button class="bg-black-1 btn w-auto" onclick="widgetTools_chart.addToKeys()">Kluczy</button>
+                                <button class="bg-black-1 btn" onclick="widgetTools_chart.addToValues()">Wartości</button>
                             </div>
 
                             <div class="form-check form-switch mt-2">
@@ -1114,12 +1105,6 @@
                     <label for="timeline-label-to"></label>
                 </div>
             </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="timeline-include-range">
-                <label class="form-check-label" for="timeline-include-range" checked>
-                  automatycznie oblicz zakres do
-                </label>
-              </div>
             <div class="mt-4 d-flex justify-content-end">
                 <button class="btn btn-success me-2" type="button"
                     onclick="insertTimeLine.recalculate()">Przelicz</button>
@@ -1153,11 +1138,11 @@
           
 
         </div>
-      </div>
+    </div>
 
 <!-- Toasts - Sys Messeges -->
     <!-- CAN'T MOVE -->
-        <div id="sysMsg-error-space" class="toast position-fixed bottom-0 end-0" role="alert" aria-live="assertive" aria-atomic="true">
+    <div id="sysMsg-error-space" class="toast position-fixed bottom-0 end-0" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header">
                 <img src="animal-2029675.svg" alt="CrabOffice logo" style="width: 35px;">
                 <strong class="me-auto">PanCrab</strong>
@@ -1166,7 +1151,7 @@
             <div class="toast-body">
                 Nie udało się wykonać tej operacji z powodu niewystarczającej ilości miejsca dla danych lub obliczeń
             </div>
-        </div>
+    </div>
     <!-- Download File will start soon -->
     <div id="sysMsg-info-download" class="toast position-fixed top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-header">
@@ -1189,6 +1174,28 @@
         </div>
         <div class="toast-body">
             Najpierw zaznacz komórke do której chcesz wstawić wybrany komponent
+        </div>
+    </div>
+    <!-- CAN'T SORT -->
+    <div id="sysMsg-error-sort" class="toast position-fixed bottom-0 end-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <img src="animal-2029675.svg" alt="CrabOffice logo" style="width: 35px;">
+            <strong class="me-auto">PanCrab</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            Nie można uporządkować komórek z obliczeniami używającymi inne komórki
+        </div>
+    </div>
+    <!-- CAN'T LOAD -->
+    <div id="sysMsg-error-load" class="toast position-fixed bottom-0 end-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <img src="animal-2029675.svg" alt="CrabOffice logo" style="width: 35px;">
+            <strong class="me-auto">PanCrab</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            Niestety nie udało się wczytać tego pliku.
         </div>
     </div>
 

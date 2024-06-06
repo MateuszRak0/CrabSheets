@@ -831,3 +831,29 @@ unitsMenager.addUnit(new Unit( "W" , "Wat") , "moc" );
 
 
 unitsMenager.loadUnitsCategory(Object.keys(unitsMenager.units)[0]);
+
+
+
+
+
+
+
+function packFunctions(){
+        let packed = [];
+        for(let functionName of MathFunction.prototype.functionsNames){
+            let buffor = {};
+            let functionObject = MathFunction.prototype.functions.get(functionName);
+            if(functionObject){
+                buffor.prefix = functionObject.prefix;
+                buffor.description = functionObject.element.dataset.bsOriginalTitle;
+                buffor.category = "NONE";
+                packed.push(buffor);
+            }
+        }
+        let data = JSON.stringify(packed);
+        let file = new Blob([data], { type: "text/plain" })
+        let a = document.getElementById("fileDownloadLink");
+        a.href = URL.createObjectURL(file);
+        a.download = "mathFunctions.json";
+        a.click();
+}

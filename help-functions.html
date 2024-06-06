@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/help-css-functions.css">
+    <title>CrabSheets - Funkcje</title>
+    <meta name="author" content="Mateusz Rak">
+    <link rel="icon" type="image/x-icon" href="animal-2029675.svg">
+</head>
+<body class="bg-dark">
+
+    <div class="container-fluid pb-5 ">
+
+        <div class="row justify-content-around">
+
+            <div class="col-12 col-sm-8 col-md-7 col-lg-5 mt-5 text-center flex-column">
+                    <span class="fs-5 fw-bolder text-light"><img src="animal-2029675.svg" alt="" style="width: 64px;">CrabSheets</span>
+                    <h1 class="text-secondary">Lista dostępnych funkcji</h1>
+                    <div class="form-floating mb-3 bg-dark text-light mt-3">
+                        <input type="text" class="form-control bg-dark text-light border-2 border-secondary" id="searchFunc" placeholder="Szukaj po nazwie">
+                        <label for="searchFunc" class="text-light">Szukaj po nazwie</label>
+                    </div>
+            </div>
+            <div class="d-flex justify-content-around flex-wrap">
+                <button class="btn btn-dark m-3 category-btn" type="button" value="">Wszystkie</button>
+                <button class="btn btn-dark m-3 category-btn" type="button" value="Matematyczna">Matematyczne</button>
+                <button class="btn btn-dark m-3 category-btn" type="button" value="Procenty">Procenty</button>
+                <button class="btn btn-dark m-3 category-btn" type="button" value="Trygonometria">Trygonometria</button>
+                <button class="btn btn-dark m-3 category-btn" type="button" value="Operacje Grupowe">Operacje Grupowe</button>
+                <button class="btn btn-dark m-3 category-btn" type="button" value="Data i Czas">Data i Czas</button>
+                <button class="btn btn-dark m-3 category-btn" type="button" value="Stała">Stała</button>
+                <button class="btn btn-dark m-3 category-btn" type="button" value="Logiczna">Logiczna</button>
+            </div>
+            <div class="col-11 bg-second mt-2 d-none d-sm-block">
+                    <div class="row py-2 fw-bold border-bottom align-items-center">
+                        <div class="col-4 border-end">Prefix / Nazwa</div>
+                        <div class="col-4 border-end">Kategoria</div>
+                        <div class="col-4 border-end">Krótki Opis</div>
+                    </div>
+            </div>
+
+            <div class="col-11 bg-light mt-0" id="functions-lists">
+                <!-- content render by js -->
+                <div id="loading-icon" class="d-flex justify-content-center py-4">
+                    <div class="spinner-grow" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <div class="spinner-grow mx-2" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <div class="spinner-grow" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="scripts/help-script-functions.js"></script>
+</body>
+</html>

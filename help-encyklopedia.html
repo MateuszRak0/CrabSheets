@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Mateusz Rak">
+    <title>CrabSheets - Encyklopedia</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/help-css-encyklopedia.css">
+    <link rel="icon" type="image/x-icon" href="animal-2029675.svg">
+    <link rel="stylesheet" href="css/fontello.css">
+</head>
+
+<body class="bg-dark">
+
+    <div class="container-fluid position-absolute h-100 w-100 start-0 top-0">
+
+        <div class="row h-100 position-relative" id="mainBox">
+
+            <div class="col-lg-3 col-md-4 col-12 pt-4 position-relative d-flex flex-column pb-2" id="sideBar">
+                <div class="text-center mb-2">
+                    <img src="animal-2029675.svg" alt="crabSheets Logo" id="logoSvg">
+                    <br>
+
+                    <h1 class="text-secondary">
+                        <span class="fs-4 fw-bolder text-light d-block">CrabSheets</span>
+                        Encyklopedia
+                    </h1>
+                    <button class="btn btn-primary d-inline-block d-md-none" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navCollapse" aria-expanded="false" aria-controls="navCollapse">
+                        Szukaj
+                    </button>
+                </div>
+                <div class="collapse show scrollDown darkScroll w-100" id="navCollapse">
+                    <div class="nav flex-column nav-pills me-3  px-2 w-100" id="v-pills-tab" role="tablist"
+                        aria-orientation="vertical">
+                        <button class="nav-link active closeCollapseBtn" id="v-pills-1-tab" data-bs-toggle="pill"
+                            data-bs-target="#v-pills-1" type="button" role="tab" aria-controls="v-pills-1"
+                            aria-selected="true">Wstęp</button>
+                        <button class="nav-link closeCollapseBtn" id="v-pills-2-tab" data-bs-toggle="pill"
+                            data-bs-target="#v-pills-2" type="button" role="tab" aria-controls="v-pills-2"
+                            aria-selected="false">Pasek
+                            Nawigacyjny</button>
+                        <button class="nav-link closeCollapseBtn" id="v-pills-3-tab" data-bs-toggle="pill"
+                            data-bs-target="#v-pills-3" type="button" role="tab" aria-controls="v-pills-3"
+                            aria-selected="false">
+                            Pasek Narzędziowy
+                        </button>
+                        <button class="nav-link closeCollapseBtn" id="v-pills-4-tab" data-bs-toggle="pill"
+                            data-bs-target="#v-pills-4" type="button" role="tab" aria-controls="v-pills-4"
+                            aria-selected="false">
+                            Przestrzeń Robocza
+                        </button>
+                        <button class="nav-link closeCollapseBtn" id="v-pills-5-tab" data-bs-toggle="pill"
+                            data-bs-target="#v-pills-5" type="button" role="tab" aria-controls="v-pills-5"
+                            aria-selected="false">Zasady zaznaczania komórek</button>
+
+                        <button class="nav-link closeCollapseBtn" id="v-pills-6-tab" data-bs-toggle="pill"
+                            data-bs-target="#v-pills-6" type="button" role="tab" aria-controls="v-pills-6"
+                            aria-selected="false">Zasady wprowadzania danych</button>
+
+                        <button class="nav-link closeCollapseBtn" id="v-pills-7-tab" data-bs-toggle="pill"
+                            data-bs-target="#v-pills-7" type="button" role="tab" aria-controls="v-pills-7"
+                            aria-selected="false">Obliczenia w komórkach</button>
+
+                        <button class="nav-link closeCollapseBtn" id="v-pills-8-tab" data-bs-toggle="pill"
+                            data-bs-target="#v-pills-8" type="button" role="tab" aria-controls="v-pills-8"
+                            aria-selected="false">Komponenty</button>
+
+                        <button class="nav-link closeCollapseBtn" id="v-pills-9-tab" data-bs-toggle="pill"
+                            data-bs-target="#v-pills-9" type="button" role="tab" aria-controls="v-pills-9"
+                            aria-selected="false">Kopiowanie i
+                            Wklejanie</button>
+
+                        <button class="nav-link closeCollapseBtn" id="v-pills-10-tab" data-bs-toggle="pill"
+                            data-bs-target="#v-pills-10" type="button" role="tab" aria-controls="v-pills-10"
+                            aria-selected="false">Sortowanie
+                            wartości</button>
+
+                        <button class="nav-link closeCollapseBtn" id="v-pills-11-tab" data-bs-toggle="pill"
+                            data-bs-target="#v-pills-11" type="button" role="tab" aria-controls="v-pills-11"
+                            aria-selected="false">Wstawianie
+                            Tabeli</button>
+
+                        <button class="nav-link closeCollapseBtn" id="v-pills-12-tab" data-bs-toggle="pill"
+                            data-bs-target="#v-pills-12" type="button" role="tab" aria-controls="v-pills-12"
+                            aria-selected="false">
+                            Wstawianie Osi Czasu
+                        </button>
+
+                        <button class="nav-link closeCollapseBtn" id="v-pills-13-tab" data-bs-toggle="pill"
+                            data-bs-target="#v-pills-13" type="button" role="tab" aria-controls="v-pills-13"
+                            aria-selected="false">
+                            Dane przestawne
+                        </button>
+
+                        <button class="nav-link closeCollapseBtn" id="v-pills-14-tab" data-bs-toggle="pill"
+                            data-bs-target="#v-pills-14" type="button" role="tab" aria-controls="v-pills-14"
+                            aria-selected="false">
+                            Zapisywanie i wczytywanie
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-9 col-md-8 col-12 bg-light  position-relative py-3 ps-3 pe-4 ps-sm-4 pe-sm-5"
+                id="mainContent">
+                <div class="tab-content" id="v-pills-tabContent">
+
+                    <!-- Page 1 - Welcome -->
+                    <div class="tab-pane fade show active" id="v-pills-1" role="tabpanel"
+                        aria-labelledby="v-pills-1-tab">
+                        <p class="fw-bolder fs-1">CrabSheets- Twoje Proste i Intuicyjne Narzędzie do Zarządzania Danymi
+                        </p>
+                        <p class="fs-5">
+                            CrabSheets to łatwe w obsłudze narzędzie do zarządzania danymi, stworzone z myślą o
+                            użytkownikach, którzy nie potrzebują zaawansowanych obliczeń naukowych, lecz chcą skutecznie
+                            organizować swoje codzienne sprawy, takie jak budżet domowy, podatki czy planowanie
+                            projektów.
+                            Dzięki intuicyjnemu interfejsowi i funkcjom dostosowanym do codziennych potrzeb, CrabSheets
+                            sprawia, że praca z danymi jest prosta i przyjemna.
+                        </p>
+
+                        <p class="fw-bolder fs-3 mt-3 d-block border-top">Kluczowe funkcje CrabSheets:</p>
+                        <ul>
+                            <li>
+                                <span class="fw-bold">Proste obliczenia za pomocą wzorów i funkcji:</span>
+                                <p>
+                                    Przeliczaj dane za pomocą wzorów pisanych samodzielnie lub skorzystaj z wbudownych
+                                    funkcji które znacząco ułatwią ci prace listę wszystkich funkcji znajdziesz
+                                    <a href="help-functions.html" target="_blank">tutaj</a>
+
+                                </p>
+                            </li>
+                            <li>
+                                <span class="fw-bold">Wizualizacja danych:</span>
+                                <p>
+                                    Przedstaw swoje dane w formie przejrzystych wykresów, aby łatwo zobaczyć, na co
+                                    wydajesz pieniądze lub jak idzie realizacja planu oszczędności do tej drugiej opcji
+                                    świetnie sprawdzą się również nasze wbudowane Paski postępu !
+                                </p>
+                            </li>
+                            <li>
+                                <span class="fw-bold">Przypisywanie jednostek:</span>
+                                <p>
+                                    Dodawaj jednostki miary do swoich danych, aby lepiej je zorganizować i zrozumieć,
+                                    np. walutę do
+                                    wydatków, kilogramy do wagi czy godziny do czasu pracy.
+                                </p>
+                            </li>
+                            <li>
+                                <span class="fw-bold">Tworzenie list za pomocą odhaczanych pól:</span>
+                                <p>
+                                    Listy kontrolne: Twórz praktyczne listy kontrolne, które pomogą Ci w organizacji
+                                    zadań, odhaczaj
+                                    wykonane zadania, aby zawsze być na bieżąco z tym, co jeszcze musisz zrobić.
+                                </p>
+                            </li>
+                            <li>
+                                <span class="fw-bold">Organizacja danych za pomocą tabel przestawnych:</span>
+                                <p>Tabele przestawne: Analizuj swoje dane w prosty sposób, filtrując i grupując
+                                    informacje, aby
+                                    szybko znaleźć to, czego potrzebujesz. Tabele przestawne pozwalają na efektywne
+                                    porządkowanie i
+                                    przeglądanie danych.
+                                </p>
+                            </li>
+                        </ul>
+                        <span class="fw-bold fs-3 mt-3 d-block border-top">Dlaczego warto wybrać CrabSheets?</span>
+                        <p>
+                            <span class="fw-bold">Intuicyjny interfejs:</span> Przyjazny użytkownikowi design sprawia,
+                            że nawet osoby bez doświadczenia w
+                            pracy z arkuszami kalkulacyjnymi łatwo poradzą sobie z obsługą.
+                        </p>
+                        <p><span class="fw-bold">Skupienie na codziennych potrzebach:</span> CrabSheets został
+                            zaprojektowany z myślą o użytkownikach,
+                            którzy potrzebują narzędzia do codziennych zastosowań, a nie zaawansowanych obliczeń.
+                        </p>
+                        <p><span class="fw-bold">Efektywność:</span> Proste i skuteczne funkcje umożliwiają szybkie
+                            uzyskiwanie wartościowych informacji
+                            i lepszą organizację pracy.
+                        </p>
+
+                        <p class="fs-5 mt-3 border-top pt-3">
+                            CrabSheets to idealne rozwiązanie dla każdego, kto potrzebuje prostego i intuicyjnego
+                            narzędzia
+                            do zarządzania danymi – od budżetowania domowego, przez planowanie projektów, po rozliczanie
+                            podatków. Odkryj, jak CrabSheets może ułatwić Twoje codzienne zadania i pomóc Ci w
+                            osiągnięciu
+                            zamierzonych celów!
+                        </p>
+                    </div>
+
+                    <!-- Page 2 - Navbar -->
+                    <div class="tab-pane fade" id="v-pills-2" role="tabpanel" aria-labelledby="v-pills-2-tab">
+
+                        <span class="fs-1 fw-bolder">Pasek Nawigacyjny</span>
+                        <span class="badge bg-primary">Nawigacja po programie</span>
+
+                        <p class="fs-5 border-bottom pb-2">
+                            CrabSheets oferuje prosty i intuicyjny pasek nawigacyjny, który umożliwia szybki dostęp do
+                            najważniejszych funkcji programu. Pasek nawigacyjny znajduje się u góry ekranu i zawiera
+                            następujące zakładki:
+                        </p>
+                        <div class="fs-3 fw-bolder">Plik</div>
+                        <ul>
+                            <li><span class="fw-bold d-block mt-2">Nowy:</span> Utwórz całkowicie nowy plik, aby
+                                rozpocząć
+                                pracę nad
+                                nowymi danymi</li>
+                            <li><span class="fw-bold d-block mt-2">Otwórz:</span> Otwórz istniejący arkusz z lokalnego
+                                dysku
+                                lub z
+                                chmury, aby kontynuować pracę nad już
+                                rozpoczętym projektem.</li>
+                            <li><span class="fw-bold d-block mt-2">Zapisz:</span> Zapisz aktualny arkusz kalkulacyjny,
+                                aby
+                                upewnić się, że wszystkie zmiany zostały
+                                zachowane.</li>
+                            <li><span class="fw-bold d-block mt-2">Informacje:</span> Przeglądaj szczegółowe informacje
+                                o
+                                aktualnym arkuszu, takie jak autor, data
+                                utworzenia czy ostatnia modyfikacja.</li>
+
+                        </ul>
+
+
+
+
+                        <div class="fs-3 fw-bolder">Wstaw</div>
+                        <ul>
+                            <li>
+                                <span class="fw-bold d-block mt-2">Tabele:</span>
+                                Dodaj tabele, aby lepiej zorganizować swoje dane i ułatwić ich analizę.
+                            </li>
+                            <li>
+                                <span class="fw-bold d-block mt-2">Oś czasu:</span>
+                                Wstaw oś czasu, aby śledzić wydarzenia lub terminy w kolejności chronologicznej.
+                            </li>
+                            <li>
+                                <span class="fw-bold d-block mt-2">Funkcje:</span>
+                                Skorzystaj z wbudowanych funkcji, aby przeprowadzać obliczenia i analizy.
+                            </li>
+                            <li>
+                                <span class="fw-bold d-block mt-2">Dane Przestawne:</span>
+                                Twórz dane przestawne, aby elastycznie organizować i analizować swoje dane.
+                            </li>
+                            <li>
+                                <span class="fw-bold d-block mt-2">Pasek postępu:</span>
+                                Dodaj pasek postępu do śledzenia realizacji celów lub projektów.
+                            </li>
+                        </ul>
+
+                        <div class="fs-3 fw-bold">Narzędzia</div>
+                        <ul>
+                            <li>
+                                <span class="fw-bold d-block mt-2">Wyczyść: </span>
+                                Wyczyść wybrane komórki, aby usunąć z nich dane lub formatowanie.
+                            </li>
+                            <li>
+                                <span class="fw-bold d-block mt-2">Oznacz jako stała: </span>
+                                Oznacz wybrane komórki jako stałe, ich adresy przy kopiowaniu i wklejaniu będą
+                                niezmienne niezależnie od wybranej opcji
+                            </li>
+                            <li>
+                                <span class="fw-bold d-block mt-2">Przesuń zaznaczone:</span>
+                                Przesuń zaznaczone komórki, wiersze lub kolumny w inne miejsce w arkuszu.
+                            </li>
+                            <li>
+                                <span class="fw-bold d-block mt-2">Sortuj zaznaczone:</span>
+                                Sortuj wybrane dane według określonych kryteriów, aby lepiej je zorganizować.
+                            </li>
+                        </ul>
+
+                        <div class="fs-3 fw-bold">Preferencje</div>
+                        <ul>
+                            <li>
+                                <span class="fw-bold d-block mt-2">Kopiowanie: </span>
+                                Dostosuj ustawienia kopiowania,
+                                aby łatwo przenosić dane między komórkami i
+                                arkuszami.
+                            </li>
+                            <li>
+                                <span class="fw-bold d-block mt-2">Autozapis: </span>
+                                Włącz lub wyłącz funkcję
+                                autozapisu, aby automatycznie zapisywać zmiany w arkuszu.
+                            </li>
+                            <li>
+                                <span class="fw-bold d-block mt-2">Cookies: </span>
+                                Zarządzaj plikami cookies używanymi
+                                przez program, aby dostosować jego działanie do
+                                swoich potrzeb.
+                            </li>
+                        </ul>
+
+                        <div class="fs-3 fw-bold">Pomoc</div>
+                        <ul>
+                            <li>
+                                <span class="fw-bold d-block mt-2">Encyklopedia:</span>
+                                Właśnie ją przeglądasz!
+                            </li>
+                            <li>
+                                <span class="fw-bold d-block mt-2">Lista Funkcji:</span>
+                                Przeglądaj listę dostępnych funkcji, aby dowiedzieć się, jak ich używać i jakie
+                                operacje mogą wykonać.
+                            </li>
+                        </ul>
+
+                        <div class="fs-5 mb-2 mt-3 border-top">
+                            <p class="fs-3 fw-bolder mb-0">Poruszanie się po pasku nawigacyjnym</p>
+                            Każda z zakładek w pasku nawigacyjnym otwiera rozwijane menu, które zawiera szczegółowe
+                            opcje i
+                            funkcje związane z danym obszarem. Aby uzyskać dostęp do tych opcji, kliknij odpowiednią
+                            zakładkę, a następnie wybierz interesującą Cię funkcję z rozwijanego menu. Dzięki
+                            przejrzystemu
+                            i intuicyjnemu interfejsowi paska nawigacyjnego, CrabSheets ułatwia dostęp do
+                            najważniejszych
+                            narzędzi i funkcji, które pozwalają efektywnie zarządzać danymi w Twoich arkuszach
+                            kalkulacyjnych.
+                        </div>
+                    </div>
+
+                    <!-- Page 3 - ToolsBar -->
+                    <div class="tab-pane fade" id="v-pills-3" role="tabpanel" aria-labelledby="v-pills-3-tab">
+                        <span class="fs-1 fw-bolder">Pasek Narzędziowy</span>
+                        <span class="badge bg-primary">Nawigacja po programie</span>
+                        <p class="fs-5 border-bottom pb-2">
+                            Pasek Narzędziowy w CrabSheets jest wyposażony w szereg przydatnych narzędzi, które
+                            umożliwiają
+                            szybkie i łatwe formatowanie oraz edycję danych w arkuszu kalkulacyjnym. Poniżej znajduje
+                            się
+                            szczegółowy opis dostępnych narzędzi na pasku narzędzi:
+                        </p>
+                        <div class="fs-3 fw-bolder">Cofnij / Ponów</div>
+                        <ul>
+                            <li><span class="fw-bold d-block mt-2">Cofnij:</span> Przywróć ostatnią wykonaną operację,
+                                aby anulować wprowadzone zmiany.</li>
+                            <li><span class="fw-bold d-block mt-2">Ponów:</span> Powtórz ostatnio cofniętą operację, aby
+                                przywrócić zmiany.
+
+                        </ul>
+                        <div class="fs-3 fw-bolder">Formatowanie Tekstu</div>
+                        <ul>
+                            <li>
+                                <span class="fw-bold d-block mt-2">Wybór czcionki:</span>Wybierz typ czcionki z listy
+                                dostępnych opcji, aby
+                                dostosować wygląd tekstu.
+                            </li>
+
+                            <li>
+                                <span class="fw-bold d-block mt-2">Dekoracja czionki</span> Wybierz dekoracje do czionki
+                                taką jak pogrubienie
+                                lub pochylenie tekstu
+                            </li>
+
+                            <li>
+                                <span class="fw-bold d-block mt-2">Rozmiar czcionki:</span> Zmieniaj rozmiar czcionki,
+                                aby dostosować
+                                wielkość tekstu do swoich potrzeb.
+                            </li>
+
+                            <li>
+                                <span class="fw-bold d-block mt-2">Wyśrodkowanie tekstu:</span> Wyśrodkuj tekst w
+                                komórkach poziomo, aby poprawić jego układ i
+                                czytelność.
+                            </li>
+
+                            <li>
+                                <span class="fw-bold d-block mt-2">Kolor czcionki:</span> Wybierz kolor tekstu z palety
+                                kolorów, aby
+                                zwiększyć czytelność lub dodać
+                                estetyki.
+                            </li>
+                        </ul>
+
+
+                        <div class="fs-3 fw-bold mt-3">Narzędzia Edycji Komórek</div>
+                        <ul>
+                            <li>
+                                <span class="fw-bold d-block mt-2">Kolor tła:</span>
+                                Zmieniaj kolor tła wybranych komórek, aby podkreślić ważne obszary arkusza.
+
+                            </li>
+                            <li>
+                                <span class="fw-bold d-block mt-2">Kolor Ramy komórek:</span>
+                                Dostosuj obramowanie komórek, wybierając kolor, aby lepiej
+                                zorganizować dane.
+                            </li>
+                            <li>
+                                <span class="fw-bold d-block mt-2">Komentarz do komórki:</span>
+                                Dodaj komentarz do komórki aby zaznaczyć jakieś uwagi lub łatwiej zorientować się w
+                                przyszłości.
+                            </li>
+                            <li>
+                                <span class="fw-bold d-block mt-2">Zaokrąglanie:</span>
+                                Szybko zaokrąglaj wartości liczbowe w komórkach do najbliższej wartości całkowitej
+                                lub określonej liczby miejsc po przecinku.
+                            </li>
+                            <li>
+                                <span class="fw-bold d-block mt-2">Jednostki miary:</span>
+                                Przypisuj jednostki miary do wartości w komórkach, takie jak waluta, masa,
+                                prędkość, aby dane były bardziej zrozumiałe.
+                            </li>
+                            <li>
+                                <span class="fw-bold d-block mt-2">Przypisanie linku URL:</span>
+                                Dodawaj linki do komórek, umożliwiając szybki dostęp do zewnętrznych zasobów lub
+                                dodatkowych informacji.
+                            </li>
+                        </ul>
+                        <div class="fs-3 fw-bolder">Wstawianie i Komponenty</div>
+                        <ul>
+                            <li>
+                                <span class="fw-bold d-block mt-2">Wstaw Date:</span>
+                                Wstawiaj datę bezpośrednio do komórek za pomocą kalendarza, co
+                                przyspiesza proces wprowadzania danych czasowych.
+                            </li>
+                            <li>
+                                <span class="fw-bold d-block mt-2">Wstaw Godzine:</span>
+                                Wstawiaj czas w formie HH:MM bezpośrednio do komórek za pomocą zegara, co
+                                przyspiesza proces wprowadzania danych czasowych.
+                            </li>
+                            <li>
+                                <span class="fw-bold d-block mt-2">Dodaj Wykres:</span>
+                                Wybierz jeden spośród czterech rodzai i dodaj wykres, aby wizualizować dane i ułatwić
+                                analizę.
+                            </li>
+                            <li>
+                                <span class="fw-bold d-block mt-2">Dodaj Pole tekstowe:</span>
+                                Dodawaj pola tekstowe do arkusza, umożliwiając wprowadzanie dodatkowych notatek
+                                lub komentarzy.
+                            </li>
+                            <li>
+                                <span class="fw-bold d-block mt-2">Zmień w Pole wyboru:</span>
+                                Zmień komórke w pole wyboru, aby tworzyć listy kontrolne lub interaktywne elementy w
+                                arkuszu.
+                            </li>
+                            <li>
+                                <span class="fw-bold d-block mt-2">Zmień w Pasek postępu:</span>
+                                Zmień komórke w paskek postępu, aby śledzić realizację zadań lub projektów.
+                            </li>
+
+                        </ul>
+
+
+
+
+
+
+                        <div class="fs-5 mb-2 mt-3 border-top">
+                            <p class="fs-3 fw-bolder mb-0">Jak korzystać z paska narzędzi</p>
+                            Aby skorzystać z narzędzi na pasku narzędzi, wystarczy kliknąć odpowiednią ikonę lub opcję.
+                            Narzędzia są łatwo dostępne i intuicyjne w użyciu, co pozwala na szybkie dostosowywanie i
+                            zarządzanie danymi w arkuszu. Dzięki różnorodnym opcjom formatowania i edycji, pasek
+                            narzędzi
+                            CrabSheets umożliwia użytkownikom efektywne i wygodne zarządzanie ich danymi.
+                        </div>
+                    </div>
+
+                    <!-- Page 4 - WorkSpace -->
+                    <div class="tab-pane fade" id="v-pills-4" role="tabpanel" aria-labelledby="v-pills-4-tab">
+                        <span class="fs-1 fw-bolder">Przestrzeń Robocza</span>
+                        <span class="badge bg-primary">Nawigacja po programie</span>
+                        <p class="fs-5 border-bottom pb-2">
+                            Przestrzeń robocza w CrabSheets to główny obszar, w którym możesz wprowadzać, edytować i
+                            organizować dane. Jest to centralna część ekranu, gdzie widoczne są komórki arkusza
+                            kalkulacyjnego. Poniżej znajduje się szczegółowy opis przestrzeni roboczej i jej funkcji.
+                        </p>
+
+                        <div class="fs-3 fw-bolder ">Arkusz</div>
+                        Przestrzeń robocza wyświetla aktualnie wybrany arkusz. W jednym otwartym pliku może znajdować
+                        się więcej niż jeden arkusz, co pozwala na lepszą organizację danych i prowadzenie różnych
+                        zestawów informacji w jednym miejscu. Możesz przełączać się między arkuszami, klikając na ich
+                        zakładki umieszczone na dole przestrzeni roboczej. Możesz tam również Dodać nowy arkusz,
+                        skopiować lub usunać aktualnie otwarty arkusz.
+
+                        <div class="fs-3 fw-bolder mt-3 border-top pt-2">Siatka Komórek</div>
+                        <span> Siatka komórek to układ wierszy i kolumn, które tworzą arkusz kalkulacyjny. Kolumny
+                            oznaczane są literą alfabetu od A do Z
+                            a wiersze cyfrą od 1 do 500.
+                        </span>
+
+
+                        <div class="fs-3 fw-bolder mt-3 border-top">Komórki</div>
+                        <ul>
+                            <li>
+                                <span class="fw-bold d-block mt-2">Wstęp:</span>
+                                komórki są podstawowymi jednostkami, w których można wprowadzać dane. Każda komórka ma
+                                unikalny adres, określony przez literę kolumny i numer wiersza oddzielone za pomocą
+                                dwukropka ':' (np. A:1, B:2).
+                            </li>
+                            <li>
+                                <span class="fw-bold d-block mt-3">Podstawy Zaznaczania komórek:</span>
+                                Aby zaznaczyć komórke wystarczy że na nią naciśniesz jeżeli chcesz wybrać więcej niż
+                                jedną komórke należy zaznaczyć obszar w którym chcesz wybrać komórki.
+                                jeżeli zapomniałeś zaznaczyć jakiś komórek po prostu zaznacz kolejny obszar a doda się
+                                on do puli zaznaczonych. Jeżeli chcesz wiedzieć więcej <a href="#">Czytaj dalej o
+                                    zasadach zaznaczania</a>
+                            </li>
+                            <li>
+                                <span class="fw-bold d-block mt-3">Jak wprowadzać dane ?</span>
+                                Mamy zasadniczo dwie metody wprowadzania danych poprzez kliknięcie na zaznaczoną już
+                                wcześniej komórke tak aby pojawił się na niej migający kursor i wpisywanie danych
+                                bezpośrednio do niej lub poprzez <a href="#">pole edycji komórki</a> znajdujące się
+                                między paskiem narzędziowym a przestrzenią roboczą.
+                            </li>
+                            <li>
+                                <span class="fw-bold d-block mt-3">Wykonywanie obliczeń w komórkach</span>
+                                Aby wykonać obliczania w komórce należy utworzyć wzór poprzez rozpoczęcie wpisywania
+                                danych od znaku "=" dla przykładu wpisując w komórke "=2+2" i wciśnieciu enter komórka
+                                wyświetli nam wynik który wynosi 4. Przy ponownym wejściu w tryb edycji komórki
+                                wyświetli nam się wzór z którego uzyskano wynik.
+
+                            </li>
+                            <li>
+                                <span class="fw-bold d-block mt-3">Zawansowane obliczenia i funkcje</span>
+                                Wzory w komórkach mogą zostać wzbogacone o odwołania do innych komórek lub Funkcje
+                                przeczytaj więcej w zakładce
+                                <a href="#">Wykonywanie obliczeń</a>
+
+                            </li>
+                        </ul>
+                        <span>
+
+                        </span>
+
+                    </div>
+
+                    <!-- Page 5 - Selection Rules -->
+                    <div class="tab-pane fade" id="v-pills-5" role="tabpanel" aria-labelledby="v-pills-5-tab">
+                        <span class="fs-1 fw-bolder">Zasady zaznaczania komórek</span>
+                        <span class="badge bg-success">Interakcje z programem</span>
+                        <p class="fs-5 border-bottom pb-2">
+                            Zaznaczanie komórek w CrabSheets zostało zaprojektowane tak, aby było intuicyjne i
+                            efektywne, umożliwiając szybkie i precyzyjne operacje na danych. Oto szczegółowy opis zasad
+                            zaznaczania komórek w CrabSheets:
+                        </p>
+                        <div class="fs-3 fw-bolder ">Zaznaczanie pojedynczej komórki</div>
+                        <ul>
+                            <li>
+                                <span class="fw-bold d-block mt-3">Zaznaczenie:</span>
+                                Kliknięcie na dowolną komórkę powoduje jej zaznaczenie.
+                            </li>
+                            <li>
+                                <span class="fw-bold d-block mt-3">Przełączanie zaznaczenia:</span>
+                                Gdy masz zaznaczoną komórkę i klikniesz na inną, zaznaczenie przeskakuje na tę drugą
+                                komórkę.
+                            </li>
+                            <li>
+                                <span class="fw-bold d-block mt-3">Koniec zaznaczenia:</span>
+                                Wciśnięcie przycisku zatwierdź na pasku edycji komórki lub klawisza enter na klawiaturze
+                                powoduje wyłączenie zaznaczenia oraz zapis wprowadzonych zmian
+                            </li>
+                        </ul>
+                        <div class="fs-3 fw-bolder pt-1 border-top mt-3">Zaznaczanie wielu komórek jednocześnie</div>
+
+                        <ul>
+                            <li>
+                                <span class="fw-bold d-block mt-3">Zaznaczenie:</span>
+                                Wciśnij lewy przycisk myszy lub przytrzymaj palec nad wybraną komórką początkową
+                                Przeciągnij kursor lub palec do końcowej komórki, którą chcesz zaznaczyć, nie puszczając
+                                przycisku myszy( na urządzeniach dotykowych nie odrywaj palca od ekranu )
+                                . Następnie zwolnij lewy przycisk myszy lub unieś palec z ekranu, aby zakończyć
+                                zaznaczanie. Obszar między komórką początkową a końcową zostanie zaznaczony.
+                            </li>
+                            <li>
+                                <span class="fw-bold d-block mt-3">Usuwanie z zaznaczonych:</span>
+                                Jeżeli jakieś komórki zostały zaznaczone przez pomyłke można je łatwo usunąc ponownie
+                                zaznaczając nowy obszar każda zaznaczona komórka znajdująca się między komórką
+                                początkową a końcową obszaru zostanie usunięta z puli zaznaczonych. Aby usuwąć
+                                pojedynczą komórke z puli zaznaczonych wystarczy że na nią naciśniesz
+                            </li>
+                            <li>
+                                <span class="fw-bold d-block mt-3">Dodawanie do zaznaczonych:</span>
+                                Jeżeli jakieś komórki zostały pominięte przy zaznaczaniu możesz je łatwo dodać
+                                zaznaczając po prostu drugi obszar. Zaznaczenie drugiego obszaru spowoduje dodanie jego
+                                komórek do puli zaznaczonych pod warunkiem że żadna z jego komórek już się w niej nie
+                                znajduje wtedy zostanie usunięta.
+                                <br>
+                                Możesz również dodawać pojedyczne komórki naciskając na nie z wciśniętym klawiszem <span
+                                    class="text-secondary">lewy CTRL</span>
+                            </li>
+                            <li>
+                                <span class="fw-bold d-block mt-3">Koniec zaznaczenia:</span>
+                                Aby odznaczyć grupe wystarczy że zaznaczysz pojedynczą komórke która nie znajduje się w
+                                puli zaznaczonych. Spowoduje to usunięciu puli zaznaczonych i zaznaczenie pojedynczej
+                                komórki
+                                można również skorzystać z klawisza enter lub zatwierdź na pasku edycji komórki
+                            </li>
+                        </ul>
+
+
+                        <div class="fs-3 fw-bolder pt-1 border-top mt-3">Przełączanie zaznaczenia podczas wpisywania
+                            wzoru</div>
+                        <div>
+                            Nie zawsze gdy masz zaznaczoną komórkę i klikniesz na inną zaznaczenie przeskoczy na tę
+                            drugą.
+                            Zadzieje się tak ponieważ komórka którą masz pierwotnie zaznaczoną ma wpisany wzór który ma
+                            możliwość włączyć
+                            teraz adres innej komórki do obliczeń.
+                        </div>
+                        <ul>
+                            <li>
+                                <span class="fw-bold d-block mt-3">Jaki wzór nie da się przełączyć ?</span>
+                                <p>Zasada brzmi że każdy niedokończony wzór przyjmie adres klikniętej komórki zamiast
+                                    przełączyć na nią zaznaczenie.</p>
+                                <div class="alert alert-warning">
+                                    <p>Dla przykładu weźmy wzór [ =2+2+5 ] i [ =2+2+ ] oraz komórke na którą będziemy
+                                        klikać 'A:1'</p>
+                                    <ul>
+                                        <li class="mt-3">
+                                            w tym pierwszym przykładzie kliknięcie na komórke 'A:1' spowoduje
+                                            przełączenie na nią
+                                            zaznaczenia ponieważ wzór [ =2+2+5 ] jest pełny i nie ma co do niego dodać.
+                                        </li>
+                                        <li class="mt-3">
+                                            Drugi przykład natiomiast nie przełączy nam zaznaczenia na komórke
+                                            'A:1' tylko włączy jej adres do obliczeń co zmieni nam wzór z [ =2+2+ ] na [
+                                            =2+2+'A:1' ].
+                                        </li>
+                                        <li class="mt-3">
+                                            Uzyskany z przykładu drugiego wzór [ =2+2+'A:1' ] będzie można już wyłączyć
+                                            następnym kliknięciem
+                                            chyba że ponownie naciśnie się na komórke 'A:1' co spowoduje jej usunięcie
+                                            ze wzoru i powrót do stanu [ =2+2+ ].
+                                        </li>
+                                    </ul>
+                                </div>
+
+                            </li>
+                            <li>
+                                <span class="fw-bold d-block mt-3">Wzory które całkowicie nie da się przełączyć
+                                    kliknięciem</span>
+                                <p>Takie też istnieją a są nimi tylko i wyłącznie wzory kończące się funkcją albo danymi
+                                    wchodzącymi w jej skład taki wzór będzie chciał przymować do siebie nieskończoną
+                                    ilość adresów
+                                    Jedynym wyjściem w tej sytuacji jest wciśnięcie przycisku zatwierdź na pasku
+                                    edycji komórki lub klawisza enter na klawiaturze
+                                </p>
+                                <div class="alert alert-warning">
+                                    <p>Przykład wzoru kończącego się funkcja z którego skorzystamy aby łatwiej nam było
+                                        się zorientować to [ =|SUMA|10,20 ] </p>
+                                    <ul>
+                                        <li class="mt-3">
+                                            Wzór który widzimy powyżej zawiera funkcje 'SUMA' która zwraca nam wynik
+                                            dodawania przesłanych argumentów 10 i 20
+                                            ale doskonale wiemy że funkcja suma może dodać do siebie więcej niż dwie
+                                            wartości
+                                        </li>
+                                        <li class="mt-3">
+                                            Kiedy komórka z takim wzorem jest otwarta kliknięcie na inną pojedynczą
+                                            komórke spowoduje
+                                            włączenie jej adresu do wzoru dla przykładu klikając na komórke A:1 nasz
+                                            wzór zmieni się w
+                                            [ =|SUMA|10,20,'A:1' ] następne kliknięcie na przykład na komórke A:2 zmieni
+                                            wzór w [ =|SUMA|10,20,'A:1','A:2' ] i tak w kółko.
+                                        </li>
+                                        <li class="mt-3">
+                                            Zaznaczenie obszaru w takiej sytuacji też nie spowoduje przełączenia tylko
+                                            włączeniu wszystkich komórek z obszaru do obliczenia. Dla przykładu
+                                            zaznaczając obszar
+                                            od komórki A:1 do A:4 nasz wzór zmieni się w [
+                                            =|SUMA|10,20,'A:1','A:2','A:3','A:4' ]
+                                        </li>
+                                    </ul>
+                                </div>
+
+                            </li>
+                        </ul>
+
+                        <hr>
+                        <span class="badge bg-danger">Opcja niedostępna dla urządzeń mobilnych </span>
+                        <div class="fs-3 fw-bolder">
+                            Jak rozpoznać kiedy komórka zostanie włączona do wzoru a kiedy przełączone zostanie
+                            zaznaczen ? </div>
+                        <div>
+
+                            <span class="mt-3 d-block">
+                                Program będzie komunikował ci swoje zamiary za pomocą kursora który zmieni swój kształt
+                                na znak "<b>+</b>"
+                                kiedy będzie chciał dodać adres komórki do wzoru zamiast ją zaznaczyć.
+                            </span>
+
+                            <div class="d-flex justify-content-center flex-wrap py-2">
+                                <div>
+
+                                </div>
+                                <div id="example-cursor"
+                                    class="mt-3 justify-content-center text-light text-center fw-bold w-100 d-flex align-items-center">
+                                    Nakieruj tutaj kursor myszy aby sprawdzić jak wygląda podczas dodawania adresów do
+                                    wzoru.
+                                </div>
+                            </div>
+                            <hr>
+                            <span class="badge bg-danger">Opcja niedostępna dla urządzeń mobilnych </span>
+                            <div class="fs-3 fw-bolder">
+                                Przełączanie zaznaczenie na komórke obok </div>
+                            <div>
+
+                                <span class="mt-3 d-block">
+                                    Jeżeli masz dostęp do klawiatury i zaznaczoną pojedynczą komórke to masz możliwość
+                                    przełączenia zaznaczenia na najbliższego sąsiada za pomocą strzałek na klawiaturze
+                                    zaznaczenie pszeskoczy w wybranym kierunku niezależnie od wzoru zawartego w komórce
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Page 6 - Write data -->
+                    <div class="tab-pane fade" id="v-pills-6" role="tabpanel" aria-labelledby="v-pills-6-tab">
+                        <span class="fs-1 fw-bolder">Zasady wprowadzania danych</span>
+                        <span class="badge bg-success">Interakcje z programem</span>
+                        <p class="fs-5 border-bottom pb-2">
+                            Wprowadzanie danych do komórek w CrabSheets jest podstawową operacją, która pozwala na
+                            efektywne zarządzanie informacjami i wykonywanie obliczeń. W tym artykule dowiesz się o
+                            metodach wprowadzania
+                            danych do komórek ich typach oraz jak wykonywać obliczenia
+                        </p>
+                        <div class="fs-4 fw-bolder ">Metody wprowadzania danych do komórek</div>
+                        <ul>
+                            <li>
+                                <span class="fw-bold d-block mt-2">Za pomocą pola edycji komórki:</span>
+                                jedną z metod wprowadzania danych jest zaznaczenie komórki a następnie wpisanie danych
+                                do pola edycji komórki
+                                aby potwierdzić zmiany naciśnij przycisk zatwierdź po prawej stronie pola edycji.
+                            </li>
+                            <li>
+                                <span class="fw-bold d-block mt-2">bezpośrednio w komórce:</span>
+                                naciśnij ponownie na zaznaczoną już komórke a pole do wprowadzania tekstu
+                                pojawi się bezpośrednio w niej wpisane dane możesz zatwierdzić przyciskiem na pasku
+                                edycji komórki lub wciskając klawisz enter na klawiaturze
+                            </li>
+                        </ul>
+                        <div class="fs-3 fw-bolder mt-4 pt-2 border-top">Typy danych dostępne w komórkach</div>
+                        <span>
+                            Wpisywane przez nas dane możemy podzielić na kilka kategori większość z nich może być
+                            poźniej używana w obliczeniach ale nie wszystkie! Poniżej znajdziesz liste dostępnych typów
+                            danych i ich opis
+                        </span>
+                        <ul>
+                            <li class="mt-3">
+                                <span class="fw-bold d-block">Tekst:</span>
+                                Tekst jest wartościa która nie może zostać użyta w obliczeniach tekstem stają się każde
+                                dane zawierające litere alfabetu od A do Z lub znak specjalny
+                                <div class="">Przykładowe teksty:
+                                    <div class="d-flex flex-wrap">
+                                        <div class="example-cell">Pies</div>
+                                        <div class="example-cell ms-3">Kot</div>
+                                        <div class="example-cell ms-3">Żyrafa</div>
+                                    </div>
+                                </div>
+
+
+                            </li>
+                            <li class="mt-3">
+                                <span class="fw-bold d-block">Liczba:</span>
+                                Jak można się domyśleć liczby doskonale nadają się do obliczeń. Wartości dzisiętne lub
+                                mniejsze zapisujemy po kropce jak w przykładach poniżej.
+                                <div>Przykładowe Liczby:
+                                    <div class="d-flex flex-wrap">
+                                        <div class="example-cell">152</div>
+                                        <div class="example-cell ms-3">2.5</div>
+                                        <div class="example-cell ms-3">0.25</div>
+                                    </div>
+                                </div>
+
+
+                            </li>
+                            <li class="mt-3">
+                                <span class="fw-bold d-block">Data i Czas:</span>
+                                Crabsheets obsługuje date w formcie Rok-Miesiąc-Dzień oraz czas w formatach
+                                Godziny:Minuty lub bardziej szczegółowo Godziny:Minuty:Sekundy.
+                                Format Czasu i daty może być używany do obliczeń w niektórych wbudowanych funkcjach.
+                                <div>Przykładowe formaty daty i czasu:
+                                    <div class="d-flex flex-wrap">
+                                        <div class="example-cell">18:42</div>
+                                        <div class="example-cell ms-3">2023-12-23</div>
+                                        <div class="example-cell ms-3">10:13:10</div>
+                                    </div>
+                                </div>
+
+
+                            </li>
+                            <li class="mt-3">
+                                <span class="fw-bold d-block">Wartość logiczna</span>
+                                Wartość logiczna jest używana w funkcjach z rodziny <i>logicznych</i> może zostać
+                                uzyskana poprzez zastosowanie znaku <br>&LT, &GT, = we wzorze na przykład =10=10 >> true
+                                <div>Przykładowe Wartości logiczne:
+                                    <div class="d-flex flex-wrap">
+                                        <div class="example-cell">true</div>
+                                        <div class="example-cell ms-3">false</div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="mt-3">
+                                <span class="fw-bold d-block">Obliczenie ( Wzór )</span>
+                                Tworzony poprzez wstawnienie znaku równości na początku. Pisanie wzorów jest obarczone
+                                kilkoma zasadami o których możesz przeczytać w zakładce <a href="#">Zasady tworzenia
+                                    wzorów</a>
+                                <div>Przykładowe Wartości logiczne:
+                                    <div class="d-flex flex-wrap">
+                                        <div class="example-cell">true</div>
+                                        <div class="example-cell ms-3">false</div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+
+
+
+                    </div>
+
+                    <!-- Paage 7  - Write Formula Rules-->
+                    <div class="tab-pane fade" id="v-pills-7" role="tabpanel" aria-labelledby="v-pills-7-tab">
+                        <span class="fs-1 fw-bolder">Obliczenia w komórkach ( Wzory )</span>
+                        <span class="badge bg-warning">Obliczenia i Funkcje</span>
+                        <p class="fs-5 pb-2">
+                            Wykonywanie obliczeń w komórkach jest jedną z kluczowych funkcji CrabSheets, umożliwiającą
+                            przekształcanie danych w wartościowe informacje. Aby efektywnie korzystać z możliwości
+                            obliczeniowych, ważne jest zrozumienie podstawowych zasad tworzenia wzorów i korzystania
+                            z wbudowanych funkcji.
+                        </p>
+                        <div class="fs-4 fw-bolder mt-4 pt-3 border-top">Podstawowe obliczenia w komórkach</div>
+                        <span>
+                            Zasadniczo wszystko co wpiszesz do komórki zostanie w niej po prostu wyświetlone
+                            chyba że jako pierwszego znaku użyjesz znaku równości "=" który informuje program że wpisane
+                            dane to wzór. Poniżej znajdziesz przykładowe obliczenia i dane w komórkach:
+                        </span>
+                        <div class="mt-2">Przykłady składają się z 2 symulowanych komórek i opisu. Pierwsza symulowana
+                            komórka wyświetla wpisany wzór natomiast druga jego wynik</div>
+
+                        <div class="alert alert-dark mt-3 pe-2 pe-md-5">
+                            <div class="fs-5">Przykład 1 - Zapis tekstu w komórce</div>
+                            <div class="d-flex flex-wrap mt-2 py-2">
+                                <div class="me-3">
+                                    Wzór:
+                                    <div class="example-cell">2+2</div>
+                                </div>
+                                <div class="d-flex align-self-end icon-right-box me-3"><div class="icon-right-bold "></div></div>
+                                <div>
+                                    Wynik:
+                                    <div class="example-cell">2+2</div>
+                                </div>
+                             
+                            </div>
+                            <div class="mt-2">
+                                Wpisanie danych nie poprzedzonych znakiem równości wyświetli je w niezmienionej
+                                formie tak jak ten tekst powyżej.
+                            </div>
+                        </div>
+
+                        <div class="alert alert-dark mt-3 pe-2 pe-md-5">
+                            <div class="fs-5">Przykład 2 - Zapis prostego obliczenia</div>
+                            <div class="d-flex flex-wrap mt-2 py-2">
+                                <div class="me-3">
+                                    Wzór:
+                                    <div class="example-cell">=2+2</div>
+                                </div>
+                                <div class="d-flex align-self-end icon-right-box me-3"><div class="icon-right-bold "></div></div>
+                                <div>
+                                    Wynik:
+                                    <div class="example-cell">4</div>
+                                </div>
+                            
+                            </div>
+                            <div class="mt-2">
+                                Jak widać poprzedzenie danych znakiem równości spowodowało uzyskanie wyniku z wzoru
+                                =2+2
+                            </div>
+                        </div>
+
+                        <div class="alert alert-dark mt-3 pe-2 pe-md-5">
+                            <div class="fs-5">Przykład 3 - Kolejność wykonywania działań</div>
+                            <div class="d-flex flex-wrap mt-2 py-2">
+                                <div class="me-3">
+                                    Wzór:
+                                    <div class="example-cell">=2+2*3</div>
+                                </div>
+                                <div class="d-flex align-self-end icon-right-box me-3"><div class="icon-right-bold "></div></div>
+                                <div>
+                                    Wynik:
+                                    <div class="example-cell">8</div>
+                                </div>
+                      
+                            </div>
+                            <div class="mt-2">
+                                Przyjmując dotychczasowe zasady obowiązujące w matematyce w pierwszej kolejności
+                                zostanie wykonane mnożenie lub dzielenie dopiero poźniej odejmnowanie lub dodawanie
+                            </div>
+                        </div>
+
+                        <div class="fs-4 fw-bolder mt-4 pt-3 border-top text-break word-break">Symbole we wzorach </div>
+                        Jak widać do konstruowania wzorów używa się symboli matematycznych jak + lub - 
+                        cała liste użytecznych symboli wraz z ich opisem znajdziesz w tabeli poniżej
+
+                        <div class="container-fluid customTable text-light mt-2">
+
+                            <div class="row text-center">
+                                <div class="col-12 col-sm-2 col-lg-2 ">
+                                    Symbol
+                                </div>
+                                <div class="col-12 col-sm-4 col-lg-5">
+                                    Przykład
+                                </div>
+                                <div class="col-12 col-sm-6 col-lg-5 ">
+                                    Opis
+                                </div>
+                            </div>
+
+                            <div class="row text-center">
+                                <div class="col-12 col-sm-2 col-lg-2 ">
+                                    +
+                                </div>
+                                <div class="col-12 col-sm-4 col-lg-5">
+                                    10 + 10 = 20
+                                </div>
+                                <div class="col-12 col-sm-6 col-lg-5">
+                                    Dodawanie
+                                </div>
+                            </div>
+    
+                            <div class="row text-center">
+                                <div class="col-12 col-sm-2 col-lg-2 ">
+                                    -
+                                </div>
+                                <div class="col-12 col-sm-4 col-lg-5">
+                                    10 - 5 = 5
+                                </div>
+                                <div class="col-12 col-sm-6 col-lg-5 ">
+                                    Odejmowanie
+                                </div>
+                            </div>
+    
+                            <div class="row text-center">
+                                <div class="col-12 col-sm-2 col-lg-2 ">
+                                *
+                                </div>
+                                <div class="col-12 col-sm-4 col-lg-5">
+                                    15 * 2 = 30
+                                </div>
+                                <div class="col-12 col-sm-6 col-lg-5 ">
+                                    Mnożenie
+                                </div>
+                            </div>
+    
+                            
+                            <div class="row text-center">
+                                <div class="col-12 col-sm-2 col-lg-2 ">
+                                /
+                                </div>
+                                <div class="col-12 col-sm-4 col-lg-5">
+                                    20 / 10 = 2
+                                </div>
+                                <div class="col-12 col-sm-6 col-lg-5 ">
+                                    Dzielenie
+                                </div>
+                            </div>
+    
+                            <div class="row text-center">
+                                <div class="col-12 col-sm-2 col-lg-2 ">
+                                    ^
+                                </div>
+                                <div class="col-12 col-sm-4 col-lg-5">
+                                    2 ^ 3 = 8
+                                </div>
+                                <div class="col-12 col-sm-6 col-lg-5 ">
+                                    Potęgowanie
+                                </div>
+                            </div>
+ 
+                            <div class="row text-center">
+                                <div class="col-12 col-sm-2 col-lg-2 ">
+                                    =
+                                </div>
+                                <div class="col-12 col-sm-4 col-lg-5">
+                                    6 = 6 = true
+                                </div>
+                                <div class="col-12 col-sm-6 col-lg-5 ">
+                                    Porównywanie
+                                </div>
+                            </div>
+
+                            <div class="row text-center">
+                                <div class="col-12 col-sm-2 col-lg-2 ">
+                                    &gt
+                                </div>
+                                <div class="col-12 col-sm-4 col-lg-5">
+                                    5 &gt 10 = false
+                                </div>
+                                <div class="col-12 col-sm-6 col-lg-5 ">
+                                    Większe
+                                </div>
+                            </div>
+
+                            <div class="row text-center">
+                                <div class="col-12 col-sm-2 col-lg-2">
+                                    &lt
+                                </div>
+                                <div class="col-12 col-sm-4 col-lg-5">
+                                    5 &lt 10 = true
+                                </div>
+                                <div class="col-12 col-sm-6 col-lg-5 ">
+                                    Mniejsze
+                                </div>
+                            </div>
+
+                            <div class="row text-center">
+                                <div class="col-12 col-sm-2 col-lg-2">
+                                    ,
+                                </div>
+                                <div class="col-12 col-sm-4 col-lg-5">
+                                    |SUMA|10,20,30 = 60
+                                </div>
+                                <div class="col-12 col-sm-6 col-lg-5 ">
+                                    Oddziela od siebie wartości
+                                </div>
+                            </div>
+
+                            <div class="row text-center">
+                                <div class="col-12 col-sm-2 col-lg-2 ">
+                                    ( ),  [ ], { }                                                                
+                                </div>
+                                <div class="col-12 col-sm-4 col-lg-5">
+                                   (2+2)*3 = 12
+                                </div>
+                                <div class="col-12 col-sm-6 col-lg-5 ">
+                                    Zmienia kolejność działania poprzez zamknięcie jego części w nawiasach
+                                </div>
+                            </div>
+
+                            <div class="row text-center">
+                                <div class="col-12 col-sm-2 col-lg-2 ">
+                                    |
+                                </div>
+                                <div class="col-12 col-sm-4 col-lg-5">
+                                    |$PI| = Liczba PI
+                                </div>
+                                <div class="col-12 col-sm-6 col-lg-5 ">
+                                    Zaznacza początek i koniec nazwy funkcji
+                                </div>
+                            </div>
+
+                            <div class="row text-center">
+                                <div class="col-12 col-sm-2 col-lg-2 ">
+                                    '
+                                </div>
+                                <div class="col-12 col-sm-4 col-lg-5">
+                                    'A:1' = Wartość z komórki A1
+                                </div>
+                                <div class="col-12 col-sm-6 col-lg-5 ">
+                                    Zaznacza początek i koniec adresu komórki
+                                </div>
+                            </div>
+
+                        </div>    
+
+                        <div class="fs-3 fw-bolder mt-4 pt-2">Obliczenia zawierające adresy innych komórek
+                        </div>
+                        <span>
+                            Cała koncepcja arkuszy kalkulacyjnych to odwoływanie się do danych z innych komórek aby nie trzeba było ich na okrągło przepisywać
+                            w crabSheets odbywa się to za pomocą wpisaniu adresu komórki pomiędzy dwa apostrofy dla przykładu 'C:1' adres komórki składa się z
+                            litery jej komumny oraz cyfry rzędu oddzielone między sobą za pomocą dwukropka litera kolumny musi być duża. Program automatycznie zmieni mała litere kolumny na duża podczas wstawiania apostrofu zamykającego wpisywany adres
+                        </span>
+
+                        <div class="alert alert-dark mt-3 pe-2 pe-md-5">
+                            <div class="fs-5">Przykład 1 - Przypisanie wartości z innej komórki</div>
+                            <div class="d-flex flex-wrap py-2 mt-2">
+
+                                <div class="me-3">
+                                    Wzór:
+                                    <div class="example-cell">='A:1'</div>
+                                </div>
+                                <div class="d-flex align-self-end icon-right-box me-3"><div class="icon-right-bold "></div></div>
+                                <div>
+                                    Wynik:
+                                    <div class="example-cell">10</div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex flex-wrap mt-2 py-2 border-top">
+                                <div class="mt-2">
+                                    Komórka 'A:1' użyta w wzorze:
+                                    <div class="example-cell">=5+5</div>
+                                </div>
+                            </div>
+                         
+
+                            <div class="mt-2">
+                                Tym razem nasz wzór zawiera odwołanie do innej komórki i po prostu przyjmuje taką
+                                samą wartość jak komórka A:1. Należy zauważyć również że w komórce A:1 mamy
+                                obliczenie którego wynikiem jest 10 i to właśnie wynik został przekazany do naszej
+                                komórki a nie wzór [=5+5]
+                            </div>
+                        </div>
+
+                        <div class="alert alert-dark mt-3 pe-2 pe-md-5">
+                            <div class="fs-5">Przykład 2 - Obliczenia z użyciem innych komórek</div>
+                            <div class="d-flex flex-wrap mt-2 py-2">
+
+                                <div class="me-3">
+                                    Wzór:
+                                    <div class="example-cell">='A:1'+'A:2'</div>
+                                </div>
+                                <div class="d-flex align-self-end icon-right-box me-3"><div class="icon-right-bold "></div></div>
+                                <div>
+                                    Wynik:
+                                    <div class="example-cell" id="example-cell-2">17</div>
+                                </div>                          
+                            </div>
+
+                            <div class="d-flex flex-wrap mt-2 py-2 border-top">
+
+                                <div class="me-3">
+                                    Komórka 'A:1' użyta w wzorze:
+                                    <div class="example-cell" id="example-cell-1">10</div>
+                                </div>
+    
+                                <div>
+                                    Komórka 'A:2' użyta w wzorze:
+                                    <div class="example-cell">=5+2</div>
+                                </div>
+
+                            </div>
+
+                            <div class="mt-2">
+                                W tym przykładzie dodajemy wartość z komórki "A:1" do wyniku działania z komórki "A:2"; jeżeli 
+                                zmienilibyśmy wartość w której kolwiek z użytych komórek to automatycznie zaktualizuje się nasz wynik możesz to wypróbować 
+                                przesuwając suwak poniżej i obserwując zmiany
+                            </div>
+                            <div>
+                                <label for="range-1" class="form-label mt-2 mb-0">Wartość komórki A:1</label>
+                                <input type="range" class="form-range" id="range-1" min="-35" max="35" step="1" value="10">
+                            </div>
+                        </div>
+                        <div class="fs-3 fw-bolder mt-4 pt-2 border-top">Kolejność wykonywania działań</div>
+                        <span>
+                            Przed przystąpieniem do poznawania funkcji należy poznać kolejność wykonywania działań. We wcześniejszych przykładach
+                        </span>
+                    </div>
+
+
+                    <!-- KONIEC WSZYSTKICH PODSTRON -->
+                </div>
+
+                <!-- DIV MAIN CONTENT -->
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const collapse = new bootstrap.Collapse(document.getElementById("navCollapse"), { toggle: false });
+        const mainContentNode = document.getElementById("mainContent");
+        addEventListener("resize", (e) => {
+            if (window.innerWidth > 767) {
+                collapse.show()
+            }
+        })
+        if (window.innerWidth < 768) collapse.hide();
+        for (let btn of document.getElementsByClassName("closeCollapseBtn")) {
+            btn.addEventListener("click", () => {
+                mainContentNode.scrollTop = 0;
+                if (window.innerWidth < 767) collapse.hide();
+            })
+        }
+
+        document.getElementById("range-1").addEventListener("input",(e)=>{
+            const value = e.currentTarget.value;
+            document.getElementById("example-cell-1").innerHTML = value;
+            document.getElementById("example-cell-2").innerHTML = parseInt(value) + 7;
+        })
+
+
+    </script>
+</body>
+
+</html>
+
