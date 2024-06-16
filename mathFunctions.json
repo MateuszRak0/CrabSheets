@@ -1,256 +1,307 @@
 [
     {
         "prefix": "SUMA",
+        "arguments":">2",
         "description": "Zwraca wynik dodawania wszystkich podanych wartości ( może sumować elementy grupy )",
         "category": "Matematyczna"
     },
     {
         "prefix": "ILOCZYN",
+        "arguments":"2",
         "description": "Zwraca wynik mnożenia dwóch podanych wartości",
         "category": "Matematyczna"
     },
     {
         "prefix": "ILORAZ",
+        "arguments":"2",
         "description": "Zwraca wynik dzielenia dwóch podanych wartości",
         "category": "Matematyczna"
     },
     {
         "prefix": "RESZTA",
+        "arguments":"2",
         "description": "Zwraca resztę z dzielenia",
         "category": "Matematyczna"
     },
     {
         "prefix": "PIERWIASTEK",
+        "arguments":"1",
         "description": "Zwraca pierwiastek podanej liczby",
         "category": "Matematyczna"
     },
     {
         "prefix": "SILNIA",
+        "arguments":"1",
         "description": "Oblicza silnie z liczby naturalnej",
         "category": "Matematyczna"
     },
     {
         "prefix": "MEDIANA",
+        "arguments":">1",
         "description": "Oblicza mediane z przesłanych wartości i grup",
         "category": "Matematyczna"
     },
     {
         "prefix": "DODATNIA",
+        "arguments":"1",
         "description": "Zamienia wartość ujemną na dodatnią z wartościa dodatnią nie robi nic",
         "category": "Matematyczna"
     },
     {
         "prefix": "SREDNIA_A",
+        "arguments":">1",
         "description": "Oblicza średnią arytmetyczną podanych wartości",
         "category": "Matematyczna"
     },
     {
         "prefix": "SREDNIA_W",
+        "arguments":">1",
         "description": "Oblicza średnią Ważona gdzie wzór to: |SREDNIA_W|W1,N1,W2,N2... gdzie W = Waga , N = Liczba lub Grupa",
         "category": "Matematyczna"
     },
     {
         "prefix": "%POWIEKSZ",
+        "arguments":"2",
         "description": "Powiększa wartość A a podany procent(B) wzór: |FUNC|A,B ",
         "category": "Procenty"
     },
     {
         "prefix": "%POMNIEJSZ",
+        "arguments":"2",
         "description": "Pomniejsza wartość A a podany procent(B) wzór: |FUNC|A,B ",
         "category": "Procenty"
     },
     {
         "prefix": "%ILE_Z",
+        "arguments":"2",
         "description": "Zwraca jaką wartościa procentową liczby A jest liczba B  wzór: |FUNC|A,B ",
         "category": "Procenty"
     },
     {
         "prefix": "%ZAMIEN_ULAMEK",
+        "arguments":"1",
         "description": "Zamienia ułamek dziesiętny na procenty",
         "category": "Procenty"
     },
     {
         "prefix": "%ZAMIEN_PROCENT",
+        "arguments":"1",
         "description": "Zamienia procenty na ułamek dziesiętny",
         "category": "Procenty"
     },
     {
         "prefix": "%ROZNICA",
+        "arguments":"2",
         "description": "O ile procent jedna wartość(A) wzrosła/zmalała w stosunku do drugiej(B)  wzór: |FUNC|A,B ",
         "category": "Procenty"
     },
     {
         "prefix": "RADIAN",
+        "arguments":"1",
         "description": "Zamienia podaną wartość w stopniach na radiany",
         "category": "Trygonometria"
     },
     {
         "prefix": "STOPNIE",
+        "arguments":"1",
         "description": "Zamienia podaną wartość w radianach na stopnie",
         "category": "Trygonometria"
     },
     {
         "prefix": "COSINUS",
+        "arguments":"1",
         "description": "Oblicza Wartość COSINUS dla podanej wartości.",
         "category": "Trygonometria"
     },
     {
         "prefix": "TANGES",
+        "arguments":"1",
         "description": "Oblicza Wartość TANGES dla podanej wartości.",
         "category": "Trygonometria"
     },
     {
         "prefix": "SINUS",
+        "arguments":"1",
         "description": "Oblicza Wartość SINUS dla podanej wartości.",
         "category": "Trygonometria"
     },
     {
         "prefix": "DYSTANS:2D",
+        "arguments":"4",
         "description": "Oblicza dystans od punktów na osi X/Y gdzie wzór to |FUNC|x1,y1,x2,y2",
         "category": "Trygonometria"
     },
     {
         "prefix": "MAPA",
+        "arguments":">3",
         "description": "Tworzy zestawienie klucz:wartość gdzie klucz musi być unikatowy wzór na stworzenie to |MAPA|A,B1,C1,B2,C2 gdzie: A = komórka w której wpisany zostanie klucz aby wyciągnąc wartość     B- Klucz  C- Wartość",
         "category": "Operacje Grupowe"
     },
     {
         "prefix": "GRUPA",
+        "arguments":">1",
         "description": "Tworzy grupe z przesłanych wartości dla poźniejszych funkcji. UWAGA grupa może być wykorzystana tylko w przeznaczonych dla niej funkcjach lub komponentach",
         "category": "Operacje Grupowe"
     },
     {
         "prefix": "GRUPA:DODAJ",
+        "arguments":">1",
         "description": "Tworzy grupę z podanych elementów + X wzór |FUNC|X,elementy...",
         "category": "Operacje Grupowe"
     },
     {
         "prefix": "GRUPA:WYJMIJ",
+        "arguments":"2",
         "description": "Wyjmuje wartość z grupy(A) po indeksie(B) licząc od początku wzór: |FUNC|A,B",
         "category": "Operacje Grupowe"
     },
     {
         "prefix": "GRUPA:MINUS",
+        "arguments":">2",
         "description": "Tworzy grupę z podanych elementów - X wzór |FUNC|X,elementy...",
         "category": "Operacje Grupowe"
     },
     {
         "prefix": "GRUPA:POMNOZ",
+        "arguments":">2",
         "description": "Tworzy grupę z podanych elementów * X wzór |FUNC|X,elementy...",
         "category": "Operacje Grupowe"
     },
     {
         "prefix": "GRUPA:PODZIEL",
+        "arguments":">2",
         "description": "Tworzy grupę z podanych elementów * X wzór |FUNC|X,elementy...",
         "category": "Operacje Grupowe"
     },
     {
         "prefix": "GRUPA:POTEGA",
+        "arguments":">2",
         "description": "Tworzy grupę z podanych elementów ^ X wzór |FUNC|X,elementy...",
         "category": "Operacje Grupowe"
     },
     {
         "prefix": "GRUPA:PIERWIA",
+        "arguments":">2",
         "description": "Tworzy grupę z wyników pierwiastkowania podanych elementów",
         "category": "Operacje Grupowe"
     },
     {
         "prefix": "NAJWIEKSZA",
+        "arguments":">1",
         "description": "Zwraca największa wartość z wszystkich przesłanych argumentów lub przesłanych grup",
         "category": "Operacje Grupowe"
     },
     {
         "prefix": "NAJMNIEJSZA",
+        "arguments":">1",
         "description": "Zwraca najmniejsza wartość z wszystkich przesłanych argumentów lub przesłanych grup",
         "category": "Operacje Grupowe"
     },
     {
         "prefix": "_DATA:DZIS",
+        "arguments":"0",
         "description": "Zwraca dzisiejszą date w formacie 'Rok-Miesiąc-Dzień' Data będzie się aktualizowac przy każdym odpaleniu arkusza",
         "category": "Data i Czas"
     },
     {
         "prefix": "_DATA:OBLICZ",
+        "arguments":"2",
         "description": "Dodaje lub odejmuje dni od daty wzór: |FUNC|DATA,DNI   gdzie wartość dni może być ujemna lub dodatnia  ",
         "category": "Data i Czas"
     },
     {
         "prefix": "_MSC",
+        "arguments":"1",
         "description": "Zwraca nazwe miesiąca z podanej liczby np: |_MSC|1 = Styczeń",
         "category": "Data i Czas"
     },
     {
         "prefix": "_DZIEN",
+        "arguments":"1",
         "description": "Zwraca nazwe dnia tygodnia z podanej liczby np: |FUNC|2 = Wtorek",
         "category": "Data i Czas"
     },
     {
         "prefix": "_CZAS",
+        "arguments":"0",
         "description": "Zwraca dokładny czas w formacie Godziny : Minuty : Sekundy",
         "category": "Data i Czas"
     },
     {
         "prefix": "$PI",
+        "arguments":"0",
         "description": "Zwraca stałą matematyczną PI",
         "category": "Stała"
     },
     {
         "prefix": "$E",
+        "arguments":"0",
         "description": "Zwraca stałą Eulera - podstawe logarytmu naturalnego",
         "category": "Stała"
     },
     {
         "prefix": "$PHI",
+        "arguments":"0",
         "description": "Zwraca tzw. liczbę złotego podziału -> &Phi; ",
         "category": "Stała"
     },
     {
         "prefix": "&BIGGER",
+        "arguments":">2",
         "description": "Zwraca TRUE gdy wszystkie elementy są większe niz wartość X wzór: |FUNC|X,Elementy..",
         "category": "Logiczna"
     },
     {
         "prefix": "&SMALLER",
+        "arguments":">2",
         "description": "Zwraca TRUE gdy wszystkie elementy są mniejsze niz wartość X wzór: |FUNC|X,Elementy..",
         "category": "Logiczna"
     },
     {
         "prefix": "&EQUAL",
+        "arguments":"2",
         "description": "Porównuje dwie wartości i zwraca TRUE lub FALSE",
         "category": "Logiczna"
     },
     {
         "prefix": "&NOT",
+        "arguments":"1",
         "description": "Bramka logiczna NOT - Przyjmuje jeden argument logiczny (true/false)",
         "category": "Logiczna"
     },
     {
         "prefix": "&AND",
+        "arguments":"2",
         "description": "Bramka logiczna AND - Przyjmuje dwa argumenty logiczne (true/false)",
         "category": "Logiczna"
     },
     {
         "prefix": "&OR",
+        "arguments":"2",
         "description": "Bramka logiczna OR - Przyjmuje dwa argumenty logiczne (true/false)",
         "category": "Logiczna"
     },
     {
         "prefix": "&XOR",
+        "arguments":"2",
         "description": "Bramka logiczna XOR - Przyjmuje dwa argumenty logiczne (true/false)",
         "category": "Logiczna"
     },
     {
         "prefix": "&SIM FALSE",
+        "arguments":"1",
         "description": "Symulator wartości logicznej FALSE: Przyjmuje jeden adres komórki jako argument. Jeżeli komórka jest pusta lub posiada wartość nielogiczną (lub logiczna inną niż 'false') zwraca false",
         "category": "Logiczna"
     },
     {
         "prefix": "&SIM TRUE",
+        "arguments":"1",
         "description": "Symulator wartości logicznej TRUE: Przyjmuje jeden adres komórki jako argument. Jeżeli komórka jest pusta lub posiada wartość nielogiczną (lub logiczna inną niż 'true') zwraca true",
         "category": "Logiczna"
     },
     {
         "prefix": "&SWITCH",
+        "arguments":"3",
         "description": "Zwraca wartość zależnie od przesłanego argumentu prawda/fałsz gdzie wzór to |SWITCH|A,B,C gdzie A - true/False  |  B - Wartość zwracana gdy true  |  C - Wartość zwracana gdy false",
         "category": "Logiczna"
     }
