@@ -56,8 +56,18 @@
 }
 
 /* Example cell */
+
+.example-cell.xs{
+    min-width: fit-content !important;
+}
+
+.example-cell.small{
+    min-width: 60px !important;
+}
+
 .example-cell{
-    width: 120px;
+    width: fit-content !important;
+    min-width: 120px;
     height: 30px;
     background-color: #212529;
     color: #fff;
@@ -66,8 +76,10 @@
     align-items: center;
     box-sizing: border-box;
     padding: 1px 3px;
+    padding-right: 5px;
     font-size: 12px;
     font-weight: 500;
+    border: 1px solid #888888;
 }
 
 tr td:first-of-type{
@@ -166,3 +178,29 @@ tr td:last-of-type{
 }
 
 
+.cell-popover{
+    position: absolute;
+    z-index: 7;
+    border: 0;
+    width: fit-content;
+    padding: 0;
+    margin: 0;
+    font-size: 19px;
+    background-color:transparent;
+    width: 10px;
+    height: 10px;
+    text-decoration: none;
+    border-radius: 0 0 0 10px;
+    right: 0;
+    top: 0;
+}
+
+.color-example{
+    display: inline-block;
+    width: 17px;
+    height: 17px;
+}
+
+.example-cell-table{
+    border:1px solid #575757;
+}

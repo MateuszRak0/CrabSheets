@@ -21,13 +21,17 @@
 
 
 #mainContent{
-    position: relative;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    top: 0;
+    bottom: 0;
     z-index: 1;
 }
+
 /* Body colors & Page Sizing */
 body{
     background-color: #000000;
-    height: 100vh;
     overflow: hidden;
 }
 
@@ -43,15 +47,8 @@ body{
     z-index: 10 ;
 }
 
-
 .fill{
-    max-width: 100%;
-    width: 100%;
-    height: 100%;
     overflow: hidden;
-    min-height: 100%;
-    max-height: 100%;
-    position: relative;
     overflow-y: auto;
     box-sizing: border-box;
     transition: width .3s ease-in-out;
@@ -67,7 +64,6 @@ body{
 }
 
 /* ScrollBars Styling & Behavior*/
-
 .offcanvas-body::-webkit-scrollbar,.dark-scroll::-webkit-scrollbar{
     appearance: none;
     scroll-behavior: smooth;
@@ -121,7 +117,6 @@ body{
 }
 
 /*bg.black-1 in inputs*/
-
 button.bg-black-1, input[type="text"].bg-black-1,input[type="button"].bg-black-1{
     color: #cbcbcb;
     transition: all .2s ease-in-out;
@@ -131,7 +126,6 @@ button.bg-black-1, input[type="text"].bg-black-1,input[type="button"].bg-black-1
     color: #ffffff;
     background-color: #0f0f0f !important;
 }
-
 
 
 /* Compontent .input-icon */
@@ -151,7 +145,6 @@ span.input-icon:active, .input-icon:active span{
     filter: drop-shadow(3px 3px 6px #4e4e4e) !important;
 }
 
-
 .input-icon input:checked + .form-check-label span{
     transition: all .1s ease-in-out;
     color: #ffe3ae;
@@ -162,6 +155,7 @@ span.input-icon:active, .input-icon:active span{
     color: #fff !important;
     filter: drop-shadow(0px 0px 5px #ffffff) !important;
 }
+
 
 /* Compontent .collapse-pivot */
 .collapse-pivot{
@@ -174,13 +168,8 @@ span.input-icon:active, .input-icon:active span{
 
 .collapse-pined{
     position: relative;
-    /* top: 0;
-    left: 0; */
     z-index: 15;
 }
-
-/* Component Error-clue */
-
 
 /* CellPopover */
 .cell-popover{
@@ -201,7 +190,6 @@ span.input-icon:active, .input-icon:active span{
 .error-popover{
     z-index: 8;
 }
-
 
 
 /* Component .sheet-switch-btn */
@@ -251,27 +239,23 @@ span.input-icon:active, .input-icon:active span{
 }
 
 
-/* Style by Section */
-
 /* TOOLBAR */
 #tools-bar label{
     text-wrap: nowrap;
     word-break: keep-all;
 }
 
-
 #tools-bar button{
     text-wrap: nowrap;
     word-break: keep-all;
 }
+
 
 /* Canvas */
 #mainCanvas{
     z-index: 1;
     background-color: transparent;
 }
-/* WIDGETS STYLING */
-
 
 /* Functions List */
 #mathFunctions-container{
@@ -313,7 +297,6 @@ span.input-icon:active, .input-icon:active span{
     cursor: cell !important;
 }
 
-
 input[type="file"]{
     min-width: 150px !important;
 }
@@ -335,7 +318,6 @@ input[type="file"]{
         box-shadow: 0px 0px 3px 1px rgba(255,255,255,0.7);
     }
 }
-
 
 .navbar-brand img{
     transition: transform .3s ease-in-out;

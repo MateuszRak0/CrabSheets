@@ -38,6 +38,8 @@ addScrolling("available-sheets-scroll-control",document.getElementById("availabl
 
 
 //Load Errors
+new CalculationError("BRACKET","Twoje obliczenie zawiera jakiś niezamknięty nawias ","@NAWIAS-","Niezamknięty nawias");
+new CalculationError("BRACKET+","Twoje obliczenie zawiera jakieś niepotrzebne nawiasy zamykające ","@NAWIAS+","Za dużo nawiasów");
 new CalculationError("EMPTY","Twoje obliczenie jest całkiem puste ","@PUSTO","Puste Obliczenie");
 new CalculationError("ERRFUNC","Nie znaleziono zapisanej funkcji: ","@FUNKCJA","Niepoprawna Funkcja");
 new CalculationError("ERRCELL","Nie znaleziono zapisanego adresu komórki: ","@ADRES","Niepoprawny Adres");
@@ -65,7 +67,33 @@ canvas.addEventListener("mousedown", (e) => {
 
 canvas.addEventListener( "mouseup", (e)=>{ 
     if(e.button == 0) selector.actionEnd(e);
- });
+});
+
+function touchConverter(touchEvent,target){
+    const toutch = touchEvent.changedTouches[0];
+    if(toutch){
+        touchEvent.preventDefault();
+        return {
+            offsetX:toutch.pageX,
+            offsetY:toutch.pageY - target.offsetTop
+        }
+    } 
+}
+
+canvas.addEventListener( "touchend", (e)=>{ 
+    console.log("KONIEC",e)
+    selector.actionEnd( touchConverter(e,canvasContainer) );
+    
+});
+
+canvas.addEventListener("touchstart", (e) => { 
+    selector.actionStart( touchConverter(e,canvasContainer) );
+    console.log("POCZĄTEK")
+});
+
+canvas.addEventListener( "mouseup", (e)=>{ 
+    if(e.button == 0) selector.actionEnd(e);
+});
 
 cellInput.element.addEventListener("input", (e)=>{
     if(document.activeElement == cellInput.element)cellInput.typing(e);
@@ -143,6 +171,7 @@ addEventListener("keyup", (keyboard) => {
 addEventListener("click",(e)=>{selector.unselectInput(e)});
 canvasContainer.addEventListener("mousemove",(e)=>{widgetTools_base.actionMove(e)});
 canvasContainer.addEventListener("mouseup",(e)=>{widgetTools_base.actionEnd(e)});
+
 canvasContainer.addEventListener("contextmenu",(e)=>{
     const element = document.getElementById("contextMenu");
     element.style.left = `${e.pageX}px`;

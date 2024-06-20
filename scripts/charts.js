@@ -338,7 +338,7 @@ class LineChart extends BasicChart{
         let realPercent = 100/this.sumAbs;
         let stepY = (spaceY-10)/100;
         let stepX = (spaceX-10)/Math.max(this.keys.length,this.values.length);
-        if(stepX < 10) stepX = 10;
+        if(stepX < 3) stepX = 3;
         if(this.minValue < 0){
             startY = startY -(Math.abs(this.minValue)*realPercent)*stepY 
             this.drawLegendY("0%",`${100+Math.round(Math.abs(this.minValue)*percent)}%`,startY,startX,this.minValue*percent,spaceY);
@@ -372,7 +372,7 @@ class LineChart extends BasicChart{
         let ctx = this.widget.ctx;
         let stepY = (spaceY-10)/Math.abs(this.maxValue - this.minValue);
         let stepX = (spaceX-10)/Math.max(this.keys.length,this.values.length);
-        if(stepX < 10) stepX = 10;
+        if(stepX < 3) stepX = 3;
         ctx.save()
         ctx.fillStyle = colors.pop();
         this.drawLegendY(this.minValue,this.maxValue,startY,startX);
@@ -407,7 +407,7 @@ class AreaChart extends BasicChart{
         let realPercent = 100/this.sumAbs;
         let stepY = (spaceY-10)/100;
         let stepX = (spaceX-10)/Math.max(this.keys.length,this.values.length);
-        if(stepX < 10) stepX = 10;
+        if(stepX < 3) stepX = 3;
         ctx.font = "bold 10px arial";
         if(this.minValue < 0){
             startY = startY -(Math.abs(this.minValue)*realPercent)*stepY 
@@ -445,7 +445,7 @@ class AreaChart extends BasicChart{
         let ctx = this.widget.ctx;
         let stepY = (spaceY-10)/Math.abs(this.maxValue - this.minValue);
         let stepX = (spaceX-10)/Math.max(this.keys.length,this.values.length);
-        if(stepX < 10) stepX = 10;
+        if(stepX < 3) stepX = 3;
         ctx.save()
         ctx.fillStyle = colors.pop();
         this.drawLegendY(this.minValue,this.maxValue,startY,startX);
@@ -651,5 +651,4 @@ document.getElementById("addChart-line").addEventListener("click",()=>{new LineC
 document.getElementById("addChart-area").addEventListener("click",()=>{new AreaChart(selectedSheet)});
 document.getElementById("addChart-bar").addEventListener("click",()=>{new BarChart(selectedSheet)});
 document.getElementById("addChart-pie").addEventListener("click",()=>{new PieChart(selectedSheet)});
-document.getElementById("chartData-overwrite")
 

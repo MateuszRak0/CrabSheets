@@ -2,7 +2,7 @@ const canvasContainer = document.getElementById("canvas-container");
 const canvas = document.getElementById("mainCanvas");
 const ctx = canvas.getContext("2d");
 const pressedKeys = new Set();
-const allSymbols = ["^", "+", "-", "*", "/", "=", "(", ")", "[", "]", "{", "}", ",", "<", ">"];
+const allSymbols = ["^", "+", "-", "*", "/", "=", "(", ")", "[", "]", "{", "}", ",", "<", ">","."];
 const selectiveSymbols = ["+", "-", "*", "/", "=", "|", "^", ",", "(", "[", "{", "<", ">"];
 const endSymbols = ["+", "-", "*", "/", "=", "|", "^", "<", ">"];
 const specialSymbols = ["$", "&", "_","%"];
@@ -46,6 +46,9 @@ const cellInput = {
 
         this.element.style.top = `${cell.y + 1}px`;
         this.element.style.left = `${cell.x}px`;
+
+        if(cell.connected && cell.connected.address.column > cell.address.column){this.element.style.width = `${cellSize.x*2}px`}
+        else{ this.element.style.width = `${cellSize.x}px` }
 
         if (this.element.classList.contains("hidden")) {
             this.element.classList.remove("hidden");
@@ -190,7 +193,6 @@ const cellInput = {
                     }
                     else {
                         if (isNaN(parseFloat(primaryResult))) {
-                            console.log(primaryResult)
                             if (e.data == null && !this.writeFunc && primaryResult == "|") {
                                 let lastIndex = this.element.value.lastIndexOf("|");
                                 if (lastIndex != -1) {
@@ -271,12 +273,24 @@ const cellInput = {
         }
     },
 
-    removeCellObject: function (cellAddress) {
-        let parts = selector.selected.text.split(cellAddress);
-        selector.selected.text = parts[0];
-        if (parts[1]) selector.selected.text += parts[1];
-        if (selector.selected.text[selector.selected.text.length - 1] == ",") selector.selected.text = selector.selected.text.slice(0, -1);
-        this.updateData();
+    removeCellObject: function (cellAddress,multiple){
+        if(multiple){
+            let parts = selector.selected.text.split(cellAddress);
+            selector.selected.text = parts[0];
+            if (parts[1]) selector.selected.text += parts[1];
+            selector.selected.text = selector.selected.text.replace(",,",",")
+            this.updateData();
+            return true
+        }
+        else{
+            const addressInCell = selector.selected.text.slice(selector.selected.text.length - cellAddress.length,selector.selected.text.length);
+            if(cellAddress == addressInCell){
+                selector.selected.text = selector.selected.text.slice(0,selector.selected.text.length - cellAddress.length);
+                this.updateData();
+                return true
+            }
+            return false
+        }
     },
 
     addCellObject(cellAddress) {
@@ -372,21 +386,27 @@ const selector = {
                         canvas.classList.remove("cursor-addCell");
                     }
                     else if (!pressedKeys.has("Control") && !cellInput.aproveCell && !cellInput.afterFunction) {
-                        if (!widgetTools_base.selectedWidget) {
-                            if (!this.checkAreaCell(this.firstPoint)) {
+                        if (!widgetTools_base.selectedWidget){
+                            if (!this.checkAreaCell(this.firstPoint,false)) {
                                 this.switchCell(this.firstPoint);
                             }
                         }
                         else {
-                            widgetTools_base.unselectWidget();
-                            this.resetOldData();
+                            if((!this.checkAreaCell(this.firstPoint))){
+                                widgetTools_base.unselectWidget();
+                                this.resetOldData();
+                            }
                         }
                     }
-                    else if (cellInput.aproveCell || pressedKeys.has("Control")) {
+                    else if(cellInput.afterFunction){
                         if (!this.checkAreaCell(this.firstPoint)) {
                             this.addAreaCell(this.firstPoint);
                         }
                     }
+                    else if (cellInput.aproveCell || pressedKeys.has("Control")) {
+                            this.addAreaCell(this.firstPoint);
+                    }
+
                     else if (!this.selected) {
                         if (!this.checkAreaCell(this.firstPoint)) {
                             this.addAreaCell(this.firstPoint);
@@ -445,12 +465,23 @@ const selector = {
         }
     },
 
-    checkAreaCell: function (cell) {
-        if (this.selectedCells.has(cell)) {
-            cell.refresh();
-            if (this.selected) cellInput.removeCellObject(cell.fakeAddress);
-            this.selectedCells.delete(cell);
-            return true
+    checkAreaCell: function (cell,multiple = true) {
+        if(this.selected){
+            if (this.selectedCells.has(cell) && !pressedKeys.has("Control")) {
+                cellInput.removeCellObject(cell.fakeAddress,multiple);
+                if(!this.selected.text.includes(cell.fakeAddress)){
+                    this.selectedCells.delete(cell);
+                    cell.refresh();
+                }
+                return true
+            }
+        }
+        else{
+            if (this.selectedCells.has(cell)) {
+                cell.refresh();
+                this.selectedCells.delete(cell);
+                return true
+            }
         }
         return false
     },
@@ -505,7 +536,7 @@ const selector = {
         }
         else if(this.selectedCells.size > 0){
             return [...this.selectedCells];
-        } 
+        }
         return false
     }
 }
@@ -724,9 +755,9 @@ class Sheet {
         };
 
         for (let cell of this.cells) {
-            
+
             cell = cell[1];
-            
+
             if(cell.text && cell.text != ""){
                 buffor.cells.push(packCell(cell,true))
             }
@@ -758,7 +789,7 @@ class Sheet {
         for(let loadedWidget of loadedSheet.widgets){
             unpackWidget(this,loadedWidget)
         }
-        
+
     }
 }
 
@@ -907,8 +938,9 @@ class Cell {
             this.redraw()
         }
         if(!redraw)this.writeText();
+        if(this.connected) this.connected.refresh();
     }
-    
+
     redraw() {
         ctx.strokeStyle = "#000000";
         ctx.strokeRect(this.x, this.y, cellSize.x, cellSize.y);
@@ -929,7 +961,7 @@ class Cell {
                 const cell = this.sheet.getCell(this.address.column+1,this.address.row);
                 if(cell){
                     if(!cell.text || cell.text == ""){
-                        ctx.fillStyle = this.styles.fillColor;
+                        ctx.fillStyle = this.styles.fillColor || "#212529";
                         ctx.fillRect(this.x+1 , this.y , cellSize.x*2 , cellSize.y );
                         this.connected = cell;
                         cell.connected = this;
@@ -946,7 +978,7 @@ class Cell {
                     this.connected = false;
                     buffor.redraw();
                     buffor.fill();
-                    
+
                     this.fill(true);
                 }
             }
@@ -974,6 +1006,7 @@ class Cell {
                 x = this.x + (sizeX / 2) - (ctx.measureText(text).width / 2) - 4;
             }
             ctx.fillStyle = this.styles.color;
+            if(this.styles.constant) ctx.fillStyle = "#f757e2";
             ctx.fillText(text, x, y);
         }
     }
@@ -1009,7 +1042,7 @@ class Calculaction {
         else { elements = this.scanTextContent(); }
         if (!this.error) {
             elements = this.lookForNegativeNumbers(elements);
-            elements = this.createBracketsHierarchy(elements)
+            elements = this.createBracketsHierarchy(elements);
             elements = this.calculateFunctions(elements);
         };
         if (!this.error) { elements = this.createBracketsHierarchy(elements); };
@@ -1066,15 +1099,18 @@ class Calculaction {
         let brackets = {}
         let buffor = [];
         let inbrackets = 0;
+        let bracketsCount = 0;
         let bracketsStart = ["(", "[", "{"];
         let bracketsEnd = [")", "]", "}"];
         for (let element of elements) {
             if (bracketsStart.includes(element)) {
+                bracketsCount ++;
                 if (inbrackets > 0) { brackets[inbrackets].push("^BRACKET^") }
                 inbrackets++;
                 if (!brackets[inbrackets]) brackets[inbrackets] = [];
             }
             else if (bracketsEnd.includes(element)) {
+                bracketsCount --;
                 if (inbrackets > 0) {
                     if (inbrackets > 1) {
                         let result = this.calculateFunctions(brackets[inbrackets]);
@@ -1102,7 +1138,15 @@ class Calculaction {
 
             }
         }
+        if(inbrackets != 0){
+            this.throwError("BRACKET");
+        } 
+        else if(bracketsCount < -3){
+            this.throwError("BRACKET+");
+        }
+
         return buffor
+
     }
 
     bracketHierarchyDecoder(brackets) {
@@ -1213,9 +1257,6 @@ class Calculaction {
                 case "<":
                     return result < result2;
             }
-
-
-
         }
 
     }
@@ -1317,7 +1358,7 @@ class Calculaction {
         let inFunction = false;
         for (let i = 1; i < text.length; i++) {
             let char = text.charAt(i);
-            if (char != "-") {
+            if (char != "-" || lastChar == "-") {
                 if (this.operators.includes(char) && this.operators.includes(lastChar)) { this.throwError("FORM"); break }
             }
             lastChar = char;
@@ -1332,6 +1373,8 @@ class Calculaction {
             else {
 
                 if (bracketsStart.includes(char)) {
+                    if(buffor.length != 0) elements.push(buffor);
+                    buffor = "";
                     elements.push(char);
                 }
                 else if (char != ",") {
@@ -1486,7 +1529,7 @@ class CalculationError {
     }
 }
 
-//A cell popover is a small circular element that attaches to the upper right corner of a cell 
+//A cell popover is a small circular element that attaches to the upper right corner of a cell
 //and is used to display errors and comments;
 
 class CellPopover{
@@ -1533,7 +1576,7 @@ class ErrorPopover extends CellPopover{
     }
 }
 
-//StyleList Working like css on cells or widgets. 
+//StyleList Working like css on cells or widgets.
 class StyleList {
     constructor(otherList) {
         this.fontFamily = "arial";
@@ -1591,7 +1634,6 @@ class StyleListFlush extends StyleList {
 }
 
 //ACTIONS
-
 function afterCellEdit(){
     canvas.classList.remove("cursor-addCell");
     if(selector.selected){
@@ -1644,6 +1686,7 @@ function MoveByArrows(arrow) {
         const newCell = selectedSheet.cells.get(`${String.fromCharCode(x + 65)}:${y}`);
         if (newCell) {
             selector.switchCell(newCell)
+            cellInput.upd
         }
     }
 

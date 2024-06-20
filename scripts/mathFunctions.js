@@ -385,7 +385,7 @@ new MathFunction("DYSTANS:2D",function(values){
 // Mapa
 new MathFunction("MAPA",function(values){
     if(values.length < 3) return "@TOLOW"
-    let key = values.shift();
+    let key = `${values.shift()}`;
     if(values.length % 2 != 0) return "@NPAIRS";
     let map = new Map();
     for(let i = 0; i < values.length; i+= 2){

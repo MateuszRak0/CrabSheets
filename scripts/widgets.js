@@ -1,13 +1,23 @@
 function addStaticWidget(constructor){
     const cells = selector.getSelected();
+    let error = false;
     if(cells.length > 0){
         for(let cell of cells){
-            new constructor(false,false,cell);
+            if(!cell.getText() && !cell.locked){
+                let result = new constructor(false,false,cell);
+                if(result === undefined){
+                    error = true;
+                }
+            }
+            else{
+                error = true
+            }
         }
     }
     else{
         sysMsg_error_insert.show();
     }
+    if(error) sysMsg_error_insert2.show();
 }
 
 const widgetTools_base = {
@@ -302,24 +312,23 @@ class WidgetVariableData extends WidgetStatic{
         this.type="VARDATA";
         this.tools = widgetTool_variableData;
         this.select = document.createElement("select");
-        this.select.addEventListener("input",(e)=>{this.loadDataToCells(e)})
+        this.select.addEventListener("input",()=>{this.loadDataToCells(false)})
         this.container.appendChild(this.select);
         this.container.classList.add("switchTable");
         this.options = {};
         this.usedCells = [];
-        this.value = "0";
+        this.value = 0;
 
         if(loadedWidget){
-            for(let option of Object.values(loadedWidget.data.options)){
-                this.addOption(option.name,option.values)
+            for(let i=0; i < Object.values(loadedWidget.data).length; i++){
+                const option = Object.values(loadedWidget.data)[i]
+                this.addOption(i,option.name,option.data)
             }
-            this.options = loadedWidget.data.options;
-            for(let cell of loadedWidget.data.cells){ this.usedCells.push(sheet.cells.get(cell)) }
-            this.loadDataToCells(false,true);
+            this.loadDataToCells(true);
             
         }
         else{
-            this.addOption();
+            this.addOption(0);
         }
     }
 
@@ -330,66 +339,92 @@ class WidgetVariableData extends WidgetStatic{
         this.select.style.textDecoration = this.styles.fontType;
         this.select.style.fontFamily = this.styles.fontFamily;
         super.refreshStyles()
-        super.refreshStyles()
     }
 
-    loadDataToCells(e,firstLoad){
-        if(this.usedCells){
-            if(!firstLoad){
-                this.saveDataToCells()
-                this.value = e.target.value;
-            } 
-            for(let cell of this.usedCells){
-                let loaded = this.options[this.value].values[cell.stringAddress];
-                (!loaded) ? cell.text = "" : cell.text = loaded;
-                cell.refresh()
+    loadDataToCells(firstLoad){
+        if(!firstLoad) this.saveDataFromCells(this.select.value);
+        this.value = this.select.value;
+        const actualOption = this.options[this.value];
+            if(actualOption){
+                if(actualOption.data.length > 0){
+                    for(let data of actualOption.data){
+                        if(this.usedCells.includes(data.cell)){
+                            data.cell.text = data.text;
+                            data.cell.refresh();
+                        }
+                    }
+                }
+                else{
+                    for(let cell of this.usedCells){
+                        cell.text = "";
+                        cell.refresh();
+                    }
+                }
+                
             }
-        }
     }
 
-    saveDataToCells(){
-        this.options[this.value].values = {};
+    saveDataFromCells(){
+        const oldOption = this.options[this.value];
+        if(!oldOption) return false
+        oldOption.data = [];
         for(let cell of this.usedCells){
-            this.options[this.value].values[cell.stringAddress] = cell.text;
+            oldOption.data.push({cell:cell,text:cell.text})
         }
+        return true
     }
 
     updata(names){
         this.usedCells = selector.getSelected();
-        this.clearData();
-        for(let name of names ){ this.addOption(name) };
-        this.select.value = "0";
+        if(!this.usedCells) this.usedCells = [];
+        for(let i = 0; i<names.length; i++){
+            const name = names[i];
+            const option = this.options[i];
+            if(!option){ this.addOption(i,name) }
+            else{ option.label.innerHTML = name } 
+        }
     }
 
-    clearData(){
-        this.options = {};
-        this.select.innerHTML = "";
-    }
-
-    addOption(name,values={}){
+    addOption(id,name = "Zakres 1",optionData){
         let option = document.createElement("option");
-        option.innerHTML = name || "Zakres 1";
+        option.innerHTML = name;
         option.value = Object.keys(this.options).length;
         this.select.appendChild(option);
-        this.options[option.value] = {
-            name:option.innerHTML,
-            values:values
+        if(!optionData){
+            this.options[id] = { label:option, data:[]};
         }
+        else{
+            let dataSet = [];
+            for(let data of optionData){
+                const cell = this.sheet.getCell(data.cell.column,data.cell.row);
+                if(!this.usedCells.includes(cell)) this.usedCells.push(cell);
+                dataSet.push( {cell:cell, text:data.text} )
+            }
+            this.options[id] = { label:option, data:dataSet};
+        } 
+        
     }
 
     packToSaving(){
         const buffor = super.packToSaving();
         buffor.type = "VARTABLE";
-        buffor.data = {
-            options:this.options,
-            cells:[],
-        };
-        for(let cell of this.usedCells) buffor.data.cells.push(cell.stringAddress);
+        buffor.data = { };
+        for(let optionID of Object.keys(this.options)){
+            const option = this.options[optionID];
+            buffor.data[optionID] = {
+                name:option.label.innerHTML,
+                data:[]
+            }
+            for(let data of option.data){
+                data.cell = data.cell.address;
+                buffor.data[optionID].data.push( data )
+            }
+        }
         return buffor
     }
 
     destroy(){
-        this.select.removeEventListener("input",(e)=>{this.loadDataToCells(e)})
+        this.select.removeEventListener("input",()=>{this.loadDataToCells(false)})
         super.destroy();
     }
 }
@@ -483,13 +518,9 @@ class WidgetCheckBox extends WidgetStatic{
         this.container.classList.add("widget-checkbox");
         this.checkbox = document.createElement("input");
         this.checkbox.type = "checkbox";
-        this.input = document.createElement("input");
-        this.input.type = "text";
         this.container.appendChild(this.checkbox);
-        this.container.appendChild(this.input);
         if(loadedWidget){
             this.checkbox.checked = loadedWidget.data.checked;
-            this.input.value = loadedWidget.data.value;
         }
     }
     
@@ -503,7 +534,6 @@ class WidgetCheckBox extends WidgetStatic{
         buffor.type = "CHECKBOX";
         buffor.data = {
             checked:this.checkbox.checked,
-            value:this.input.value
         };
         return buffor
     }
@@ -665,20 +695,17 @@ widgetTool_variableData.dataInputs = [];
 widgetTool_variableData.loadData = function(){
     this.clearData()
     for(let option of Object.values(this.selectedWidget.options)){
-        this.addDataInput(option.name);
+        this.addDataInput(option.label.innerHTML);
     }
     selector.resetOldData();
 
     if(this.selectedWidget.usedCells){
         for(let cell of this.selectedWidget.usedCells){ selector.addAreaCell(cell) }
     } 
-        
-    
-    
 }
 
 widgetTool_variableData.addDataInput = function(name){
-    this.dataInputs.push(new DataInput(name,document.getElementById("variableDataOptions")));
+    this.dataInputs.push(new DataInput( name, document.getElementById("variableDataOptions"), false ));
 }
 
 widgetTool_variableData.clearData = function(){
@@ -756,7 +783,7 @@ contentResizer.addMonitor(document.getElementById("offcanvas-variable-data"),wid
 contentResizer.addMonitor(document.getElementById("offcanvas-styleTable"),new bootstrap.Offcanvas(document.getElementById("offcanvas-styleTable")));
 contentResizer.addMonitor(document.getElementById("offcanvas-insert-timeline"),new bootstrap.Offcanvas(document.getElementById("offcanvas-insert-timeline")));
 
-addEventListener("resize",contentResizer.resize.bind(contentResizer))//(e)=>{
+addEventListener("resize",contentResizer.resize.bind(contentResizer))
 
 
 //HANDLERS
@@ -768,6 +795,7 @@ for(let btn of document.getElementsByClassName("widget-remove-btn")){
 for(let btn of document.getElementsByName("insert-checkBox")){
     btn.addEventListener("click",()=>{ addStaticWidget(WidgetCheckBox)});
 }
+
 for(let btn of document.getElementsByName("insert-progressBar")){
     btn.addEventListener("click",()=>{ addStaticWidget(WidgetProgressBar)});
 }

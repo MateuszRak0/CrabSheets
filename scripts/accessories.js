@@ -1,6 +1,7 @@
 const sysMsg_error_space = new bootstrap.Toast(document.getElementById("sysMsg-error-space"));
 const sysMsg_info_download = new bootstrap.Toast(document.getElementById("sysMsg-info-download"));
 const sysMsg_error_insert = new bootstrap.Toast(document.getElementById("sysMsg-error-insert"));
+const sysMsg_error_insert2 = new bootstrap.Toast(document.getElementById("sysMsg-error-insert2"));
 const sysMsg_error_sort = new bootstrap.Toast(document.getElementById("sysMsg-error-sort"));
 const sysMsg_error_load = new bootstrap.Toast(document.getElementById("sysMsg-error-load"));
 //Display
@@ -147,6 +148,9 @@ const display = {
             selector.selected.text = value;
             this.cellFunc.value = "";
             afterCellEdit();
+        }
+        else{
+            selector.resetOldData()
         }
 
     },
@@ -571,23 +575,27 @@ const copiedStorage = {
 }
 
 class DataInput{
-    constructor(value,parentNode){
+    constructor(value,parentNode,removeBtn = true){
         this.container = document.createElement("li");
         this.container.classList.add("chartData");
         this.input = document.createElement("input");
         this.input.classList.add("w-auto");
         this.input.type = "text"; this.input.value = value;
-        this.removeBtn = document.createElement("button");
-        this.removeBtn.classList.add("icon-cancel", "btn-dark","btn");
-        this.removeBtn.addEventListener("click",(e)=>{this.destroy()});
 
         parentNode.appendChild(this.container)
         this.container.appendChild(this.input);
-        this.container.appendChild(this.removeBtn);
+
+        if(removeBtn){
+            this.removeBtn = document.createElement("button");
+            this.removeBtn.classList.add("icon-cancel", "btn-dark","btn");
+            this.removeBtn.addEventListener("click",(e)=>{this.destroy()});
+            this.container.appendChild(this.removeBtn);
+        }
+        
     }
 
     destroy(){
-        this.removeBtn.removeEventListener("click",(e)=>{this.destroy()});
+        if(this.removeBtn){ this.removeBtn.removeEventListener("click",(e)=>{this.destroy()}); }
         this.input.remove();
         this.container.remove();
     }
@@ -1117,12 +1125,6 @@ function selectedMove(x,y){
         }
     }
 }
-
-// function switchDynamicPage(e){
-//     document.getElementById("dynamic-page-frame").src = e.target.value;
-// }
-
-// for(let btn of document.getElementsByClassName("helpLink")){ btn.addEventListener("click",switchDynamicPage) }
 
 // LISTENERS to accesories
 approveActionWindow.approveBtn.addEventListener("click", () => { approveActionWindow.actionApprove() });

@@ -20,7 +20,7 @@
 
             <div class="col-lg-3 col-md-4 col-12 pt-4 position-relative d-flex flex-column pb-2" id="sideBar">
                 <div class="text-center mb-2">
-                    <img src="animal-2029675.svg" alt="crabSheets Logo" id="logoSvg">
+                    <a href="index.html"><img src="animal-2029675.svg" alt="crabSheets Logo" id="logoSvg"></a>
                     <br>
 
                     <h1 class="text-secondary">
@@ -66,17 +66,15 @@
 
                         <button class="nav-link closeCollapseBtn" id="v-pills-8-tab" data-bs-toggle="pill"
                             data-bs-target="#v-pills-8" type="button" role="tab" aria-controls="v-pills-8"
-                            aria-selected="false">Komponenty</button>
+                            aria-selected="false">Funkcje w obliczeniach</button>
 
                         <button class="nav-link closeCollapseBtn" id="v-pills-9-tab" data-bs-toggle="pill"
                             data-bs-target="#v-pills-9" type="button" role="tab" aria-controls="v-pills-9"
-                            aria-selected="false">Kopiowanie i
-                            Wklejanie</button>
+                            aria-selected="false">Sortowanie danych</button>
 
                         <button class="nav-link closeCollapseBtn" id="v-pills-10-tab" data-bs-toggle="pill"
                             data-bs-target="#v-pills-10" type="button" role="tab" aria-controls="v-pills-10"
-                            aria-selected="false">Sortowanie
-                            wartości</button>
+                            aria-selected="false">Kopiowanie i Wklejanie</button>
 
                         <button class="nav-link closeCollapseBtn" id="v-pills-11-tab" data-bs-toggle="pill"
                             data-bs-target="#v-pills-11" type="button" role="tab" aria-controls="v-pills-11"
@@ -92,13 +90,13 @@
                         <button class="nav-link closeCollapseBtn" id="v-pills-13-tab" data-bs-toggle="pill"
                             data-bs-target="#v-pills-13" type="button" role="tab" aria-controls="v-pills-13"
                             aria-selected="false">
-                            Dane przestawne
+                            Komponenty
                         </button>
 
                         <button class="nav-link closeCollapseBtn" id="v-pills-14-tab" data-bs-toggle="pill"
                             data-bs-target="#v-pills-14" type="button" role="tab" aria-controls="v-pills-14"
                             aria-selected="false">
-                            Zapisywanie i wczytywanie
+                            Wykresy
                         </button>
 
                     </div>
@@ -594,7 +592,8 @@
 
 
                         <div class="fs-3 fw-bolder pt-1 border-top mt-3">Przełączanie zaznaczenia podczas wpisywania
-                            wzoru</div>
+                            wzoru
+                        </div>
                         <div>
                             Nie zawsze gdy masz zaznaczoną komórkę i klikniesz na inną zaznaczenie przeskoczy na tę
                             drugą.
@@ -670,6 +669,14 @@
 
                             </li>
                         </ul>
+                        <hr>
+                        <div class="fs-3 fw-bolder pt-1 border-top mt-3">
+                            Używanie klawisza lewy CTRL podczas zaznaczania
+                        </div>
+                        <span>
+                            Gdy użyjesz klawisza lewy CTRL na swojej klawiaturze i zaczniesz zaznaczać grupę lub pojedynczą komórkę to niezależnie od stanu tej komórki( czy jest już zaznaczona ) 
+                            oraz niezależnie od wpisywanego obliczenia komórka zostanie zaznaczona oraz jeżeli jest wpisywany wzór zostanie do niego dołączona nawet jeżeli wzór nie będzie chciał przyjąć w tym miejscu komórki
+                        </span>
 
                         <hr>
                         <span class="badge bg-danger">Opcja niedostępna dla urządzeń mobilnych </span>
@@ -746,10 +753,10 @@
                                 Tekst jest wartościa która nie może zostać użyta w obliczeniach tekstem stają się każde
                                 dane zawierające litere alfabetu od A do Z lub znak specjalny
                                 <div class="">Przykładowe teksty:
-                                    <div class="d-flex flex-wrap">
-                                        <div class="example-cell">Pies</div>
-                                        <div class="example-cell ms-3">Kot</div>
-                                        <div class="example-cell ms-3">Żyrafa</div>
+                                    <div class="d-flex flex-wrap flex-column flex-sm-row">
+                                        <div class="example-cell my-2">Pies</div>
+                                        <div class="example-cell my-2 ms-0 ms-sm-3">Kot</div>
+                                        <div class="example-cell my-2 ms-0 ms-sm-3">Żyrafa</div>
                                     </div>
                                 </div>
 
@@ -760,10 +767,10 @@
                                 Jak można się domyśleć liczby doskonale nadają się do obliczeń. Wartości dzisiętne lub
                                 mniejsze zapisujemy po kropce jak w przykładach poniżej.
                                 <div>Przykładowe Liczby:
-                                    <div class="d-flex flex-wrap">
-                                        <div class="example-cell">152</div>
-                                        <div class="example-cell ms-3">2.5</div>
-                                        <div class="example-cell ms-3">0.25</div>
+                                    <div class="d-flex flex-wrap  flex-column flex-sm-row">
+                                        <div class="example-cell my-2">152</div>
+                                        <div class="example-cell my-2 ms-0 ms-sm-3">2.5</div>
+                                        <div class="example-cell my-2 ms-0 ms-sm-3">0.25</div>
                                     </div>
                                 </div>
 
@@ -775,10 +782,10 @@
                                 Godziny:Minuty lub bardziej szczegółowo Godziny:Minuty:Sekundy.
                                 Format Czasu i daty może być używany do obliczeń w niektórych wbudowanych funkcjach.
                                 <div>Przykładowe formaty daty i czasu:
-                                    <div class="d-flex flex-wrap">
-                                        <div class="example-cell">18:42</div>
-                                        <div class="example-cell ms-3">2023-12-23</div>
-                                        <div class="example-cell ms-3">10:13:10</div>
+                                    <div class="d-flex flex-wrap flex-column flex-sm-row">
+                                        <div class="example-cell my-2">18:42</div>
+                                        <div class="example-cell my-2 ms-0 ms-sm-3">2023-12-23</div>
+                                        <div class="example-cell my-2 ms-0 ms-sm-3">10:13:10</div>
                                     </div>
                                 </div>
 
@@ -789,9 +796,9 @@
                                 Wartość logiczna jest używana w funkcjach z rodziny <i>logicznych</i> może zostać
                                 uzyskana poprzez zastosowanie znaku <br>&LT, &GT, = we wzorze na przykład =10=10 >> true
                                 <div>Przykładowe Wartości logiczne:
-                                    <div class="d-flex flex-wrap">
-                                        <div class="example-cell">true</div>
-                                        <div class="example-cell ms-3">false</div>
+                                    <div class="d-flex flex-wrap flex-column flex-sm-row">
+                                        <div class="example-cell my-2">true</div>
+                                        <div class="example-cell my-2 ms-0 ms-sm-3">false</div>
                                     </div>
                                 </div>
                             </li>
@@ -801,9 +808,9 @@
                                 kilkoma zasadami o których możesz przeczytać w zakładce <a href="#">Zasady tworzenia
                                     wzorów</a>
                                 <div>Przykładowe Wartości logiczne:
-                                    <div class="d-flex flex-wrap">
-                                        <div class="example-cell">true</div>
-                                        <div class="example-cell ms-3">false</div>
+                                    <div class="d-flex flex-wrap flex-column flex-sm-row">
+                                        <div class="example-cell my-2">=10+5-2</div>
+                                        <div class="example-cell my-2 ms-0 ms-sm-3">=|SUMA|10,20</div>
                                     </div>
                                 </div>
                             </li>
@@ -1135,12 +1142,1346 @@
                                 <input type="range" class="form-range" id="range-1" min="-35" max="35" step="1" value="10">
                             </div>
                         </div>
-                        <div class="fs-3 fw-bolder mt-4 pt-2 border-top">Kolejność wykonywania działań</div>
+                        <div class="fs-3 fw-bolder mt-4 pt-2 border-top">Zmiana kolejność wykonywania działań</div>
                         <span>
-                            Przed przystąpieniem do poznawania funkcji należy poznać kolejność wykonywania działań. We wcześniejszych przykładach
+                            Wiesz już że w kolejnośći wykonywania działań mnożenie i dzielenie odbywa przed dodwaniem i odejmnowaniem
+                            kolejność tą można jednak dowolnie zmienić za pomocą nawiasów okrągłych <b>()</b> kwadratowych <b>[]</b> lub klamrowych <b>{}</b>
+                            poniżej znajdziesz kilka przykładów 
                         </span>
+
+
+                        <div class="alert alert-dark mt-3 pe-2 pe-md-5">
+                            <div class="fs-5">Przykład 1 - Zmiana kolejności nawiasami</div>
+                            <div class="d-flex flex-wrap mt-2 py-2">
+                                <div class="me-3">
+                                    Wzór:
+                                    <div class="example-cell">=(2+2)*3</div>
+                                </div>
+                                <div class="d-flex align-self-end icon-right-box me-3"><div class="icon-right-bold "></div></div>
+                                <div>
+                                    Wynik:
+                                    <div class="example-cell">12</div>
+                                </div>
+                      
+                            </div>
+                            <div class="mt-2">
+                               Nie wiem czy zauważyłeś ale podobny przykład był na początku tego artykułu tam jednak wzór wyglądał nieco 
+                               inaczej  <span class="fw-bold">=2+2*3</span> a wynik wynosił <span class="fw-bold">8</span> tutaj kolejność została zmieniona 
+                               za pomocą nawiasów okrągłych możesz użyć jeszcze niawiasów kwadratowych lub klamrowych jeśli chcesz.
+                            </div>
+                        </div>
+
+                        
+                        <div class="alert alert-dark mt-3 pe-2 pe-md-5">
+                            <div class="fs-5">Przykład 2 - Zagnieżdżanie nawiasów</div>
+                            <div class="d-flex flex-wrap mt-2 py-2">
+                                <div class="me-3">
+                                    Wzór:
+                                    <div class="example-cell">=(2*(2+2))*3</div>
+                                </div>
+                                <div class="d-flex align-self-end icon-right-box me-3"><div class="icon-right-bold "></div></div>
+                                <div>
+                                    Wynik:
+                                    <div class="example-cell">24</div>
+                                </div>
+                            </div>
+                            <div class="bg-light p-2 mt-2">
+                                <div class="fw-bold">Dlatego że:</div>
+                                <div class="d-flex flex-wrap">
+                                    <div class="me-3">
+                                        Początkowy wzór:
+                                        <div class="example-cell">=(2*(2+2))*3</div>
+                                    </div>
+                                    <div class="d-flex align-self-end icon-right-box me-3"><div class="icon-right-bold "></div></div>
+                                    <div>
+                                        Krok 1:
+                                        <div class="example-cell">=(2*4)*3</div>
+                                    </div>
+                                    <div class="d-flex align-self-end icon-right-box me-3"><div class="icon-right-bold "></div></div>
+                                    <div>
+                                        Krok 2:
+                                        <div class="example-cell">=8*3</div>
+                                    </div>
+                                </div>
+                            </div>
+                      
+                            <div class="mt-3">
+                                W tym przykładzie umieściliśmy nawiasy w innych nawiasach co zmieniło kolejność obliczenia dwukrotnie
+                                 możesz zobaczyć jak zmieniało się obliczenie obserwując "Krok 1" i "Krok 2". Pamiętaj możesz zagnieżdżać swoje nawiasy w nieskończoność pamiętaj tylko o ich zamykaniu w przeciwnym razie wynik który otrzymasz to <b>0</b>
+                            </div>
+                        </div>
+
+                        <div class="fs-3 fw-bolder mt-4 pt-2 border-top">Zawansowane obliczenia w komórkach</div>
+                        <span>
+                            Ten artykuł zawierał tylko podstawowe zasady wykonywania obliczeń w komórkach dalsze tematy dotyczące obszaru
+                            wykonywania obliczeń są na tyle ważne że zasługują na swoje osobne artykuły przeczytaj teraz Funkcje w obliczeniach
+                        </span>
+                
                     </div>
 
+                    <!-- Paage 8  - Use functions in calc-->
+                    <div class="tab-pane fade" id="v-pills-8" role="tabpanel" aria-labelledby="v-pills-8-tab">
+                            <span class="fs-1 fw-bolder">Funkcje w obliczeniach</span>
+                            <span class="badge bg-warning">Obliczenia i Funkcje</span>
+                            <p class="fs-5 pb-2">
+                               Obliczenia w komórkach można wzbogacić o szereg wbudowanych funkcji aby użyć jakiejś funkcji należy wpisać jej nazwe pomiędzy znakami '|'
+                               np |SUMA| lub |SINUS|. Listę wszystkich dostępnych funkcji wraz z ich opisami możesz znaleźć <a href="help-functions.html">tutaj</a>.
+
+                            </p>
+
+                            <div class="fs-4 fw-bolder mt-4 pt-3 border-top">Metody wstawiania funkcji</div>
+
+                            <span>
+                                    Funkcja zawsze wygląda tak samo jest to jej nazwa z dużych liter pomiędzy dwoma znakami '|' ale ciężko za każdym razem pamiętać o wielkich 
+                                    literach specjalnym znaku '|' oraz znać wszystkie nazwy funkcji dlatego
+                                    poniżej znajdziesz listę sposobów na zapis funkcji z której wybierzesz najwygodniejszy dla ciebie:
+                            </span>
+
+                            <ul>
+                                    <li class="mt-2">
+                                        <b>Samodzielny Zapis do komórki</b>
+                                        <div>
+                                            Jest to najszybsza metoda ale wymaga znajomości nazw funkcji po prostu przy tworzeniu wzoru zacznij wpisywać nazwę jakiejś funkcji byle jak może 
+                                            być z małej litery i bez znaku '|' na początku kiedy wpisana nazwa pokryje się z jakąś nazwą funkcji program 
+                                            automatycznie sformatuje twój tekst na poprawny np wpisanie do komórki =suma poskutkuje natychmiastowym sformatowaniem do =|SUMA|
+                                        </div>
+                                    </li>
+                                    <li class="mt-3">
+                                        <b>Wybór funkcji z listy sugerowanych</b>
+                                        <div>
+                                            Zacznij wpisywać jakąś nazwe funkcji jak w przykładzie pierszym a pojawi ci się rozsuwana lista zasugerowanych funkcji. Nakierowując na nazwe zasugerowanej funkcji zobaczysz jej opis a klikając na nią wstawisz ją do wzoru.
+                                            jeżeli nie znasz nazwy funkcji jaką chcesz wpisać możesz zacząć wpisywanie od znaku '|' wtedy pojawi ci się lista wszystkich funkcji
+                                        </div>
+                                    </li>
+                                    <li class="mt-3">
+                                        <b>Wstawienie funkcji z przycisku</b>
+                                        <div>
+                                            Jeżeli poprzednie metody ci nie odpowiadają możesz w każdej chwili nacisnąc na zakładke "Wstaw" na pasku
+                                            nawigacyjnym a następnie wybrać opcje "Funkcje". przy wybranej komórce pokaże ci się lista sugerowanych funkcji która będzie zawierała wszystkie funkcje dostępne w programie.
+                                            Co ciekawe wstawienie funkcji do pustej komórki automatycznie doda znak "=" przed nazwą funkcji;
+
+                                        </div>
+                                    </li>
+                            </ul>
+
+                            <div class="fs-4 fw-bolder mt-4 pt-3 border-top">Zasady korzystania z funkcji</div>
+
+                            <span>
+                                korzystając z funkcji musimy przestrzegać kilku zasad w przeciwnym razie zamiast wyniku otrzymamy błąd. 
+                                Aby zrozumieć co może powodować błędy musimy zrozumieć że nasza funkcja składa się zasadniczo z dwóch sekcji
+                                z nazwy funkcji oraz jej argumentów czyli danych do niech przekazanych dla przykładu <b>|SUMA|10,20</b> zawiera nazwę funkcji
+                                |SUMA| i dwa argumenty 10 oraz 20 oddzielone od siebie przecinkiem. Teraz gdy już wiemy czym są argumenty musimy wiedzieć że każda z
+                                funkcji przyjmuję ich określoną ilość. Niewpisanie wystarczającej ilości danych do funkcji albo wpisanie ich za dużo będzie powodować błędy
+                                ilość potrzebnych argumentów znajdziesz na <a href="help-functions.html">liście funkcji</a> podczas czytania listy zwróc uwagę na oznaczenie symbolem '>'
+                                dla przykładu '>2' oznacza że funkcja przyjmuje dwa lub więcej argumentów.
+                            </span>
+
+                            <div class="alert alert-success mt-3 pe-2 pe-md-5">
+                                <div class="fs-5">Przykład 1 - Poprawne użycie funkcji SINUS</div>
+                                <div class="d-flex flex-wrap mt-2 py-2">
+                                    <div class="me-3">
+                                        Wzór:
+                                        <div class="example-cell">=|SINUS|1.4</div>
+                                    </div>
+                                    <div class="d-flex align-self-end icon-right-box me-3"><div class="icon-right-bold "></div></div>
+                                    <div>
+                                        Wynik:
+                                        <div class="example-cell">0.99</div>
+                                    </div>
+                                 
+                                </div>
+                                <div class="mt-2">
+                                    Wysłanie do funkcji sinus liczby 1.4 zwróci nam sinus tej liczby który wynosi 0.99 nie ma tu żadnego błędu bo funkcja sinus przyjmuje jeden argument i tyle dostaje
+                                </div>
+                            </div>
+    
+                            <div class="alert alert-danger mt-3 pe-2 pe-md-5">
+                                <div class="fs-5">Przykład 2 - Niepoprawne użycie funkcji SINUS</div>
+                                <div class="d-flex flex-wrap mt-2 py-2">
+                                    <div class="me-3">
+                                        Wzór:
+                                        <div class="example-cell">=|SINUS|1.4,2</div>
+                                    </div>
+                                    <div class="d-flex align-self-end icon-right-box me-3"><div class="icon-right-bold "></div></div>
+                                    <div>
+                                        Wynik:
+                                        <div class="example-cell position-relative">
+                                            @ZA DUŻO
+                                            <div class="cell-popover" style="background-color: red;"></div>
+                                        </div>
+                                    </div>
+                                
+                                </div>
+                                <div class="mt-2">
+                                    W tym przykładzie wysłaliśmy za dużo argumentów do funkcji suma przez co nasz wynik zamienił się w skróconą nazwe błędu '@ZA DUŻO'
+                                    oraz otrzymaliśmy czerwony znacznik komentarza w prawym górnym rogu komórki. Podczas używania programu najechanie lub kliknięcie na niego spowoduje wyświetlenie wskazówki dotyczącej błedu
+                                </div>
+                            </div>
+    
+                            <div class="fs-4 fw-bolder mt-4 pt-3 border-top text-break word-break">Używanie kilku funkcji w jednym obliczeniu</div>
+                            <span>
+                            Poprzez konstrukcje funkcji wydawało by się że jak już raz ją wpiszemy to każdy następny postawiony znak będzie jej argumentem 
+                            nie do końca tak jest funkcje przyjmuje argumenty tak długo dopóki nie natrafi na znak inny niż przecinek wtedy 
+                            zwóci swój wynik a obliczenie potoczy się dalej np obliczenie =|SUMA|2,3*2 zmieni się w =5*2 i zwróci nam wynik 10
+                            idąc tym tokiem myślenia możemy użyć dwóch funkcji ze sobą oddzielając je znakiem
+                            matematycznym co jednak jeśli tego nie zrobimy ? Najlepiej jeżeli pokaże ci to na przykładach poniżej
+                            </span>
+
+                            <div class="alert alert-dark mt-3 pe-2 pe-md-5">
+                                <div class="fs-5">Przykład 1 - Użycie dwóch funkcji oddzielonych znakiem</div>
+                                <div class="d-flex flex-wrap mt-2 py-2">
+                                    <div class="me-3">
+                                        Wzór:
+                                        <div class="example-cell">=<span class="text-warning">|SUMA|5,5,2</span>/<span class="text-success">|SUMA|2,1</span></div>
+                                    </div>
+                                    <div class="d-flex align-self-end icon-right-box me-3"><div class="icon-right-bold"></div></div>
+                                    <div>
+                                        Wynik:
+                                        <div class="example-cell">
+                                            4
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-2 fw-bold">Ponieważ:</div>
+                                <div class="d-flex flex-wrap">
+                                    <div class="me-3">
+                                        Krok 1:
+                                        <div class="example-cell">=<span class="text-warning">
+                                            |SUMA|5,5,2</span>/<span class="text-success">|SUMA|2,1</span>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-self-end icon-right-box me-3"><div class="icon-right-bold"></div></div>
+                                    <div>
+                                        Krok 2:
+                                        <div class="example-cell">
+                                            =<span class="text-warning">12</span>/<span class="text-success">3</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    W tym przykładzie zaznaczyłem kolorami dwie osobne funkcje i jej argumenty. Jak widać funkcje są oddzielone znakiem dzielenia "/".
+                                    Obliczenie funkcji zawsze wykonuje się w pierwszej kolejności chyba że jej argumenty zawierają własne obliczenia.
+                                </div>
+                            </div>
+    
+    
+                            <div class="alert alert-dark mt-3 pe-2 pe-md-5">
+                                <div class="fs-5">Przykład 2 - Zagnieżdżanie funkcji w funkcji</div>
+                                <div class="d-flex flex-wrap mt-2 py-2">
+                                    <div class="me-3">
+                                        Wzór:
+                                        <div class="example-cell">=<span class="text-warning">|SUMA|5,<span class="text-success">|PIERWIASTEK|25</span></span></div>
+                                    </div>
+                                    <div class="d-flex align-self-end icon-right-box me-3"><div class="icon-right-bold"></div></div>
+                                    <div>
+                                        Wynik:
+                                        <div class="example-cell">
+                                            10
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-2 fw-bold">Ponieważ:</div>
+                                <div class="d-flex flex-wrap">
+                                    <div class="me-3">
+                                        Krok 1:
+                                        <div class="example-cell">=<span class="text-warning">|SUMA|5,<span class="text-success">|PIERWIASTEK|25</span></span></div>
+                                    </div>
+                                    <div class="d-flex align-self-end icon-right-box me-3"><div class="icon-right-bold"></div></div>
+                                    <div>
+                                        Krok 2:
+                                        <div class="example-cell">=<span class="text-warning">|SUMA|5,<span class="text-success">5</span></span></div>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    W tym przykładzie funkcja |PIERWIASTEK| została wykorzystana jako argument w funkcji |SUMA| dlatego że dzieli je tylko
+                                    przecinek. w takim wypadku funkcje wykorzystane jako argumenty obliczą się w pierwszej kolejności i zwrócą swoje wyniki do funkcji nadrzędnej
+                                </div>
+                            </div>
+
+                                
+                            <div class="fs-4 fw-bolder mt-4 pt-3 border-top">Argumenty w funkcjach</div>
+                            <span>
+                                Różne funkcje przyjmują różne typy argumentów w jednych będą to po prostu liczby w innych 
+                                wartośći logiczne true/false a jeszcze inne przyjmą do siebie tekst lub date. jak można się domyśleć przesłanie złego typu argumentu do funkcji będzie powodować jej błędy
+                            </span>
+
+                            <div class="alert alert-success mt-3 pe-2 pe-md-5">
+                                <div class="fs-5">Przykład 1 - Poprawne użycie funkcji |_DZIEN|</div>
+                                <div class="d-flex flex-wrap mt-2 py-2">
+                                    <div class="me-3">
+                                        Wzór:
+                                        <div class="example-cell">=|_DZIEN|3</div>
+                                    </div>
+                                    <div class="d-flex align-self-end icon-right-box me-3"><div class="icon-right-bold "></div></div>
+                                    <div>
+                                        Wynik:
+                                        <div class="example-cell">Środa</div>
+                                    </div>
+                                 
+                                </div>
+                                <div class="mt-2">
+                                    Funkcja |_DZIEN| zwraca nazwę dnia tygodnia z podanej liczby od 1-7 tutaj jak widać wszystko odbyło się poprawnie. 
+                                    Dodatkowo zauważyć można znak '_' na początku nazwy funkcji. Jest to symbol kategori funkcji w programie występują następujące symbole:
+                                    <ul>
+                                        <li>_ - Funkcje czasu</li>
+                                        <li>& - Funkcje logiczne </li>
+                                        <li>$ - Stałe </li>
+                                        <li>% - Procentowe </li>
+                                    </ul>
+                                    jeżeli wpiszesz któryś z tych znaków podczas tworzenia wzoru wyświetli ci się lista sugerowanych funkcji tylko i wyłącznie z tej kategori której dotyczy dany znak
+
+                                </div>
+                            </div>
+    
+                            <div class="alert alert-danger mt-3 pe-2 pe-md-5">
+                                <div class="fs-5">Przykład 2 - Niepoprawne użycie funkcji _DZIEN</div>
+                                <div class="d-flex flex-wrap mt-2 py-2">
+                                    <div class="me-3">
+                                        Wzór:
+                                        <div class="example-cell">=|_DZIEN|true</div>
+                                    </div>
+                                    <div class="d-flex align-self-end icon-right-box me-3"><div class="icon-right-bold "></div></div>
+                                    <div>
+                                        Wynik:
+                                        <div class="example-cell position-relative">
+                                            @ZLY ARG
+                                            <div class="cell-popover" style="background-color: red;"></div>
+                                        </div>
+                                    </div>
+                                
+                                </div>
+                                <div class="mt-2">
+                                    przesłanie argumentu typu logicznego do funkcji|_DZIEN| zwraca nam błąd o złym argumencie jak było napisane wyżej funkcja ta przyjmuje tylko liczby całkowite w zakresie od 1 do 7
+                                </div>
+                            </div>
+
+                            <div class="alert alert-dark mt-3 pe-2 pe-md-5">
+                                <div class="fs-5">Przykład 3 - Użycie obliczenia jako argumentu w funkcji</div>
+                                <div class="d-flex flex-wrap mt-2 py-2">
+                                    <div class="me-3">
+                                        Wzór:
+                                        <div class="example-cell">=<span class="text-warning">|SUMA|5,18,2,<span class="text-success">(10-6)</span></span></div>
+                                    </div>
+                                    <div class="d-flex align-self-end icon-right-box me-3"><div class="icon-right-bold"></div></div>
+                                    <div>
+                                        Wynik:
+                                        <div class="example-cell">
+                                            29
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-2 fw-bold">Ponieważ:</div>
+                                <div class="d-flex flex-wrap">
+                                    <div class="me-3">
+                                        Krok 1:
+                                        <div class="example-cell">=<span class="text-warning">|SUMA|5,18,2,<span class="text-success">4</span></span></div>
+                                    </div>
+                                    <div class="d-flex align-self-end icon-right-box me-3"><div class="icon-right-bold"></div></div>
+                                    <div>
+                                        Krok 2:
+                                        <div class="example-cell">=29</div>
+                                    </div>
+                                </div>
+                            
+                                <div class="mt-3">
+                                    Jak widać na tym przykładzie bez problemu możemy użyć jakiegoś obliczenia jako argumentu wystarczy że zamkniemy je w nawias
+                                </div>
+                            </div>
+
+
+                    </div>
+
+                    <!-- Page 9 Sort data -->
+                    <div class="tab-pane fade" id="v-pills-9" role="tabpanel" aria-labelledby="v-pills-9-tab">
+                        <span class="fs-1 fw-bolder">Sortowanie danych</span>
+                        <span class="badge bg-info">Operacje na danych</span>
+                        <p class="fs-5 pb-2">
+                           Natłok nieuporządkowanych danych może stwarzać problem z odczytywaniem ich naszczeście program posiada wbudowaną funcję do sortowania wartości liczbowych i tekstów
+                           aby ją wybrać najpierw zaznacz komórki które chcesz posortować następnie odnajdź i rozwiń na pasku navigacyjnym zakładkę "Narzędzia" znajdź Opcję "Sortuj zaznaczone" i wybierz kierunek sortowania Malejąco lub rosnąco 
+                        </p>
+                        <div class="alert alert-danger d-flex align-items-center" role="alert">
+                            <div>
+                              <b>UWAGA</b> Podczas zaznaczania obszaru do sortowania używanie klawisza CTRL i zaznaczanie pojedynczych komórek spowoduje że program wypełni posortowane wartości do komórek w tej kolejności jak zostały zaznaczone a nie np od góry do dołu lub od prawej od lewej
+                            </div>
+                          </div>
+
+                        <div class="fs-4 fw-bolder mt-4 pt-3 border-top">Jakie dane można sortować ?</div>
+
+                        <span>
+                                Można posortować każde dane a nawet obliczenia wtedy pod uwagę będzie brany tylko ich wynik. Jedynym wyjątkiem są obliczenia używające adresów innych komórek w swoim wzorze.
+                                poniżej znajdziesz kilka przykładów danych przed i po sortowaniu
+                        </span>
+
+                        <div class="alert alert-dark mt-3 pe-2 pe-md-5">
+                            <div class="fs-5">Przykład 1 - Sortowanie Dat</div>
+                            <div class="d-flex flex-wrap justify-content-evenly">
+                               
+                                    <div class="d-flex flex-column align-items-center justify-content-between mx-2">
+                                        <div class="text-center fw-bold">Przed</div>
+                                        <div>
+                                            <div class="example-cell mt-2">2024-06-13</div>
+                                            <div class="example-cell mt-1">2024-06-21</div>
+                                            <div class="example-cell mt-1">2024-06-04</div>
+                                            <div class="example-cell mt-1">2024-06-08</div>
+                                            <div class="example-cell mt-1">2024-06-01</div>
+                                        </div>
+                                    </div>
+                              
+                          
+                                    <div class="d-flex flex-column align-items-center justify-content-between mx-2">
+                                        <div class="text-center fw-bold">Rosnąco</div>
+                                        <div>
+                                            <div class="example-cell mt-2">2024-06-01</div>
+                                            <div class="example-cell mt-1">2024-06-04</div>
+                                            <div class="example-cell mt-1">2024-06-08</div>
+                                            <div class="example-cell mt-1">2024-06-13</div>
+                                            <div class="example-cell mt-1">2024-06-21</div>
+                                        </div>
+                                    </div>
+                              
+                        
+                                    <div class="d-flex flex-column align-items-center justify-content-between mx-2">
+                                        <div class="text-center fw-bold">Malejąco</div>
+                                        <div>
+                                            <div class="example-cell mt-2">2024-06-21</div>
+                                            <div class="example-cell mt-1">2024-06-13</div>
+                                            <div class="example-cell mt-1">2024-06-08</div>
+                                            <div class="example-cell mt-1">2024-06-04</div>
+                                            <div class="example-cell mt-1">2024-06-01</div>
+                                        </div>
+                                    </div>
+                          
+
+                            </div>
+                        </div>
+
+                        <div class="alert alert-dark mt-3 pe-2 pe-md-5">
+                            <div class="fs-5">Przykład 2 - Sortowanie liczby</div>
+                            <div class="d-flex flex-wrap justify-content-evenly">
+                               
+                                    <div class="d-flex flex-column align-items-center justify-content-between mx-2">
+                                        <div class="text-center fw-bold">Przed</div>
+                                        <div>
+                                            <div class="example-cell mt-2">13</div>
+                                            <div class="example-cell mt-1">21</div>
+                                            <div class="example-cell mt-1">4</div>
+                                            <div class="example-cell mt-1">8</div>
+                                            <div class="example-cell mt-1">1</div>
+                                        </div>
+                                    </div>
+                              
+                          
+                                    <div class="d-flex flex-column align-items-center justify-content-between mx-2">
+                                        <div class="text-center fw-bold">Rosnąco</div>
+                                        <div>
+                                            <div class="example-cell mt-2">1</div>
+                                            <div class="example-cell mt-1">4</div>
+                                            <div class="example-cell mt-1">8</div>
+                                            <div class="example-cell mt-1">13</div>
+                                            <div class="example-cell mt-1">21</div>
+                                        </div>
+                                    </div>
+                              
+                        
+                                    <div class="d-flex flex-column align-items-center justify-content-between mx-2">
+                                        <div class="text-center fw-bold">Malejąco</div>
+                                        <div>
+                                            <div class="example-cell mt-2">21</div>
+                                            <div class="example-cell mt-1">13</div>
+                                            <div class="example-cell mt-1">8</div>
+                                            <div class="example-cell mt-1">4</div>
+                                            <div class="example-cell mt-1">1</div>
+                                        </div>
+                                    </div>
+                          
+
+                            </div>
+                        </div>
+
+                        <div class="alert alert-dark mt-3 pe-2 pe-md-5">
+                            <div class="fs-5">Przykład 3 - Sortowanie tekstów</div>
+                            <div class="d-flex flex-wrap justify-content-evenly">
+                               
+                                    <div class="d-flex flex-column align-items-center justify-content-between mx-2">
+                                        <div class="text-center fw-bold">Przed</div>
+                                        <div>
+                                            <div class="example-cell mt-2">Marek</div>
+                                            <div class="example-cell mt-1">Arek</div>
+                                            <div class="example-cell mt-1">Darek</div>
+                                            <div class="example-cell mt-1">Jarek</div>
+                                            <div class="example-cell mt-1">Staszek</div>
+                                        </div>
+                                    </div>
+                              
+                          
+                                    <div class="d-flex flex-column align-items-center justify-content-between mx-2">
+                                        <div class="text-center fw-bold">Rosnąco</div>
+                                        <div>
+                                            <div class="example-cell mt-2">Arek</div>
+                                            <div class="example-cell mt-1">Darek</div>
+                                            <div class="example-cell mt-1">Jarek</div>
+                                            <div class="example-cell mt-1">Marek</div>
+                                            <div class="example-cell mt-1">Staszek</div>
+                                        </div>
+                                    </div>
+                              
+                        
+                                    <div class="d-flex flex-column align-items-center justify-content-between mx-2">
+                                        <div class="text-center fw-bold">Malejąco</div>
+                                        <div>
+                                            <div class="example-cell mt-2">Staszek</div>
+                                            <div class="example-cell mt-1">Marek</div>
+                                            <div class="example-cell mt-1">Jarek</div>
+                                            <div class="example-cell mt-1">Darek</div>
+                                            <div class="example-cell mt-1">Arek</div>
+                                        </div>
+                                    </div>
+                          
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Page 10 Copy/Cut DATA-->
+                    <div class="tab-pane fade" id="v-pills-10" role="tabpanel" aria-labelledby="v-pills-10-tab">
+                        <span class="fs-1 fw-bolder">Kopiowanie / Wklejanie</span>
+                        <span class="badge bg-info">Operacje na danych</span>
+                        <p class="fs-5 pb-2">
+                           Kopiowanie lub wycinanie a poźniej wklejanie na danych innych niż obliczenia nie powoduje nic nadzwyczajnego po prostu
+                           przenosimy lub duplikujemy dane z jednej komórki do drugiej. Kopiowanie obliczeń ma natiomast dwa tryby miedzy którymi możesz przełączać w zakładce "Preferencje > Kopiowanie"
+                        </p>
+
+                        <div class="fs-4 fw-bolder mt-4 pt-3 border-top">
+                            Jak używać kopiowania lub wycinania ?
+                        </div>
+                        <span>
+                            W pierwszej kolejności należy zaznaczyć komórke lub komórki które chcesz skopiować lub wyciąć następnie na 
+                            urządzeniach z dostępem do klawiatury możesz skkorzystać kombinacji klawiszy 
+                            <ul>
+                                <li>Lewy CTRL + C - Kopiowanie</li>
+                                <li>Lewy CTRL + X - Wycinanie</li>
+                                <li>Lewy CTRL + V - Wklejanie</li>
+                            </ul> 
+                            poza tą metodą możesz użyć prawego przycisku myszy lub przytrzymać chwilę palec w miejscu na dowolnej komórce aby przywołać rozwijane menu z tymi samymi opcjami co w liście powyżej
+                        </span>
+
+                        <div class="fs-4 fw-bolder mt-4 pt-3 border-top">
+                            Tryby kopiowanie obliczeń
+                        </div>
+
+                        <span>
+                            Tryp kopiowania obliczeń wpływa tylko na adresy komórek w obliczeniu w trybie zmiany zależności obliczenie otrzyma 
+                            nowe adresy obliczone na podstawie odległości użytej komórki od komórki w której wykonuje się obliczenie ale odległość
+                            ta zostanie przeliczona przez adres gdzie wklei się obliczenie w trybie statycznym( Niezmieniaj obliczeń )
+                            adresy komórek pozostają bez zmian. Tryb statyczny jest prosty i zrozumiały 
+                            dlatego poniższe przykłady będą dotyczyły tylko trybu dynamicznego
+                        </span>
+
+                        <div class="alert alert-warning mt-3 pe-2 pe-md-5 overflow-auto w-100">
+                            <div class="fs-5">Przykład - Storzenie wzoru i przeniesienie go do komórek poniżej </div>
+                            
+                            <div class="mt-3">
+                                <span class="fw-bold">1. Tworzymy wzór w komórce A:1 z odwołaniem do komórki B:1</span>
+                                <div>jak widać wzór w komórce A:1 odnosi się do komórki która jest dokładnie jedną kolumne w prawo taka zależność zostanie zapisana przy kopiowaniu</div>
+                                <div class="d-flex">
+                                    <div>
+                                         <div class="example-cell small">0</div>
+                                         <div class="example-cell small">1</div>
+                                         <div class="example-cell small">2</div>
+                                         <div class="example-cell small">3</div>
+                                         <div class="example-cell small">4</div>
+                                    </div>
+                                    <div>
+                                         <div class="example-cell small">A</div>
+                                         <div class="example-cell small">='B:1'*2</div>
+                                         <div class="example-cell small"></div>
+                                         <div class="example-cell small"></div>
+                                         <div class="example-cell small"></div>
+                                     </div>
+                                     <div>
+                                         <div class="example-cell small">B</div>
+                                         <div class="example-cell small">2</div>
+                                         <div class="example-cell small">4</div>
+                                         <div class="example-cell small">6</div>
+                                         <div class="example-cell small">8</div>
+                                     </div>
+                                 </div>
+                            </div>
+                          
+                            <div class="mt-3">
+                                <span class="fw-bold">2. Kopiujemy zawartość komórki A:1 i wklejamy do komórki A:2</span>
+                                <div>Po wklejeniu wzoru do komórki A:2 adres użyty w obliczeniu automatycznie zmienił się z B:1 na B:2 ponieważ teraz komórka B:2 znajduje się jedną kolumne w prawo od komórki z obliczeniem</div>
+                                <div class="d-flex">
+                                    <div>
+                                         <div class="example-cell small">0</div>
+                                         <div class="example-cell small">1</div>
+                                         <div class="example-cell small">2</div>
+                                         <div class="example-cell small">3</div>
+                                         <div class="example-cell small">4</div>
+                                    </div>
+                                    <div>
+                                         <div class="example-cell small">A</div>
+                                         <div class="example-cell small">='B:1'*2</div>
+                                         <div class="example-cell small border-warning">='B:2'*2</div>
+                                         <div class="example-cell small"></div>
+                                         <div class="example-cell small"></div>
+                                     </div>
+                                     <div>
+                                         <div class="example-cell small">B</div>
+                                         <div class="example-cell small">2</div>
+                                         <div class="example-cell small">4</div>
+                                         <div class="example-cell small">6</div>
+                                         <div class="example-cell small">8</div>
+                                     </div>
+                                 </div>
+                            </div>                
+
+                            <div class="mt-3">
+                                <span class="fw-bold">3. Zaznaczamy komórke A:3 oraz A:4 jednocześnie i wklejamy wcześniej skopiowaną zawartość</span>
+                                <div>Jak widać wcześniej utworzonym wzorem możemy automatycznie wypełniać całe zaznaczone obszary</div>
+                                <div class="d-flex">
+                                    <div>
+                                         <div class="example-cell small">0</div>
+                                         <div class="example-cell small">1</div>
+                                         <div class="example-cell small">2</div>
+                                         <div class="example-cell small">3</div>
+                                         <div class="example-cell small">4</div>
+                                    </div>
+                                    <div>
+                                         <div class="example-cell small">A</div>
+                                         <div class="example-cell small">='B:1'*2</div>
+                                         <div class="example-cell small">='B:2'*2</div>
+                                         <div class="example-cell small border-warning">='B:3'*2</div>
+                                         <div class="example-cell small border-warning">='B:4'*2</div>
+                                     </div>
+                                     <div>
+                                         <div class="example-cell small">B</div>
+                                         <div class="example-cell small">2</div>
+                                         <div class="example-cell small">4</div>
+                                         <div class="example-cell small">6</div>
+                                         <div class="example-cell small">8</div>
+                                     </div>
+                                 </div>
+                            </div>     
+                            
+                        </div>
+
+
+                        <div class="fs-4 fw-bolder mt-4 pt-3 border-top">
+                            Opcja "Oznacz jako stałą"
+                        </div>
+                        <span>
+                        Wiesz już jak dynamicznie zmieniają się adresy komórek przy obliczeniach jednak czasami potrzebujemy aby część adresów pozostała 
+                        niezmieniona możemy wybrać komórki do których odwołania będą stałe i wybrać opcje "Oznacz jako stałą" w zakładce "Narzędzia" na pasku navigacyjnym.
+                        </span>
+
+                        <div class="alert alert-warning mt-3 pe-2 pe-md-5 overflow-auto w-100">
+                            <div class="fs-5">Przykład - Przeliczanie EUR na PLN po kursie oznaczonym jako stała </div>
+                            
+                            <div class="mt-3">
+                                <span class="fw-bold">1. Tworzymy naszą stała</span>
+                                <div>W komórce B:2 wpisujemy nasz kurs EURO i oznaczamy go jako stałą za pomocą opcji z paska navigacyjnego</div>
+                                <div class="d-flex">
+                                    <div>
+                                         <div class="example-cell small">0</div>
+                                         <div class="example-cell small">1</div>
+                                         <div class="example-cell small">2</div>
+                                         <div class="example-cell small">3</div>
+                                         <div class="example-cell small">4</div>
+                                         <div class="example-cell small">5</div>
+                                         <div class="example-cell small">6</div>
+                                    </div>
+                                    <div>
+                                        <div class="example-cell small">A</div>
+                                        <div class="example-cell small">kurs eur</div>
+                                        <div class="example-cell small text-muted">EUR</div>
+                                        <div class="example-cell small  text-muted">102</div>
+                                        <div class="example-cell small  text-muted">75</div>
+                                        <div class="example-cell small  text-muted">68</div>
+                                        <div class="example-cell small  text-muted">45</div>
+                                     </div>
+                                     <div>
+                                        <div class="example-cell">B</div>
+                                        <div class="example-cell border-primary">4.25</div>
+                                        <div class="example-cell text-muted">PLN</div>
+                                        <div class="example-cell"></div>
+                                        <div class="example-cell"></div>
+                                        <div class="example-cell"></div>
+                                        <div class="example-cell"></div>
+                                     </div>
+                                     
+                                </div>
+                            </div>
+                          
+                            <div class="mt-3">
+                                <span class="fw-bold">2.Tworzymy wzór wykorzystujący adres stałej</span>
+                                <div>Podzieliliśmy nasze dane na dwie kolumny po lewej stronie mamy Wartości w EUR a po prawej będziemy obliczać wartość w PLN. Tworzymy nasz wzór do obliczania w komórce B:3 który korzysta z komórki po swojej lewej oraz stałej B:1</div>
+                                <div class="d-flex">
+                                    <div>
+                                         <div class="example-cell small">0</div>
+                                         <div class="example-cell small">1</div>
+                                         <div class="example-cell small">2</div>
+                                         <div class="example-cell small">3</div>
+                                         <div class="example-cell small">4</div>
+                                         <div class="example-cell small">5</div>
+                                         <div class="example-cell small">6</div>
+                                    </div>
+                                    <div>
+                                        <div class="example-cell small">A</div>
+                                        <div class="example-cell small">kurs eur</div>
+                                        <div class="example-cell small">EUR</div>
+                                        <div class="example-cell small">102</div>
+                                        <div class="example-cell small">75</div>
+                                        <div class="example-cell small">68</div>
+                                        <div class="example-cell small">45</div>
+                                     </div>
+                                     <div>
+                                        <div class="example-cell">B</div>
+                                        <div class="example-cell border-primary">4.25</div>
+                                        <div class="example-cell">PLN</div>
+                                        <div class="example-cell">='A:3'*<span class="text-primary">'B:1'</span> </div>
+                                        <div class="example-cell"></div>
+                                        <div class="example-cell"></div>
+                                        <div class="example-cell"></div>
+                                     </div>
+                                     
+                                </div>
+                            </div>                
+
+                            <div class="mt-3">
+                                <span class="fw-bold">3.Kopiujemy wzór z komórki B:3 i wklejamy do komórek od B:4 do B:6</span>
+                                <div>Teraz cała kolumna wypełni się naszym wzorem zmieniając adres komórki z lewej strony ale pozostawiając nieruszony adres stałej B:1</div>
+                                <div class="d-flex">
+                                    <div>
+                                         <div class="example-cell small">0</div>
+                                         <div class="example-cell small">1</div>
+                                         <div class="example-cell small">2</div>
+                                         <div class="example-cell small">3</div>
+                                         <div class="example-cell small">4</div>
+                                         <div class="example-cell small">5</div>
+                                         <div class="example-cell small">6</div>
+                                    </div>
+                                    <div>
+                                        <div class="example-cell small">A</div>
+                                        <div class="example-cell small">kurs eur</div>
+                                        <div class="example-cell small">EUR</div>
+                                        <div class="example-cell small">102</div>
+                                        <div class="example-cell small">75</div>
+                                        <div class="example-cell small">68</div>
+                                        <div class="example-cell small">45</div>
+                                     </div>
+                                     <div>
+                                        <div class="example-cell">B</div>
+                                        <div class="example-cell border-primary">4.25</div>
+                                        <div class="example-cell">PLN</div>
+                                        <div class="example-cell">='A:3'*<span class="text-primary">'B:1'</span> </div>
+                                        <div class="example-cell">='A:4'*<span class="text-primary">'B:1'</span> </div>
+                                        <div class="example-cell">='A:5'*<span class="text-primary">'B:1'</span> </div>
+                                        <div class="example-cell">='A:6'*<span class="text-primary">'B:1'</span> </div>
+                                     </div>
+                                     
+                                </div>
+                            </div>     
+                            
+                        </div>
+
+                    </div>
+
+                    <!-- Page 11 Insert Table -->
+                    <div class="tab-pane fade" id="v-pills-11" role="tabpanel" aria-labelledby="v-pills-11-tab">
+                        <span class="fs-1 fw-bolder">Wstawianie Tabeli</span>
+                        <span class="badge bg-dark">Automatyczne wypełnianie</span>
+                        <p class="fs-5 pb-2">
+                           Cały program jest jak jedna wielka tabela jednak organizacja danych wymaga czasem na podzielenie ich na mniejsze tabele
+                           możesz to łatwo zrobić zaznaczając obszar który chcesz zamienić w tabelę a następnie otwierając narzędzie wstawiania tabeli rozwijając zakładke "Wstaw" i wybierając opcje "Tabele"
+                        </p>
+                        <div class="alert alert-danger d-flex align-items-center" role="alert">
+                            <div>
+                              <b>UWAGA</b> Podczas zaznaczania obszaru do wstawienia tabeli aby unikać błędów nie należy używać klawisza "lewy CTRL"
+                            </div>
+                          </div>
+
+                        <div class="fs-4 fw-bolder mt-4 pt-3 border-top">Opis dostępnych opcji</div>
+                        <span>
+                            W narzędziu do wstawiania tabeli nie znajdziesz dużo opcji ale opis każdego z nich z pewnością ci się przyda. Poniżej znajdziesz wszystkie dostępne opcje i ich opis:
+                        </span>
+                        <ul>
+                            <li class="mt-2">
+                                <div class="fw-bold">Orientacja (Ostyluj w)</div>
+                                <span>
+                                    Ta opcja pozwala wybrać w jakim kierunku chcemy układać 
+                                    nasze dane pionowo od góry do dołu lub poziomo od lewej do prawej. Podzielone tak wiersze lub kolumny utworzą <span class="fw-bold">sekcje</span>         
+                                </span>
+                            </li>
+                            <li class="mt-2">
+                                <div class="fw-bold">Wyróżnij miejsce na Tytuł</div>
+                                <span>
+                                    Po wybraniu tej opcji pierwsza komórka każdej sekcji otrzyma specjalne miejsce na tytuł z pogrubionym i wyśrodkowanym teksem
+                                </span>
+                            </li>
+                            <li class="mt-2">
+                                <div class="fw-bold">Wyróżnij miejsce na Wynik</div>
+                                <span>
+                                    Jeżeli wybierzesz tą opcje pojawi się dodatkowa opcja opisana poniżej oraz pole wyboru funkcji. Wybrana funkcja 
+                                    automatycznie doda się na końcu każdej sekcji i przyjmie jako swoje argumenty pozostałe komórki 
+                                    sekcji wyłączając tytuł( Jeżeli został ustawiony ).
+                                </span>
+                            </li>
+                            <li class="mt-2">
+                                <div class="fw-bold">Wyróżnij miejsce na Legendę</div>
+                                <span>
+                                    Ta opcja pozostawi pierwszą sekcje pustą abyś mógł oprócz tytułów dodać jeszcze
+                                    legendę na osi prostopadłej dodatkowo w ostatniej komórce pierwszej sekcji umieści nazwe wybranej przez ciebie funkcji
+                                </span>
+                            </li>
+
+                            <li class="mt-2">
+                                <div class="fw-bold">Kolorystyka</div>
+                                <span>
+                                    Tutaj wybierasz styl swojej tabeli możesz wybrać opcję z 
+                                    czarnym kwadratem aby nie dodawać koloru tabeli a jedynie same funkcje i stylowania tekstu
+                                </span>
+                            </li>
+                        </ul>
+
+                        <div class="fs-4 fw-bolder mt-4 pt-3 border-top">
+                            Interaktywny przykład
+                        </div>
+                        <div>Tutaj zostanie wyświetlona Tabela z opcji poniżej Funkcje nie będą działać w tym przykładzie</div>
+                        <div class="d-flex overflow-auto p-4">
+                            <div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                            </div>
+                            <div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                            </div>
+                            <div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                            </div>
+                            <div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                            </div>
+                            <div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                            </div>
+                            <div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                            </div>
+                            <div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                            </div>
+                            <div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                                <div class="example-cell example-cell-table"></div>
+                            </div>
+                        </div>
+
+
+                        <div class="bg-dark text-light px-4 py-3">
+                            <span class="mb-1 d-block fw-bold">Ostyluj w:</span>
+                            <select class="form-select" aria-label="Default select example" id="table-style-orient">
+                                <option value="horizontal">Poziomie</option>
+                                <option value="vertical" selected>Pionie</option>
+                            </select>
+                            <hr>
+                            <span class="mt-3 mb-1 d-block fw-bold">Wyróżnij miejsca na:</span>
+                            <div class="d-flex">
+                                <div class="form-check me-5">
+                                    <input class="form-check-input" type="checkbox" value="" id="table-style-extra-1">
+                                    <label class="form-check-label" for="table-style-extra-1" data-bs-toggle="tooltip"
+                                        data-bs-placement="top" title="Pogrubia i środkuje tekst na początku każdej grupy">
+                                        Tytuł
+                                    </label>
+                                </div>
+                                <div class="form-check me-5">
+                                    <input class="form-check-input" type="checkbox" value="" id="table-style-extra-2"
+                                        data-bs-toggle="collapse" data-bs-target=".table-style" aria-expanded="false"
+                                        aria-controls="table-add-function table-style-extra-3-box">
+                                    <label class="form-check-label" for="table-style-extra-2" data-bs-toggle="tooltip"
+                                        data-bs-placement="top" title="Przygotowuje ostatnią komórke grupy na wynik z funkcji">
+                                        Wynik
+                                    </label>
+                                </div>
+                                <div class="form-check me-5">
+                                    <div class="collapse table-style" id="table-style-extra-3-box">
+                                        <input class="form-check-input" type="checkbox" value="" id="table-style-extra-3">
+                                        <label class="form-check-label" for="table-style-extra-2" data-bs-toggle="tooltip"
+                                            data-bs-placement="top"
+                                            title="Pozostawia dodatkowe puste miejsce po lewej lub na górze tabeli">
+                                            Legende
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="collapse table-style" id="table-add-function">
+                                <span class="mt-3 mb-1 d-block fw-bold">Wynik z funkcji: </span>
+                                <select class="form-select" aria-label="select table function" id="table-function">
+                                    <option value="SUMA" selected>Suma</option>
+                                    <option value="NAJWIEKSZA">Największa wartość</option>
+                                    <option value="NAJMNIEJSZA">Najmniejsza wartość</option>
+                                    <option value="SREDNIA_A">Średnia Arytmetyczna</option>
+                                    <option value="MEDIANA">Mediana</option>
+                                    <option value="GRUPA">Grupa</option>
+                                </select>
+                            </div>
+                            <hr>
+                            <span class="mt-3 mb-1 d-block fw-bold">Kolorystyka:</span>
+                            <div class="d-flex flex-wrap justify-content-around">
+                
+                                <div class="form-check form-check-inline mt-2">
+                                    <input class="form-check-input" type="radio" id="tableStyle-2" value="#a569bd"
+                                        name="table-style-color" checked>
+                                    <label class="form-check-label ms-1" for="tableStyle-2">
+                                        <span class="color-example" style="background-color: rgb(210, 180, 222);"></span>
+                                        <span class="color-example" style="background-color: #a569bd;"></span>
+                                        <span class="color-example" style="background-color: rgb(108, 52, 131);"></span>
+                                    </label>
+                                </div>
+                
+                                <div class="form-check form-check-inline mt-2">
+                                    <input class="form-check-input" type="radio" id="tableStyle-3" value="#d38642"
+                                        name="table-style-color">
+                                    <label class="form-check-label ms-1" for="tableStyle-3">
+                                        <span class="color-example" style="background-color: rgb(245, 203, 167);"></span>
+                                        <span class="color-example" style="background-color: #d38642 ;"></span>
+                                        <span class="color-example" style="background-color: #9b6816;"></span>
+                                    </label>
+                                </div>
+                
+                                <div class="form-check form-check-inline mt-2">
+                                    <input class="form-check-input" type="radio" id="tableStyle-4" value="#5D6D7E"
+                                        name="table-style-color">
+                                    <label class="form-check-label ms-1" for="tableStyle-4">
+                                        <span class="color-example" style="background-color: rgb(190, 210, 227);"></span>
+                                        <span class="color-example" style="background-color: #5D6D7E;"></span>
+                                        <span class="color-example" style="background-color: #2E4053;"></span>
+                                    </label>
+                                </div>
+                
+                                <div class="form-check form-check-inline mt-2">
+                                    <input class="form-check-input" type="radio" id="tableStyle-5" value="#7e5d5d"
+                                        name="table-style-color">
+                                    <label class="form-check-label ms-1" for="tableStyle-5">
+                                        <span class="color-example" style="background-color: rgb(227, 190, 190);"></span>
+                                        <span class="color-example" style="background-color: #7e5d5d;"></span>
+                                        <span class="color-example" style="background-color: #532e2e;"></span>
+                                    </label>
+                                </div>
+                
+                                <div class="form-check form-check-inline mt-2">
+                                    <input class="form-check-input" type="radio" id="tableStyle-6" value="#6f995d"
+                                        name="table-style-color">
+                                    <label class="form-check-label ms-1" for="tableStyle-6">
+                                        <span class="color-example" style="background-color: rgb(117, 150, 120);"></span>
+                                        <span class="color-example" style="background-color: #6f995d;"></span>
+                                        <span class="color-example" style="background-color: #3b6127;"></span>
+                                    </label>
+                                </div>
+                
+                                <div class="form-check form-check-inline mt-2">
+                                    <input class="form-check-input" type="radio" id="tableStyle-1" value="" name="table-style-color">
+                                    <label class="form-check-label ms-1" for="tableStyle-1">
+                                        <!-- Bez stylów -->
+                                        <span class="color-example" style="background-color: rgba(0, 0, 0, 0.5);"></span>
+                                        <span class="color-example" style="background-color: rgba(0, 0, 0, 0.5);"></span>
+                                        <span class="color-example" style="background-color: rgba(0, 0, 0, 0.5);"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="mt-4 d-flex justify-content-end">
+                                <button class="btn btn-danger " type="button" onclick="styleTable.clearTable()">Wyczyść tabele</button>
+                
+                                <button class="btn btn-success ms-3" type="button" onclick="styleTable.makeTable()">Wstaw</button>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+
+                    <!-- Page 12 Sort data -->
+                    <div class="tab-pane fade" id="v-pills-12" role="tabpanel" aria-labelledby="v-pills-12-tab">
+                        <span class="fs-1 fw-bolder">Wstawianie osi czasu</span>
+                        <span class="badge bg-dark">Automatyczne wypełnianie</span>
+                        <p class="fs-5 pb-2">
+                           Dzieki narzędziu wstawiania osi czasu błyskawicznie wypełnisz zaznaczone komórki nazwami dni tygodnia lub miesięcy, datami lub czasem w godzinach, minutach i sekundach
+                           dodatkowo wybierzesz wartość początkową wstawianych danych określisz kierunek rosnący lub malejący i krok operacji
+                        </p>
+
+                        <div class="alert alert-danger d-flex align-items-center" role="alert">
+                            <div>
+                              <b>UWAGA</b> Używania klawisza CTRL podczasz zaznaczania komórek do wypełnienia danymi. komórki wypełnią się w tej kolejności w jakim zostały zaznaczone
+                            </div>
+                        </div>
+
+                        <div class="fs-4 fw-bolder mt-4 pt-3 border-top">Interaktywny przykład narzędzia</div>
+
+                        <span>
+                                Poniżej znajdziesz opcje takie same jak w narzędziu dostępnym w programie oraz kilka przykładowych komórek które są już domyślnie zaznaczone
+                                Możesz dowolnie zmieniać opcje następnie wciśnij przycisk przelicz i wstaw poźniej sprawdź uzyskane dane w przykładowych komórkach
+                        </span>
+
+                        <div class="alert bg-dark text-light mt-3 pe-2 pe-md-5">
+                            <span class="mt-3 mb-1 d-block fw-bold">Kierunek Upływu czasu:</span>
+                            <div class="d-flex">
+                                <div class="form-check me-5">
+                                    <input class="form-check-input" type="radio" checked name="timeline-direction" value="true">
+                                    <label class="form-check-label" for="table-style-extra-1">
+                                        Rośnij
+                                    </label>
+                                </div>
+                                <div class="form-check me-5">
+                                    <input class="form-check-input" type="radio" name="timeline-direction" value="false">
+                                    <label class="form-check-label" for="table-style-extra-2">
+                                        Malej
+                                    </label>
+                                </div>
+                            </div>
+                            <hr>
+                            <span class="mb-1 d-block fw-bold">Czas w formcie:</span>
+                            <select class="form-select" aria-label="Default select example" id="timeline-format">
+                                <option value="hour">Godziny</option>
+                                <option value="day">Dnia tygodnia</option>
+                                <option value="month">Miesiąca</option>
+                                <option value="year">Lat</option>
+                                <option value="date">Daty</option>
+                            </select>
+                
+                            <hr>
+                
+                            <div class="row">
+                                <div class="col-6 p-2">
+                                    <span class="mt-3 mb-1 d-block fw-bold">Wartość kroku:</span>
+                                    <input type="number" class="btn bg-light w-100" value="1" min="1" id="timeline-step">
+                                </div>
+                                <div class="col-6 p-2">
+                                    <span class="mt-3 mb-1 d-block fw-bold">Rodzaj kroku:</span>
+                                    <select class="form-select" aria-label="Default select example" id="timeline-stepType">
+                                        <option value="1">Godzina</option>
+                                        <option value="2">Minuta</option>
+                                        <option value="3">Sekunda</option>
+                                    </select>
+                                </div>
+                            </div>
+                
+                            <hr>
+                     
+                            <span class="mt-3 mb-1 d-block fw-bold">Wybierz Zakres:</span>
+                            <div class="row">
+                                <div class="col-6">
+                                    <span class="btn bg-black-1 text-light w-100 d-block">Zacznij od</span>
+                                    <input type="time" class="bg-black-1 text-light p-2 mt-2 w-100 border-0" id="timeline-label-from">
+                                    <label for="timeline-label-from"></label>
+                                </div>
+                                <div class="col-6">
+                                    <span class="btn bg-black-1 text-light w-100 d-block">Skończ na</span>
+                                    <input type="time" class="bg-black-1 text-light p-2 mt-2 w-100 border-0" id="timeline-label-to"
+                                        disabled>
+                                    <label for="timeline-label-to"></label>
+                                </div>
+                            </div>
+                            <div class="mt-4 d-flex justify-content-end">
+                                <button class="btn btn-success me-2" type="button"
+                                    onclick="insertTimeLine.recalculate()">Przelicz</button>
+                                <button class="btn btn-success" type="button" disabled id="timeline-approve"
+                                    onclick="insertTimeLine.insert()">Wstaw</button>
+                            </div>                            
+                        </div>
+
+                        <div class="fw-bold">Przykładowe komórki</div>
+                        <div class="d-flex overflow-auto w-100 p-2">
+                            <div class="example-cell border timeline-cell"></div>
+                            <div class="example-cell border timeline-cell"></div>
+                            <div class="example-cell border timeline-cell"></div>
+                            <div class="example-cell border timeline-cell"></div>
+                            <div class="example-cell border timeline-cell"></div>
+                        </div>
+
+                    </div>
+
+                    <!-- Page 13 Komponents -->
+                    <div class="tab-pane fade" id="v-pills-13" role="tabpanel" aria-labelledby="v-pills-13-tab">
+                        <span class="fs-1 fw-bolder">Komponenty</span>
+                        <span class="badge bg-danger">Dodatkowa zawartość</span>
+                        <p class="fs-5 pb-2">
+                           Komponenty to dodatkowa zawartość którą możesz wzbogacić swój obszar roboczy służą do organizacji i wizualizacji danych w programie wyróżniamy dwa rodzaje komponentów
+                           Statyczne i Dynamiczne ale ich opis znajdziesz ponieżej najpierw jednak przedstawię ci listę wszystkich dostępnych komponentów
+                        </p>
+                        <div class="fs-4 fw-bolder mt-4 pt-3 border-top">Lista dostępnych komponentów:</div>
+                        <ul>
+
+                            <li  class="mt-2">
+                                <div class="fw-bold">Pole tekstowe</div>
+                                <span>
+                                    Umieść pole tekstowe w dowolnym miejscu na ekranie dopasuj jego rozmiar nawet jeżeli tekst nie będzie się miescił w środku
+                                    będziesz mógł go wygodnie przewijać dzięki temu możesz zapisać duże notatki na dość małej przestrzeni
+                                </span>
+                            </li>
+
+                            <li class="mt-2">
+                                <div class="fw-bold">Pole wyboru</div>
+                                <span>
+                                    Zaznacz komórke która ma stać się polem wyboru i wstaw ten komponent. Teraz z lewej strony komórki 
+                                    widzisz czerwoną strefe kliknięcie na nią zmieni jej kolor z czerwonego na zielony i na odwrót
+                                    pozwoli ci to na wygodne odznaczanie wykonanych zadań i operacji
+                                </span>
+                            </li>
+
+                            <li  class="mt-2">
+                                <div class="fw-bold">Pasek postępu</div>
+                                <span>
+                                    Zamienia komórke w pasek postępu i pozwala na ustawienie wartości mininalnej, maksymalnej i aktualnej może przyjmować 
+                                    adresy komórek jako swoje wartości co pozwoli na dynamiczne aktualizowanie paska!
+                                </span>
+                            </li>
+
+                            <li  class="mt-2">
+                                <div class="fw-bold">Dane przestawne</div>
+                                <span>
+                                    Zamienia komórke w rozsuwaną listę którą możesz wybierać jakie dane mają się aktualnie wyświetlać w poprzednio wybranych komórkach
+                                    bardziej szczegółowy opis tego komponentu znajdziesz niżej
+                                </span>
+                            </li>
+
+                            <li  class="mt-2">
+                                <div class="fw-bold">Wykres</div>
+                                <span>Wykresy też są komponentami ale poświeciłem im całkiem osobny artykuł</span>
+                            </li>
+                        </ul>
+
+                        <div class="fs-4 fw-bolder mt-4 pt-3 border-top">Komponenty Statyczne a Dynamiczne</div>
+                        <span>
+                            Zasadniczą różnicą jest połóżenie i rozmiar komponentu komponenty Dynamiczne takie jak 
+                            tekst czy wykres nie mają przypisanego położenia można je dowolnie złapać i przesunąć ponadto można je dowolnie skalować rozciągając ich kształt
+                            łapiąc zaznaczony komponent za mały niebieski kwadracik w prawym dolnym rogu. Komponenty statyczne natomiast przypisuje się do jakiejś komórki aby 
+                            je wstawić musimy najpierw zaznaczyć komórke lub cały obszar a następnie wybrać interesujący nas komponent.
+                        </span>
+
+                        <div class="fs-4 fw-bolder mt-4 pt-3 border-top">Jak wstawić komponent ?</div>
+                        <span>
+                            Większość komponentów znajdziesz na końcu paska narzędziowego dwa pierwsze "Wykres" i "Tekst" są komponentami dynamicznymi i możesz je wstawić w dowolnym momencie
+                            pozostałe wymagają najpierw zaznaczenia komórek w które mają zostać wstawione. Komponenty których nie ma na pasku narzędzowym możesz wstawić za pomocą zakładki "Wstaw" na pasku nawigacyjnym
+                        </span>
+
+                        <div class="fs-4 fw-bolder mt-4 pt-3 border-top">Stylowanie komponentu</div>
+                        <span>
+                            Komponenty można stylować na przykład zmieniać kolor ich czcionki lub tła. Stylowanie odbywa się za pomocą tych samych narzędzi( z paska narzędziowego) którymi stylujemy komórki.
+                            nie wszystkie style działają na wszystkie komponenty ale użycie ich na jakimś komponencie nie powoduje błędów więc bez obaw 
+                        </span>
+
+                        <div class="fs-4 fw-bolder mt-4 pt-3 border-top">Komponent - Dane Przestawne</div>
+                        <span>
+                            Obsługa tego komponentu nie jest tak intuicyjna jak w pozostałych przypadkach dlatego jego działanie opiszę trochę obszerniej.
+                             Najpierw musimy zrozumieć co ten komponent tak naprawdę potrafi zobaczysz to na interaktywnym przykładzie poniżej
+                        </span>
+                        <div class="row mt-2">
+                            <div class="col-12 col-md-6 col-lg-4">
+                                <div class="d-flex">
+                                    <div>
+                                        <div class="example-cell small">0</div>
+                                        <div class="example-cell small">1</div>
+                                        <div class="example-cell small">2</div>
+                                        <div class="example-cell small">3</div>
+                                        <div class="example-cell small">4</div>
+                                    </div>
+                                    <div class="me-3">
+                                        <div class="example-cell">A</div>
+                                        <div class="example-cell position-relative p-0">
+                                            <select id="example-switch-table" class="p-0 btn text-light bg-dark position-absolute start-0 end-0 top-0 bottom-0">
+                                                <option value="0" selected>Styczeń</option>
+                                                <option value="1">Luty</option>
+                                                <option value="2">Marzec</option>
+                                            </select>
+                                        </div>
+                                        <div class="example-cell example-switch-table-cell">36</div>
+                                        <div class="example-cell example-switch-table-cell">78</div>
+                                        <div class="example-cell example-switch-table-cell">92</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-8 mt-2">
+                                
+                                W tym przykładzie komponent został wstawiony do komórki A:1 i przypisane mu zostały komórki od A:2 do A:4 naciśnij
+                                na komórke A:1 i wybierz nazwę zakresu z którego mają się wyświetlić dane w tym przypadku są to nazwy miesiąca ale możesz nazwać je dowolnie
+                                
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <b class="border-top">Jak konfigurować ten komponent ?</b>
+                            <div>Po wstawieniu komponentu do komórki naciśnij na niego aby otworzyć jego ustawienia powinny one wyglądać mniej więcej tak jak te poniżej</div>
+                        </div>
+                        <div class="row mb-2 mt-3">
+                            <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
+                                <div class="bg-dark text-light p-3">
+                                    <div class=" pb-3">
+                                        Zmieniaj dane w wielu komórkach jednocześnie za pomocą prostej rozsuwanej listy
+                                      </div>
+                                      <hr>
+                                      <div class="d-flex flex-column">
+                                        <button class="btn btn-secondary mt-1" id="variableData-add-set">Nowy zakres</button>
+                                        <ol id="variableDataOptions" class="data-list mt-2">
+                                            <li class="chartData">
+                                                <input class="w-auto bg-dark text-light btn" type="text" value="Zakres 1">
+                                            </li>
+                                        </ol>
+                                      </div>
+                                      <button class="btn d-block ms-auto btn-success" id="variableData-save-data">Zapisz</button>
+                                </div>
+                            </div>
+                        </div>
+                        <span>
+                            Przyciskiem "Nowy zakres" dodasz kolejną kolekcje danych do komponentu 
+                            pojawi się ona na liście poniżej klikając tam na nią możesz edytować jej nazwe
+                            kiedy dodasz i nazwiesz już swoje kolekcje możesz zaznaczyć obszar z komórkami które mają zostać przypisane do komponentu następnie wciśnij przycisk Zapisz
+                            To wszystko wystarczy że przejdziesz teraz po wszystich stworzonych zakresach i uzupełnisz dane w komórkach
+                        </span>
+                       
+                    </div>
+
+                    <!-- Page 14 Charts -->
+                    <div class="tab-pane fade" id="v-pills-14" role="tabpanel" aria-labelledby="v-pills-14-tab">
+                        <span class="fs-1 fw-bolder">Wykresy</span>
+                        <span class="badge bg-danger">Dodatkowa zawartość</span>
+                        <p class="fs-5 pb-2">
+                           Wykresy to najlepszy sposób na wizualizację większej ilości danych w tym artykule 
+                           dowiesz się jakie rodzaje wykresów występują w programie jak je wstawić do przestrzeni roboczej oraz skonfigurować
+                        </p>
+                        <div class="fs-4 fw-bolder mt-4 pt-3 border-top">Wstawianie wykresu</div>
+                        <span>
+                            Aby wstawić wykres wybierz wybierz ikonę 
+                            <span class="icon-chart-line"></span> 
+                            na pasku narzędzi ukaże ci się wtedy lista z dostępnymi rodzajami wykresów teraz wystarczy że naciśniesz na wybrany przez ciebie rodzaj wykresu a wstawi się on do przestrzeni roboczej
+                            
+                        
+                        
+                        </span>
+                        <div class="fs-4 fw-bolder mt-4 pt-3 border-top">Dostępne rodzaje wykresów:</div>
+                        <div class="d-flex flex-wrap">
+                            <div class="icon-chart-line fs-4 mt-2 mx-3"><span class="fs-6"> - Liniowy</span></div>
+                            <div class="icon-chart-area fs-4 mt-2 mx-3"><span class="fs-6"> - Obszarowy</span></div>
+                            <div class="icon-chart-bar fs-4 mt-2 mx-3"><span class="fs-6"> - Słupkowy</span></div>
+                            <div class="icon-chart-pie fs-4 mt-2 mx-3"><span class="fs-6"> - Kołowy</span></div>
+                        </div>
+
+                        <div class="fs-4 fw-bolder mt-4 pt-3 border-top">Konfiguracja Wykresów:</div>
+                        <span>
+                            Po wstawieniu wykresu i ponownym na niego naciśnieciu otworzą się jego ustawienia. 
+                            Podzieliłem konfigurację wykresów na dwa obszary pierwszy z nich to stylowanie wykresu a drugi to zakres danych dla wykresu
+                        </span>
+
+                        <div class="fs-4 fw-bolder mt-4 pt-3 border-top">Konfiguracja Wykresów - Stylowanie:</div>
+                        <span>W sekcji Stylowania wykresu możesz znaleźć paletę 6 barw przewodnich do wyboru oraz preferencje takie jak przezroczyste tło oraz 
+                            czy wykres ma wyświetlać dane normalnie czy sumować je i wyświetlać wartość procentową poszczególnych wartości
+                        </span>
+                        <div class="my-2 row">
+                            <div class="col-11 col-md-8 col-lg-6">
+                                <img src="images/chart1.jpg" alt="" class="img-fluid">
+                            </div>
+                            
+                        </div>
+                        <div class="fs-4 fw-bolder mt-4 pt-3 border-top">Konfiguracja Wykresów - Zakres Danych:</div>
+                        <span>
+                            U góry sekcji zakresu danych mamy opcje dodawania wszystkich 
+                            zaznaczonych przez nasz komórek do wybranej grupy kluczy lub wartości ponad to możesz wybrać czy dodane teraz dane
+                            mają nadpisać istniejące już czy dodać się całkiem na nowo
+                        </span>
+                        <div class="my-2 row">
+                            <div class="col-11 col-md-8 col-lg-6"><img src="images/chart2.jpg" alt="" class="img-fluid"></div>
+                        </div>
+                        <span>
+                            Ponadto możesz ręcznie wpisywać dane do wykresów klikając na duży zielony przycisk z symbolem plusa "+" 
+                            dodasz dzięki niemu pierwszy zestaw do wykresu składający się z wartości i opcjonalnie etykiety
+                        </span>
+                        <div class="my-2 row">
+                            <div class="col-11 col-md-8 col-lg-6"><img src="images/chart3.jpg" alt="" class="img-fluid"></div>
+                        </div>
+                        <span>
+                            Teraz klikając w pole tekstowe Etykieta lub Wartość możesz wpisać swoje dane albo nacisnąć na komórke z 
+                            której dane mają być dynamicznie pobierane do wykresu my stworzymy dwa zestawy danych bez etykiety i wpiszemy do nich po prostu wartość 10 i 20
+                            oraz naciśniemy przycisk zatwierdź aby zobaczyć zmiany
+                        </span>
+                        <div class="my-2 row">
+                            <div class="col-11 col-md-8 col-lg-6"><img src="images/chart4.jpg" alt="" class="img-fluid"></div>
+                        </div>
+                        <span>Jak widac nasz wykres z wysłanych do niego danych narysował dwa słupki ponieważ wybrałem wykres typu słupkowego do tego przykładu </span>
+                        <div class="my-2 row">
+                            <div class="col-11 col-md-8 col-lg-6"><img src="images/chart5.jpg" alt="" class="img-fluid"></div>
+                        </div>
+                        <span>Dodanie teraz etykiet do zakresów danych spowoduje wyświetlenie ich przy odpowiednim słupku  </span>
+                        <div class="my-2 row">
+                            <div class="col-11 col-md-8 col-lg-6"><img src="images/chart6.jpg" alt="" class="img-fluid"></div>
+                        </div>
+                        <div class="my-2 row">
+                            <div class="col-11 col-md-8 col-lg-6"><img src="images/chart7.jpg" alt="" class="img-fluid"></div>
+                        </div>
+                        <div class="fs-4 fw-bolder mt-4 pt-3 border-top">Wymiarowanie komponentu</div>
+                        <span>Komponent wykres nie może być zbyt małych rozmiarów ponieważ niektóre dane mogą się nie zmieścić jeżeli nie widzisz niektórych z 
+                            wpisanych danych spróbuj zwiększyć rozmiar komponentu
+                        </span>
+                    </div>
 
                     <!-- KONIEC WSZYSTKICH PODSTRON -->
                 </div>
@@ -1159,31 +2500,8 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        const collapse = new bootstrap.Collapse(document.getElementById("navCollapse"), { toggle: false });
-        const mainContentNode = document.getElementById("mainContent");
-        addEventListener("resize", (e) => {
-            if (window.innerWidth > 767) {
-                collapse.show()
-            }
-        })
-        if (window.innerWidth < 768) collapse.hide();
-        for (let btn of document.getElementsByClassName("closeCollapseBtn")) {
-            btn.addEventListener("click", () => {
-                mainContentNode.scrollTop = 0;
-                if (window.innerWidth < 767) collapse.hide();
-            })
-        }
-
-        document.getElementById("range-1").addEventListener("input",(e)=>{
-            const value = e.currentTarget.value;
-            document.getElementById("example-cell-1").innerHTML = value;
-            document.getElementById("example-cell-2").innerHTML = parseInt(value) + 7;
-        })
-
-
-    </script>
-</body>
+    <script src="scripts/help-script.js"></script>
+</body>     
 
 </html>
 

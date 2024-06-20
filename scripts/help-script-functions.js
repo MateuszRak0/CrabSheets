@@ -17,8 +17,6 @@ async function downloadFunctions() {
         listNode.appendChild(errorMSG);
         document.getElementById("loading-icon").remove();
     }
-    
-    
 }
 
 function unpackData(data){
@@ -34,17 +32,19 @@ class FunctionLabel{
         this.container = document.createElement("div");
         this.container.classList.add( "row", "py-4", "align-items-center", "border-bottom" );
         functions[funcData.prefix] = this;
-        this.addData(funcData.prefix);
-        this.addData(funcData.category);
-        this.addData(funcData.description);
+        this.addData(funcData.prefix,3);
+        this.addData(funcData.category,3);
+        this.addData(funcData.description,4);
+        const argumentsData = `<span class="d-inline d-md-none">Argumenty: </span> ${funcData.arguments}`;
+        this.addData(argumentsData,2);
         this.show();
         
     }
 
-    addData(data){
+    addData(data,columnSize){
         let dataLabel = document.createElement("div");
         dataLabel.innerHTML = data;
-        dataLabel.classList.add("col-sm-4", "col-12", "border-end");
+        dataLabel.classList.add(`col-md-${columnSize}`, "col-12", "border-end");
         this.container.appendChild(dataLabel)
     }
 
