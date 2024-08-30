@@ -731,6 +731,7 @@ const contentResizer = {
     },
 
     show(node,bootstrapOBJ){
+        if(parseInt(window.innerWidth) <= 600) return false;
         const target = node.target;
         this.showed = bootstrapOBJ;
         mainContent.style.width = `${window.innerWidth - target.offsetWidth}px`;
@@ -765,6 +766,7 @@ const contentResizer = {
     },
 
     hide(e){
+        if(parseInt(window.innerWidth) <= 600) return false;
         if(e.target != this.showed._element) return false
         mainContent.style.width = "";
         this.showed = false;
