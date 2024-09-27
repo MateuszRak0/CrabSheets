@@ -182,7 +182,6 @@ if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigat
         checkbox.click();
         checkbox.checked = true;
     }
-    hideElement("hide-part-input-1");
     hideElement("hide-part-input-2");
     setTimeout(()=>{sysMsg_info_mobile.show()},1000)
 }
