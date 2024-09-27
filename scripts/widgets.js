@@ -24,6 +24,7 @@ const widgetTools_base = {
     selectedWidget:false,
     editorNode:document.getElementById("widgetTools_base"),
     removeWidgetBtn:document.getElementById("removeWidgetBtn"),
+    resizeWidgetPivot:document.getElementById("resizer"),
     nextFunc:false,
     startX:0,
     startY:0,
@@ -37,7 +38,13 @@ const widgetTools_base = {
             this.editorNode.style.top = `${parseInt(this.selectedWidget.container.style.top)-1}px`;
             this.editorNode.style.width = `${this.selectedWidget.container.clientWidth+5}px`;
             this.editorNode.style.height = `${this.selectedWidget.container.clientHeight+5}px`;
-            if(this.selectedWidget.moving) changeFontSizesOptions(true);
+            if(this.selectedWidget.moving){
+                changeFontSizesOptions(true);
+                this.resizeWidgetPivot.classList.remove("hidden");
+            } 
+            else{
+                this.resizeWidgetPivot.classList.add("hidden");
+            }
             
         }
     },
@@ -598,39 +605,19 @@ class WidgetChart extends WidgetInteractive{
         super(sheet,loadedWidget);
         this.chartObject = chartObject;
         this.type="CHART";
-        this.canvas = document.createElement("canvas");
-        this.container.appendChild(this.canvas);
         this.tools = widgetTools_chart;
-        this.ctx = this.canvas.getContext("2d");
+        this.container.setAttribute("id",this.chartObject.id)
         this.container.classList.add("widget-chart");
-        if(!loadedWidget){
-            this.styles.chartStyles = "210, 180, 222";
-            this.styles.beTransparent = false;
-            this.styles.percentMode= false;
-        }
-        this.refresh(true);
-        
+        this.refreshStyles(true);
     }
 
-    refreshStyles(){
-        this.refresh()
-        if(this.styles.beTransparent){this.styles.fillColor = "transparent"}
-        else if(!this.styles.beTransparent && this.styles.fillColor == "transparent"){
-            this.styles.fillColor = "#ffffff";
-        }
+    refreshStyles(firstLoad){
         super.refreshStyles();
+        if(!firstLoad) this.refresh();
     }
 
-    refresh(firstLoad){
-        let width = this.container.offsetWidth;
-        let height = this.container.offsetHeight;
-        if(this.styles.strokeColor){
-            width = width - 6;
-            height = height - 6;
-        }
-        this.canvas.width = width;
-        this.canvas.height = height;
-        if(!firstLoad) this.chartObject.refresh();
+    refresh(){
+        this.chartObject.refresh()
     }
 
     clearCanvas(){
@@ -638,8 +625,6 @@ class WidgetChart extends WidgetInteractive{
     }
 
     destroy(){
-        this.chartObject.destroy();
-        this.canvas.remove();
         super.destroy();
     }
 
@@ -653,25 +638,12 @@ class WidgetChart extends WidgetInteractive{
         buffor.type = "CHART";
         buffor.chartType = this.chartObject.type;
         buffor.data = this.chartObject.pairs;
+        buffor.title = this.chartObject.title;
+        buffor.theme = this.chartObject.theme;
         return buffor
     }
 }
 
-class WidgetNewChart extends WidgetInteractive{
-    constructor(sheet,loadedWidget){
-        super(sheet,loadedWidget);
-        this.container.classList.add("d-flex","align-items-end")
-    }
-
-    addBar(percent){
-        let bar = document.createElement("div");
-        bar.style.width = '15px';
-        bar.style.height = `${percent}%`;
-        bar.style.marginRight = '5px';
-        bar.style.backgroundColor = "#ff0000"
-        this.container.appendChild(bar);
-    }
-}
 
 //Progress Bar
 widgetTool_progressBar.loadData = function(){

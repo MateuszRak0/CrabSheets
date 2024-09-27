@@ -4,6 +4,7 @@ const sysMsg_error_insert = new bootstrap.Toast(document.getElementById("sysMsg-
 const sysMsg_error_insert2 = new bootstrap.Toast(document.getElementById("sysMsg-error-insert2"));
 const sysMsg_error_sort = new bootstrap.Toast(document.getElementById("sysMsg-error-sort"));
 const sysMsg_error_load = new bootstrap.Toast(document.getElementById("sysMsg-error-load"));
+const sysMsg_info_mobile = new bootstrap.Toast(document.getElementById("sysMsg-info-mobile"));
 //Display
 class UniversalInput{
     constructor(id){
@@ -1156,3 +1157,16 @@ document.getElementById("makeConstant").addEventListener("click",()=>{
         else{ cell.styles.constant = true }
     }
 })
+
+for(let checkbox of document.getElementsByClassName("hide-part-input")){
+    checkbox.addEventListener("input",(e)=>{
+        const targetElement = document.getElementById(e.currentTarget.value);
+        if(!targetElement)return false;
+        if(targetElement.classList.contains("hidden")){
+            targetElement.classList.remove("hidden");
+        }
+        else{
+            targetElement.classList.add("hidden");
+        }
+    })
+}

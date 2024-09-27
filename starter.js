@@ -69,28 +69,6 @@ canvas.addEventListener( "mouseup", (e)=>{
     if(e.button == 0) selector.actionEnd(e);
 });
 
-function touchConverter(touchEvent,target){
-    const toutch = touchEvent.changedTouches[0];
-    if(toutch){
-        touchEvent.preventDefault();
-        return {
-            offsetX:toutch.pageX,
-            offsetY:toutch.pageY - target.offsetTop
-        }
-    } 
-}
-
-canvas.addEventListener( "touchend", (e)=>{ 
-    console.log("KONIEC",e)
-    selector.actionEnd( touchConverter(e,canvasContainer) );
-    
-});
-
-canvas.addEventListener("touchstart", (e) => { 
-    selector.actionStart( touchConverter(e,canvasContainer) );
-    console.log("POCZĄTEK")
-});
-
 canvas.addEventListener( "mouseup", (e)=>{ 
     if(e.button == 0) selector.actionEnd(e);
 });
@@ -185,7 +163,6 @@ addEventListener("mousedown",(e)=>{
     if(e.button != 2) setTimeout(()=>{document.getElementById("contextMenu").classList.remove("show")},100);
 })
 
-
 if(localStorage.getItem("cookiesAproved") == null){
     newFile()
     askAboutCookies()
@@ -197,4 +174,18 @@ else{
     else{
         approveActionWindow.show(msg_loadFile,loadFromLocalStorage,newFile);
     }
+};
+
+if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+    function hideElement(checkbox_id){
+        let checkbox = document.getElementById(checkbox_id);
+        checkbox.click();
+        checkbox.checked = true;
+    }
+    hideElement("hide-part-input-1");
+    hideElement("hide-part-input-2");
+    setTimeout(()=>{sysMsg_info_mobile.show()},1000)
 }
+
+
+

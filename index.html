@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/widgets.css">
     <link rel="icon" type="image/x-icon" href="animal-2029675.svg">
+
 </head>
 
 <body ondragstart="return false;" ondrop="return false;">
@@ -18,7 +19,7 @@
     <div class="fill d-flex flex-column" id="mainContent">
 
         <!-- TOPBAR & TOOLS -->
-        <div class="bg-dark text-light px-0 mb-1 border-bottom border-secondary position-relative z-10">
+        <div class="bg-dark text-light px-0 border-bottom border-secondary position-relative z-10">
 
             <!-- NAVBAR -->
             <nav class="navbar navbar-expand-md navbar-dark bg-black-1 p-0">
@@ -41,14 +42,16 @@
                                     Plik
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdownFile">
-                             
+
                                     <li><button class="dropdown-item" type="button" id="newFile">Nowy</button>
                                     </li>
-                                    <li><button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#loadFileWindow">Otwórz</button></li>
-                                    <li><button class="dropdown-item" type="button" onclick="downloadFile()">Zapisz</button></li>
+                                    <li><button class="dropdown-item" type="button" data-bs-toggle="modal"
+                                            data-bs-target="#loadFileWindow">Otwórz</button></li>
+                                    <li><button class="dropdown-item" type="button"
+                                            onclick="downloadFile()">Zapisz</button></li>
                                     <li><a class="dropdown-item" href="#widget-fileInfo" data-bs-toggle="offcanvas"
-                                        href="#widget-fileInfo" role="button"
-                                        aria-controls="widget-fileInfo">Informacje</a></li>
+                                            href="#widget-fileInfo" role="button"
+                                            aria-controls="widget-fileInfo">Informacje</a></li>
                                 </ul>
                             </li>
 
@@ -65,9 +68,12 @@
                                             data-bs-target="#offcanvas-insert-timeline"
                                             aria-controls="offcanvas-insert-timeline">Oś czasu</button>
                                     </li>
-                                    <li><button class="dropdown-item" type="button" onclick="showSimilarFunctions()">Funkcje</button></li>
-                                    <li><button class="dropdown-item" type="button" id="insert-variableData">Dane Przestawne</button></li>
-                                    <li><button class="dropdown-item" type="button" name="insert-progressBar">Pasek postępu</button></li>
+                                    <li><button class="dropdown-item" type="button"
+                                            onclick="showSimilarFunctions()">Funkcje</button></li>
+                                    <li><button class="dropdown-item" type="button" id="insert-variableData">Dane
+                                            Przestawne</button></li>
+                                    <li><button class="dropdown-item" type="button" name="insert-progressBar">Pasek
+                                            postępu</button></li>
                                 </ul>
                             </li>
 
@@ -82,37 +88,41 @@
                                         <a class="dropdown-item" href="#">Wyczyść &raquo; </a>
                                         <ul class="dropdown-menu dropdown-submenu dropdown-menu-dark">
                                             <li>
-                                                <button class="dropdown-item" type="button" onclick="selectedClearData()">dane</button>
+                                                <button class="dropdown-item" type="button"
+                                                    onclick="selectedClearData()">dane</button>
                                             </li>
                                             <li>
-                                                <button class="dropdown-item" type="button" onclick="selectedClearStyles()">style</button>
+                                                <button class="dropdown-item" type="button"
+                                                    onclick="selectedClearStyles()">style</button>
                                             </li>
                                             <li>
-                                                <button class="dropdown-item" type="button" onclick="selectedClearWWidgets()">Komponenty</button>
+                                                <button class="dropdown-item" type="button"
+                                                    onclick="selectedClearWWidgets()">Komponenty</button>
                                             </li>
                                         </ul>
                                     </li>
 
-                        
-                                    <li><button class="dropdown-item" type="button" id="makeConstant">Oznacz jako Stałą</button></li>
+
+                                    <li><button class="dropdown-item" type="button" id="makeConstant">Oznacz jako
+                                            Stałą</button></li>
                                     <li>
                                         <a class="dropdown-item" href="#">Przesuń zaznaczone &raquo; </a>
                                         <ul class="dropdown-menu dropdown-submenu dropdown-menu-dark">
                                             <li>
-                                                <button class="dropdown-item" type="button" name="moveSelected" 
-                                                onclick="selectedMove(0,-1)">W Góre</button>
+                                                <button class="dropdown-item" type="button" name="moveSelected"
+                                                    onclick="selectedMove(0,-1)">W Góre</button>
                                             </li>
                                             <li>
                                                 <button class="dropdown-item" type="button" name="moveSelected"
-                                                onclick="selectedMove(0,1)">W Dół</button>
+                                                    onclick="selectedMove(0,1)">W Dół</button>
                                             </li>
                                             <li>
                                                 <button class="dropdown-item" type="button" name="moveSelected"
-                                                onclick="selectedMove(-1,0)">W Lewo</button>
+                                                    onclick="selectedMove(-1,0)">W Lewo</button>
                                             </li>
                                             <li>
                                                 <button class="dropdown-item" type="button" name="moveSelected"
-                                                onclick="selectedMove(1,0)">W Prawo</button>
+                                                    onclick="selectedMove(1,0)">W Prawo</button>
                                             </li>
                                         </ul>
                                     </li>
@@ -121,12 +131,12 @@
                                         <a class="dropdown-item" href="#">Sortuj zaznaczone &raquo; </a>
                                         <ul class="dropdown-menu dropdown-submenu dropdown-menu-dark">
                                             <li>
-                                                <button class="dropdown-item" type="button" name="moveSelected" 
-                                                onclick="selectedSort(1)">Rosnąco (A-Z / 0-9)</button>
+                                                <button class="dropdown-item" type="button" name="moveSelected"
+                                                    onclick="selectedSort(1)">Rosnąco (A-Z / 0-9)</button>
                                             </li>
                                             <li>
                                                 <button class="dropdown-item" type="button" name="moveSelected"
-                                                onclick="selectedSort(-1)">Malejąco (Z-A / 9-0)</button>
+                                                    onclick="selectedSort(-1)">Malejąco (Z-A / 9-0)</button>
                                             </li>
                                         </ul>
                                     </li>
@@ -144,21 +154,53 @@
                                         <a class="dropdown-item" href="#">Kopiowanie &raquo; </a>
                                         <ul class="dropdown-menu dropdown-submenu dropdown-menu-dark">
                                             <li>
-                                                <input class="btn-check" type="radio" name="copy-options" id="copy-options-1" value="0" checked>
-                                                <label class="btn btn-secondary dropdown-item" for="copy-options-1">Zmień zależności w obliczeniach</label>  
+                                                <input class="btn-check" type="radio" name="copy-options"
+                                                    id="copy-options-1" value="0" checked>
+                                                <label class="btn btn-secondary dropdown-item"
+                                                    for="copy-options-1">Zmień zależności w obliczeniach</label>
                                             </li>
-                                            <li>                                           
-                                                <input class="btn-check" type="radio" name="copy-options" id="copy-options-2" value="1">
-                                                <label class="btn btn-secondary dropdown-item" for="copy-options-2" >Niezmieniaj obliczeń</label>                                       
+                                            <li>
+                                                <input class="btn-check" type="radio" name="copy-options"
+                                                    id="copy-options-2" value="1">
+                                                <label class="btn btn-secondary dropdown-item"
+                                                    for="copy-options-2">Niezmieniaj obliczeń</label>
                                             </li>
                                         </ul>
                                     </li>
                                     <li>
                                         <input class="btn-check" type="checkbox" id="auto-saving">
-                                        <label class="btn btn-secondary dropdown-item" for="auto-saving">Auto-Zapis</label>  
+                                        <label class="btn btn-secondary dropdown-item"
+                                            for="auto-saving">Auto-Zapis</label>
                                     </li>
+                                    <li><button class="dropdown-item" type="button" onclick="askAboutCookies()">Zgoda
+                                            cookies</button></li>
+                                </ul>
+                            </li>
 
-                                    <li><button class="dropdown-item" type="button" onclick="askAboutCookies()">Zgoda cookies</button></li>
+                            <li class="nav-item dropdown ms-2">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownFile" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    Widok
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdownFile">
+                                    <li>
+                                        <input class="btn-check hide-part-input" type="checkbox"
+                                            value="tools-bar-container" id="hide-part-input-1">
+                                        <label class="btn btn-secondary dropdown-item" for="hide-part-input-1">Pasek
+                                            narzędzi</label>
+                                    </li>
+                                    <li>
+                                        <input class="btn-check hide-part-input" type="checkbox" value="cell-data-input"
+                                            id="hide-part-input-2">
+                                        <label class="btn btn-secondary dropdown-item" for="hide-part-input-2">Pole
+                                            edycji danych</label>
+                                    </li>
+                                    <li>
+                                        <input class="btn-check hide-part-input" type="checkbox" value="sheets-bar"
+                                            id="hide-part-input-3">
+                                        <label class="btn btn-secondary dropdown-item" for="hide-part-input-3">Pasek
+                                            arkuszy</label>
+                                    </li>
                                 </ul>
                             </li>
 
@@ -168,8 +210,10 @@
                                     Pomoc
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdownFile">
-                                    <li> <a href="help-encyklopedia.html" target="_blank" class="dropdown-item">Encyklopedia</a> </li>
-                                    <li> <a href="help-functions.html" target="_blank" class="dropdown-item">Lista Funkcji</a> </li>
+                                    <li> <a href="help-encyklopedia.html" target="_blank"
+                                            class="dropdown-item">Encyklopedia</a> </li>
+                                    <li> <a href="help-functions.html" target="_blank" class="dropdown-item">Lista
+                                            Funkcji</a> </li>
                                 </ul>
                             </li>
                         </ul>
@@ -178,7 +222,7 @@
             </nav>
 
             <!-- TOOLS BAR -->
-            <div class="d-flex w-100 p-1 bg-black-1">
+            <div class="d-flex w-100 p-1 bg-black-1 " id="tools-bar-container">
                 <!-- Scroll Back -->
                 <button class="btn btn-sm  px-1 btn-primary" value="-1" name="tool-bar-scroll-control">
                     <span class="icon-left-bold"></span>
@@ -236,7 +280,8 @@
 
                     <!-- TEXT ALIGN -->
                     <div class="p-1  ps-2 mx-1 border-start">
-                        <div class="text-center col-12"><span class="icon-left-bold"></span><b>A</b><span class="icon-right-bold"></span></div>
+                        <div class="text-center col-12"><span class="icon-left-bold"></span><b>A</b><span
+                                class="icon-right-bold"></span></div>
 
                         <div class="d-flex">
                             <div class="input-icon">
@@ -423,26 +468,30 @@
                         <div class="d-flex align-items-center horizontal-scroll ">
                             <div class="px-3">Typ Wykresu: </div>
 
-                            <button class="btn btn-dark input-icon" data-bs-toggle="collapse" id="addChart-line"
-                                data-bs-target="#collapse-charts" aria-expanded="false" aria-controls="collapse-charts">
+                            <button class="btn btn-dark input-icon" data-bs-toggle="collapse" name="add-chart-btn"
+                                value="line" data-bs-target="#collapse-charts" aria-expanded="false"
+                                aria-controls="collapse-charts">
                                 <span class="icon-chart-line fs-4" data-bs-toggle="tooltip" data-bs-placement="right"
                                     title="Liniowy"></span>
                             </button>
 
-                            <button class="btn btn-dark input-icon" data-bs-toggle="collapse" id="addChart-area"
-                                data-bs-target="#collapse-charts" aria-expanded="false" aria-controls="collapse-charts">
+                            <button class="btn btn-dark input-icon" data-bs-toggle="collapse" name="add-chart-btn"
+                                value="area" data-bs-target="#collapse-charts" aria-expanded="false"
+                                aria-controls="collapse-charts">
                                 <span class="icon-chart-area fs-4" data-bs-toggle="tooltip" data-bs-placement="right"
                                     title="Obszarowy"></span>
                             </button>
 
-                            <button class="btn btn-dark input-icon" data-bs-toggle="collapse" id="addChart-bar"
-                                data-bs-target="#collapse-charts" aria-expanded="false" aria-controls="collapse-charts">
+                            <button class="btn btn-dark input-icon" data-bs-toggle="collapse" name="add-chart-btn"
+                                value="column" data-bs-target="#collapse-charts" aria-expanded="false"
+                                aria-controls="collapse-charts">
                                 <span class="icon-chart-bar fs-4" data-bs-toggle="tooltip" data-bs-placement="right"
                                     title="Kolumnowy"></span>
                             </button>
 
-                            <button class="btn btn-dark input-icon" data-bs-toggle="collapse" id="addChart-pie"
-                                data-bs-target="#collapse-charts" aria-expanded="false" aria-controls="collapse-charts">
+                            <button class="btn btn-dark input-icon" data-bs-toggle="collapse" name="add-chart-btn"
+                                value="pie" data-bs-target="#collapse-charts" aria-expanded="false"
+                                aria-controls="collapse-charts">
                                 <span class="icon-chart-pie fs-4" data-bs-toggle="tooltip" data-bs-placement="right"
                                     title="Kołowy"></span>
                             </button>
@@ -455,29 +504,33 @@
 
                 <!-- ProgressBar Tools -->
                 <div class="collapse collapse-pined bg-dark w-100" aria-expanded="false" id="collapse-progressBar">
-                   
-                        <div class="row horizontal-scroll px-2 align-items-end">
-                            <div class="col-3">
-                                <span class="text-secondary">Minimalna Wartość</span>
-                                <input type="text" class="form-control form-control-sm bg-black-1 border-0"  id="progressBar-min">
-                            </div>
 
-                            <div class="col-3">
-                                <span class="text-secondary">Aktualna Wartość</span>
-                                <input type="text" class="form-control form-control-sm me-2 bg-black-1 border-0" id="progressBar-actual">
-                             </div>
-
-                            <div class="col-3">
-                                <span class="text-secondary">Maksymalna Wartość</span>
-                                <input type="text" class="form-control form-control-sm me-2 bg-black-1 border-0" id="progressBar-max">
-                            </div>
-
-                            <div class="col-3">
-                                <button class="btn btn-success btn-sm w-100"  aria-label="Close" data-bs-toggle="collapse" data-bs-target="#collapse-progressBar"
-                                aria-expanded="false" aria-controls="collapse-progressBar" id="progressBar-apply">Zatwierdź</button>
-                            </div>
+                    <div class="row horizontal-scroll px-2 align-items-end">
+                        <div class="col-3">
+                            <span class="text-secondary">Minimalna Wartość</span>
+                            <input type="text" class="form-control form-control-sm bg-black-1 border-0"
+                                id="progressBar-min">
                         </div>
-                    
+
+                        <div class="col-3">
+                            <span class="text-secondary">Aktualna Wartość</span>
+                            <input type="text" class="form-control form-control-sm me-2 bg-black-1 border-0"
+                                id="progressBar-actual">
+                        </div>
+
+                        <div class="col-3">
+                            <span class="text-secondary">Maksymalna Wartość</span>
+                            <input type="text" class="form-control form-control-sm me-2 bg-black-1 border-0"
+                                id="progressBar-max">
+                        </div>
+
+                        <div class="col-3">
+                            <button class="btn btn-success btn-sm w-100" aria-label="Close" data-bs-toggle="collapse"
+                                data-bs-target="#collapse-progressBar" aria-expanded="false"
+                                aria-controls="collapse-progressBar" id="progressBar-apply">Zatwierdź</button>
+                        </div>
+                    </div>
+
                     <button type="button" class="icon-angle-double-up btn-sm btn btn-primary w-100 py-0"
                         aria-label="Close" data-bs-toggle="collapse" data-bs-target="#collapse-progressBar"
                         aria-expanded="false" aria-controls="collapse-progressBar"></button>
@@ -533,8 +586,8 @@
 
             </div>
 
-            <!-- CELL DATA DISPLAY -->
-            <div class="bg-black-1 py-1 px-2">
+            <!-- Cell data input -->
+            <div class="bg-black-1 py-1 px-2" id="cell-data-input">
                 <div class="input-group input-group-sm">
                     <span class="input-group-text bg-dark px-2 text-light border-0 hover-effect"
                         id="cellData-cords">-:-</span>
@@ -562,27 +615,30 @@
             <input type="text" id="cellInput" class="position-absolute hidden">
             <div id="mathFunctions-container" class="position-absolute d-flex flex-column p-1 dark-scroll hidden"></div>
             <div class="position-fixed z-10 d-flex flex-column" id="contextMenu">
-                <button class="btn btn-sm bg-black-1 d-block" type="button" onclick='copiedStorage.saveData()'>Kopiuj</button>
-                <button class="btn btn-sm bg-black-1 d-block" type="button" onclick='copiedStorage.saveData(true)'>Wytnij</button>
-                <button class="btn btn-sm bg-black-1 d-block" type="button" onclick='copiedStorage.pasteData()'>Wklej</button>
+                <button class="btn btn-sm bg-black-1 d-block" type="button"
+                    onclick='copiedStorage.saveData()'>Kopiuj</button>
+                <button class="btn btn-sm bg-black-1 d-block" type="button"
+                    onclick='copiedStorage.saveData(true)'>Wytnij</button>
+                <button class="btn btn-sm bg-black-1 d-block" type="button"
+                    onclick='copiedStorage.pasteData()'>Wklej</button>
             </div>
             <canvas id="mainCanvas" class="position-relative" width="2000" height="2000"></canvas>
         </div>
 
         <!-- FOOTER -->
-        <div class="px-2 py-1 bg-dark text-light d-flex">
+        <div class="px-2 py-1 bg-dark text-light d-flex" id="sheets-bar">
             <div class="me-3">
 
                 <div class="input-group flex-nowrap">
 
                     <button class="btn btn-sm p-1 btn-dark" data-bs-toggle="tooltip" data-bs-placement="right"
-                    title="Usuń Wybrany" id="sheet-remove">
-                    <span class="icon-doc-remove"></span>
+                        title="Usuń Wybrany" id="sheet-remove">
+                        <span class="icon-doc-remove"></span>
                     </button>
 
                     <button class="btn btn-sm p-1 btn-dark" data-bs-toggle="tooltip" data-bs-placement="right"
-                    title="Kopiuj Wybrany" id="sheet-copy">
-                    <span class="icon-docs"></span>
+                        title="Kopiuj Wybrany" id="sheet-copy">
+                        <span class="icon-docs"></span>
                     </button>
 
                     <button class="btn btn-sm p-1 btn-dark" data-bs-toggle="tooltip" data-bs-placement="right"
@@ -624,10 +680,9 @@
 
     </div>
 
-<!-- MODALS -->
+    <!-- MODALS -->
     <!-- approveActionWindow -->
-    <div class="modal fade" id="approveActionWindow" tabindex="-1"
-        data-bs-backdrop="static" aria-hidden="true">
+    <div class="modal fade" id="approveActionWindow" tabindex="-1" data-bs-backdrop="static" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content bg-dark text-light">
                 <div class="modal-header justify-content-start">
@@ -648,8 +703,7 @@
     </div>
 
     <!-- LoadFileInput -->
-    <div class="modal fade" id="loadFileWindow" tabindex="-1"
-        data-bs-backdrop="static" aria-hidden="true">
+    <div class="modal fade" id="loadFileWindow" tabindex="-1" data-bs-backdrop="static" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content bg-dark text-light">
                 <div class="modal-header">
@@ -662,13 +716,13 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary" onclick="loadFile()" data-bs-dismiss="modal"
-                    aria-label="Close">Wczytaj</button>
+                        aria-label="Close">Wczytaj</button>
                 </div>
             </div>
         </div>
     </div>
 
-<!-- OFFCANVAS -->
+    <!-- OFFCANVAS -->
     <!-- Add Hyperlink Window -->
     <div class="modal fade" id="addHyperlink-modal" tabindex="-1" aria-labelledby="addHyperlink-title"
         aria-hidden="true">
@@ -751,7 +805,8 @@
         </div>
         <div class="offcanvas-body">
 
-            <div id="sysMsg-error-chart" class="toast position-absolute bottom-0 start-0 bg-dark w-100" role="alert" aria-live="assertive" aria-atomic="true">
+            <div id="sysMsg-error-chart" class="toast position-absolute bottom-0 start-0 bg-dark w-100" role="alert"
+                aria-live="assertive" aria-atomic="true">
                 <div class="toast-header">
                     <img src="animal-2029675.svg" alt="CrabOffice logo" style="width: 35px;">
                     <strong class="me-auto">PanCrab</strong>
@@ -763,8 +818,10 @@
             </div>
 
 
+
             <div class="accordion accordion-flush" id="accordionFlushExample">
 
+                <!-- Stylowanie -->
                 <div class="accordion-item bg-dark text-light">
                     <h2 class="accordion-header" id="flush-headingTwo">
                         <button class="accordion-button bg-black-1" type="button" data-bs-toggle="collapse"
@@ -775,82 +832,23 @@
                     <div id="flush-collapseTwo" class="accordion-collapse collapse show"
                         aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
                         <div class="accordion-body px-0">
-                            <div class="fw-bold">Kolory:</div>
-                            <div class="d-flex flex-wrap justify-content-around">
-                                <div class="form-check form-check-inline mt-2">
-                                    <input class="form-check-input" type="radio" id="chartStyle-1" value="210, 180, 222"
-                                        name="chart-styles-color" checked>
-                                    <label class="form-check-label ms-1" for="chartStyle-1">
-                                        <span class="color-example"
-                                            style="background-color: rgb(210, 180, 222);"></span>
-                                        <span class="color-example"
-                                            style="background-color: rgb(165, 105, 189);"></span>
-                                        <span class="color-example" style="background-color: rgb(108, 52, 131);"></span>
-                                    </label>
-                                </div>
-
-                                <div class="form-check form-check-inline mt-2">
-                                    <input class="form-check-input" type="radio" id="chartStyle-2" value="174, 214, 241"
-                                        name="chart-styles-color">
-                                    <label class="form-check-label ms-1" for="chartStyle-2">
-                                        <span class="color-example"
-                                            style="background-color: rgb(174, 214, 241) "></span>
-                                        <span class="color-example" style="background-color: #5DADE2;"></span>
-                                        <span class="color-example" style="background-color: #2E86C1;"></span>
-                                    </label>
-                                </div>
-
-                                <div class="form-check form-check-inline mt-2">
-                                    <input class="form-check-input" type="radio" id="chartStyle-3" value="245, 203, 167"
-                                        name="chart-styles-color">
-                                    <label class="form-check-label ms-1" for="chartStyle-3">
-                                        <span class="color-example"
-                                            style="background-color: rgb(245, 203, 167);"></span>
-                                        <span class="color-example" style="background-color: #EB984E ;"></span>
-                                        <span class="color-example" style="background-color: #D68910;"></span>
-                                    </label>
-                                </div>
-
-                                <div class="form-check form-check-inline mt-2">
-                                    <input class="form-check-input" type="radio" id="chartStyle-4" value="190, 210, 227"
-                                        name="chart-styles-color">
-                                    <label class="form-check-label ms-1" for="chartStyle-4">
-                                        <span class="color-example"
-                                            style="background-color: rgb(190, 210, 227);"></span>
-                                        <span class="color-example" style="background-color: #5D6D7E;"></span>
-                                        <span class="color-example" style="background-color: #2E4053;"></span>
-                                    </label>
-                                </div>
-
-                                <div class="form-check form-check-inline mt-2">
-                                    <input class="form-check-input" type="radio" id="chartStyle-5" value="227, 190, 190"
-                                        name="chart-styles-color">
-                                    <label class="form-check-label ms-1" for="chartStyle-5">
-                                        <span class="color-example"
-                                            style="background-color: rgb(227, 190, 190);"></span>
-                                        <span class="color-example" style="background-color: #7e5d5d;"></span>
-                                        <span class="color-example" style="background-color: #532e2e;"></span>
-                                    </label>
-                                </div>
-
-                                <div class="form-check form-check-inline mt-2">
-                                    <input class="form-check-input" type="radio" id="chartStyle-6" value="117, 150, 120"
-                                        name="chart-styles-color">
-                                    <label class="form-check-label ms-1" for="chartStyle-6">
-                                        <span class="color-example"
-                                            style="background-color: rgb(117, 150, 120);"></span>
-                                        <span class="color-example" style="background-color: #6f995d;"></span>
-                                        <span class="color-example" style="background-color: #3b6127;"></span>
-                                    </label>
-                                </div>
-                            </div>
+                            <div class="fw-bold">Typ wykresu:</div>
+                            <select class="form-select bg-black-1 border-0 mt-2 text-light"
+                                aria-label="Select chart type" id="chart-type">
+                                <option value="column">Kolumnowy</option>
+                                <option value="pie">Kołowy</option>
+                                <option value="line">Liniowy</option>
+                                <option value="area">Obszarowy</option>
+                            </select>
+                            <div class="fw-bold mt-2 mb-1 pt-1 border-top border-secondary">Motyw:</div>
+                            <select class="form-select bg-black-1 border-0 mt-2 text-light overflow-hidden" size="4"
+                                aria-label="Select chart type" id="chart-theme">
+                                <option value="light1">Jasny 1</option>
+                                <option value="light2">Jasny 2</option>
+                                <option value="dark1">Ciemny 1</option>
+                                <option value="dark2">Ciemny 2</option>
+                            </select>
                             <div class="fw-bold mt-2 mb-1 pt-1 border-top border-secondary">Preferencje:</div>
-
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="chart-render-bg" value="true"
-                                    checked>
-                                <label class="form-check-label" for="chart-render-bg">Przezroczyste Tło</label>
-                            </div>
 
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" id="chart-render-legend">
@@ -861,7 +859,7 @@
                     </div>
                 </div>
 
-
+                <!-- Zakresy Danych -->
                 <div class="accordion-item bg-dark text-light">
                     <h2 class="accordion-header" id="flush-headingOne">
                         <button class="accordion-button bg-black-1 collapsed " type="button" data-bs-toggle="collapse"
@@ -872,11 +870,18 @@
                     <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
                         data-bs-parent="#accordionFlushExample">
                         <div class="accordion-body px-0">
+                            <div class="mb-3">
+                                <label for="chart-title" class="form-label">Tytuł Wykresu</label>
+                                <input type="email" class="form-control bg-black-1 border-0 text-light" id="chart-title"
+                                    placeholder="">
+                            </div>
                             <div class="fw-bold mb-2">Dodaj wszystkie zaznaczone komórki do:</div>
 
                             <div>
-                                <button class="bg-black-1 btn w-auto" onclick="widgetTools_chart.addToKeys()">Kluczy</button>
-                                <button class="bg-black-1 btn" onclick="widgetTools_chart.addToValues()">Wartości</button>
+                                <button class="bg-black-1 btn w-auto"
+                                    onclick="widgetTools_chart.addToKeys()">Kluczy</button>
+                                <button class="bg-black-1 btn"
+                                    onclick="widgetTools_chart.addToValues()">Wartości</button>
                             </div>
 
                             <div class="form-check form-switch mt-2">
@@ -897,6 +902,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
 
         </div>
@@ -1090,7 +1096,7 @@
             </div>
 
             <hr>
-     
+
             <span class="mt-3 mb-1 d-block fw-bold">Wybierz Zakres:</span>
             <div class="row">
                 <div class="col-6">
@@ -1117,43 +1123,48 @@
     </div>
 
     <!-- VariableData -->
-    <div class="offcanvas offcanvas-end w-25" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvas-variable-data">
+    <div class="offcanvas offcanvas-end w-25" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
+        id="offcanvas-variable-data">
         <div class="offcanvas-header bg-black-1 text-light">
-          <h5 class="offcanvas-title">Dane Przestawne</h5>
-          <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            <h5 class="offcanvas-title">Dane Przestawne</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body bg-dark text-light">
-          <div class=" pb-3">
-            Zmieniaj dane w wielu komórkach jednocześnie za pomocą prostej rozsuwanej listy
-          </div>
-          <hr>
-          <div class="d-flex flex-column">
-            <button class="btn btn-secondary mt-1" id="variableData-add-set">Nowy zakres</button>
-            <ol id="variableDataOptions" class="data-list mt-2">
-                
-            </ol>
-          </div>
-          <button class="btn d-block ms-auto btn-success" id="variableData-save-data">Zapisz</button>
-   
-          
+            <div class=" pb-3">
+                Zmieniaj dane w wielu komórkach jednocześnie za pomocą prostej rozsuwanej listy
+            </div>
+            <hr>
+            <div class="d-flex flex-column">
+                <button class="btn btn-secondary mt-1" id="variableData-add-set">Nowy zakres</button>
+                <ol id="variableDataOptions" class="data-list mt-2">
+
+                </ol>
+            </div>
+            <button class="btn d-block ms-auto btn-success" id="variableData-save-data">Zapisz</button>
+
+
 
         </div>
     </div>
 
-<!-- Toasts - Sys Messeges -->
+    <!-- Toasts - Sys Messeges -->
+
     <!-- CAN'T MOVE -->
-    <div id="sysMsg-error-space" class="toast position-fixed bottom-0 end-0" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header">
-                <img src="animal-2029675.svg" alt="CrabOffice logo" style="width: 35px;">
-                <strong class="me-auto">PanCrab</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-            <div class="toast-body">
-                Nie udało się wykonać tej operacji z powodu niewystarczającej ilości miejsca dla danych lub obliczeń
-            </div>
+    <div id="sysMsg-error-space" class="toast position-fixed bottom-0 end-0" role="alert" aria-live="assertive"
+        aria-atomic="true">
+        <div class="toast-header">
+            <img src="animal-2029675.svg" alt="CrabOffice logo" style="width: 35px;">
+            <strong class="me-auto">PanCrab</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            Nie udało się wykonać tej operacji z powodu niewystarczającej ilości miejsca dla danych lub obliczeń
+        </div>
     </div>
+
     <!-- Download File will start soon -->
-    <div id="sysMsg-info-download" class="toast position-fixed top-0 end-0" role="alert" aria-live="assertive" aria-atomic="true">
+    <div id="sysMsg-info-download" class="toast position-fixed top-0 end-0" role="alert" aria-live="assertive"
+        aria-atomic="true">
         <div class="toast-header">
             <img src="animal-2029675.svg" alt="CrabOffice logo" style="width: 35px;">
             <strong class="me-auto">PanCrab</strong>
@@ -1165,8 +1176,10 @@
             Jeżeli pobieranie się nie rozpoczyna <a href="" id="fileDownloadLink">kliknij tutaj</a>.
         </div>
     </div>
+
     <!-- CAN'T INSERT -->
-    <div id="sysMsg-error-insert" class="toast position-fixed bottom-0 end-0" role="alert" aria-live="assertive" aria-atomic="true">
+    <div id="sysMsg-error-insert" class="toast position-fixed bottom-0 end-0" role="alert" aria-live="assertive"
+        aria-atomic="true">
         <div class="toast-header">
             <img src="animal-2029675.svg" alt="CrabOffice logo" style="width: 35px;">
             <strong class="me-auto">PanCrab</strong>
@@ -1176,8 +1189,10 @@
             Najpierw zaznacz komórke do której chcesz wstawić wybrany komponent
         </div>
     </div>
+
     <!-- CAN'T SORT -->
-    <div id="sysMsg-error-sort" class="toast position-fixed bottom-0 end-0" role="alert" aria-live="assertive" aria-atomic="true">
+    <div id="sysMsg-error-sort" class="toast position-fixed bottom-0 end-0" role="alert" aria-live="assertive"
+        aria-atomic="true">
         <div class="toast-header">
             <img src="animal-2029675.svg" alt="CrabOffice logo" style="width: 35px;">
             <strong class="me-auto">PanCrab</strong>
@@ -1187,8 +1202,10 @@
             Nie można uporządkować komórek z obliczeniami używającymi inne komórki
         </div>
     </div>
+
     <!-- CAN'T LOAD -->
-    <div id="sysMsg-error-load" class="toast position-fixed bottom-0 end-0" role="alert" aria-live="assertive" aria-atomic="true">
+    <div id="sysMsg-error-load" class="toast position-fixed bottom-0 end-0" role="alert" aria-live="assertive"
+        aria-atomic="true">
         <div class="toast-header">
             <img src="animal-2029675.svg" alt="CrabOffice logo" style="width: 35px;">
             <strong class="me-auto">PanCrab</strong>
@@ -1198,8 +1215,10 @@
             Niestety nie udało się wczytać tego pliku.
         </div>
     </div>
+
     <!-- CAN'T INSERT2 -->
-    <div id="sysMsg-error-insert2" class="toast position-fixed bottom-0 end-0" role="alert" aria-live="assertive" aria-atomic="true">
+    <div id="sysMsg-error-insert2" class="toast position-fixed bottom-0 end-0" role="alert" aria-live="assertive"
+        aria-atomic="true">
         <div class="toast-header">
             <img src="animal-2029675.svg" alt="CrabOffice logo" style="width: 35px;">
             <strong class="me-auto">PanCrab</strong>
@@ -1210,9 +1229,25 @@
         </div>
     </div>
 
+    <!-- Mobile Version -->
+    <div id="sysMsg-info-mobile" data-bs-delay="15000" class="toast position-fixed bottom-0 end-0" role="alert" aria-live="assertive"
+        aria-atomic="true">
+        <div class="toast-header">
+            <img src="animal-2029675.svg" alt="CrabOffice logo" style="width: 35px;">
+            <strong class="me-auto">PanCrab</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            Hej nie wykryliśmy podłączonej myszki niestety niektóre funkcje są
+            niedostępne dla urządzeń mobilnych. Domyślnie ukryliśmy "pasek narzędzi" i "pole edycji komórek" możesz to
+            zmienić w zakładce Widok w menu głównym
+        </div>
+    </div>
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap 5 -->
+    <script src="https://cdn.canvasjs.com/ga/canvasjs.stock.min.js"></script> <!-- CanvasJS -->
     <script src="core.js"></script>
     <script src="scripts/filehandler.js"></script>
     <script src="scripts/accessories.js"></script>

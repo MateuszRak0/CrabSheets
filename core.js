@@ -915,7 +915,7 @@ class Cell {
         })
 
         this.usedInCharts.forEach(chart => {
-            chart.refresh();
+            chart.refresh(true);
         })
         this.oldtext = this.text;
         ctx.clearRect(this.x + 1, this.y + 1, cellSize.x - 2, cellSize.y - 2);

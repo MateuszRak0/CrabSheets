@@ -97,23 +97,7 @@ function unpackWidget(sheet,loadedWidget,copied){
             break;            
 
         case "CHART":
-            switch(loadedWidget.chartType) {
-                case "PIE":
-                  new PieChart(sheet,loadedWidget);
-                  break;
-
-                case "BAR":
-                  new BarChart(sheet,loadedWidget);
-                  break;
-
-                case "LINE":
-                  new LineChart(sheet,loadedWidget);
-                  break;
-
-                case "AREA":
-                  new AreaChart(sheet,loadedWidget);
-                  break;                     
-              }
+            new Chart(sheet,loadedWidget)
             break;
     }
 }
